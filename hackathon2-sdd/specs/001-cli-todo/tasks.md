@@ -27,7 +27,7 @@ they fail before implementation, and target 100% coverage with mypy passing.
 
 ## Phase 1: Setup (Shared Infrastructure)
 
-- [ ] T001 Create CLI todo project layout in hackathon2-sdd/src/{cli,models,services,lib} and tests/{unit,integration} (deliverable: directories ready)
+- [ ] T001 Initialize project in hackathon2-sdd using `uv init` and ensure src/{cli,models,services,lib} plus tests/{unit,integration} exist (deliverable: uv-initialized project layout)
 - [ ] T002 Initialize uv environment and sync deps via `uv sync` at /home/aie/all_data/piaic71-hackathon/hackathon2-sdd (deliverable: up-to-date .venv)
 - [ ] T003 Add pytest and mypy config stubs in hackathon2-sdd/pyproject.toml if missing (deliverable: configs align with 100% coverage + type checks)
 - [ ] T004 Document Context7 MCP usage plan in hackathon2-sdd/specs/001-cli-todo/research.md addendum (deliverable: note to pull docs via MCP where available)
@@ -57,7 +57,7 @@ they fail before implementation, and target 100% coverage with mypy passing.
 - [ ] T014 [US1] Wire CLI subcommands add/view in hackathon2-sdd/src/cli/main.py using argparse (deliverable: green T011)
 - [ ] T015 [US1] Refactor for duplication removal and functional purity where possible in hackathon2-sdd/src/services/store.py (deliverable: clean code post-green)
 - [ ] T016 [US1] Update docs/quickstart with add/view examples in hackathon2-sdd/specs/001-cli-todo/quickstart.md (deliverable: updated guide)
-- [ ] T017 [US1] Human review checkpoint before commit (deliverable: approval + commit note)
+- [ ] T017 [US1] Human review checkpoint: present US1 changes; on approval, commit or iterate (deliverable: approval + commit/changes)
 
 ## Phase 4: User Story 2 - Update and Complete Tasks (Priority: P2)
 
@@ -76,7 +76,7 @@ they fail before implementation, and target 100% coverage with mypy passing.
 - [ ] T022 [US2] Implement complete_task with idempotent handling in hackathon2-sdd/src/services/store.py (deliverable: green T019)
 - [ ] T023 [US2] Wire CLI subcommands update/complete in hackathon2-sdd/src/cli/main.py (deliverable: green T020)
 - [ ] T024 [US2] Refactor shared validation/formatting into hackathon2-sdd/src/lib/validation.py (deliverable: reduced duplication)
-- [ ] T025 [US2] Human review checkpoint before commit (deliverable: approval + commit note)
+- [ ] T025 [US2] Human review checkpoint: present US2 changes; on approval, commit or iterate (deliverable: approval + commit/changes)
 
 ## Phase 5: User Story 3 - Remove Tasks (Priority: P3)
 
@@ -93,7 +93,7 @@ they fail before implementation, and target 100% coverage with mypy passing.
 - [ ] T028 [US3] Implement delete_task in hackathon2-sdd/src/services/store.py (deliverable: green T026)
 - [ ] T029 [US3] Wire CLI delete subcommand in hackathon2-sdd/src/cli/main.py (deliverable: green T027)
 - [ ] T030 [US3] Refactor common CLI messaging and exit handling in hackathon2-sdd/src/lib/cli_output.py (deliverable: consistent outputs)
-- [ ] T031 [US3] Human review checkpoint before commit (deliverable: approval + commit note)
+- [ ] T031 [US3] Human review checkpoint: present US3 changes; on approval, commit or iterate (deliverable: approval + commit/changes)
 
 ## Phase N: Polish & Cross-Cutting Concerns
 

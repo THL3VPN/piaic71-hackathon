@@ -17,7 +17,7 @@ links:
   pr: null
 files:
   - path: hackathon2-sdd/specs/001-cli-todo/tasks.md
-    summary: Task breakdown with TDD-first steps per story, dependencies, and review checkpoints.
+    summary: Task breakdown with TDD-first steps per story, dependencies, uv init setup, and explicit review checkpoints with commit gates.
 tests:
   - status: not_run
     details: Task planning only; no automated tests executed.
