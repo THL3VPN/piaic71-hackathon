@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from tests.conftest import run_cli
+from conftest import run_cli
 
 
 def test_cli_add_then_view_outputs_task():

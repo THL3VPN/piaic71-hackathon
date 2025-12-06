@@ -46,16 +46,16 @@ they fail before implementation, and target 100% coverage with mypy passing.
 
 ### Tests for User Story 1 (MANDATORY - write before implementation) ⚠️
 
-- [ ] T009 [US1] RED: Write unit tests for add_task behavior in hackathon2-sdd/tests/unit/test_tasks_add.py (deliverable: failing tests)
-- [ ] T010 [P] [US1] RED: Write unit tests for view_tasks listing in hackathon2-sdd/tests/unit/test_tasks_view.py (deliverable: failing tests)
-- [ ] T011 [US1] RED: Write integration test for CLI add+view flow in hackathon2-sdd/tests/integration/test_cli_add_view.py (deliverable: failing test)
+- [X] T009 [US1] RED: Write unit tests for add_task behavior in hackathon2-sdd/tests/unit/test_tasks_add.py (deliverable: failing tests)
+- [X] T010 [P] [US1] RED: Write unit tests for view_tasks listing in hackathon2-sdd/tests/unit/test_tasks_view.py (deliverable: failing tests)
+- [X] T011 [US1] RED: Write integration test for CLI add+view flow in hackathon2-sdd/tests/integration/test_cli_add_view.py (deliverable: failing test)
 
 ### Implementation for User Story 1
 
-- [ ] T012 [US1] Implement add_task in hackathon2-sdd/src/services/store.py to append Task with new id (deliverable: green T009)
-- [ ] T013 [US1] Implement view_tasks in hackathon2-sdd/src/services/store.py returning ordered tasks (deliverable: green T010)
-- [ ] T014 [US1] Wire CLI subcommands add/view in hackathon2-sdd/src/cli/main.py using argparse (deliverable: green T011)
-- [ ] T015 [US1] Refactor for duplication removal and functional purity where possible in hackathon2-sdd/src/services/store.py (deliverable: clean code post-green)
+- [X] T012 [US1] Implement add_task in hackathon2-sdd/src/services/store.py to append Task with new id (deliverable: green T009)
+- [X] T013 [US1] Implement view_tasks in hackathon2-sdd/src/services/store.py returning ordered tasks (deliverable: green T010)
+- [X] T014 [US1] Wire CLI subcommands add/view in hackathon2-sdd/src/cli/main.py using argparse (deliverable: green T011)
+- [X] T015 [US1] Refactor for duplication removal and functional purity where possible in hackathon2-sdd/src/services/store.py (deliverable: clean code post-green)
 - [ ] T016 [US1] Update docs/quickstart with add/view examples in hackathon2-sdd/specs/001-cli-todo/quickstart.md (deliverable: updated guide)
 - [ ] T017 [US1] Human review checkpoint: present US1 changes; on approval, commit or iterate (deliverable: approval + commit/changes)
 

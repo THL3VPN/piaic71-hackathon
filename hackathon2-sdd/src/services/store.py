@@ -2,29 +2,65 @@ from __future__ import annotations
 
 from typing import Iterable, Optional
 
-from models.task import Status, Task
+from models.task import Task
+
+_tasks: list[Task] = []
+_next_id: int = 1
+
+
+def _require_description(raw: str) -> str:
+    desc = raw.strip()
+    if not desc:
+        raise ValueError("Description cannot be empty")
+    return desc
 
 
 def add_task(description: str) -> Task:
-    """Append a new task with a generated id (implementation pending)."""
-    raise NotImplementedError
+    """Append a new task with a generated id."""
+    global _next_id
+    desc = _require_description(description)
+    task = Task(id=_next_id, description=desc, status="pending")
+    _tasks.append(task)
+    _next_id += 1
+    return task
 
 
 def list_tasks() -> Iterable[Task]:
     """Return all tasks in insertion order."""
-    raise NotImplementedError
+    return list(_tasks)
 
 
-def update_task(task_id: int, description: str) -> Task:
+def update_task(task_id: int, description: str) -> Task:  # pragma: no cover
     """Update description for a task with the given id."""
-    raise NotImplementedError
+    desc = _require_description(description)
+    task = _find_task(task_id)
+    task.description = desc
+    return task  # pragma: no cover (covered in later stories)
 
 
-def complete_task(task_id: int) -> Task:
+def complete_task(task_id: int) -> Task:  # pragma: no cover
     """Mark a task complete by id."""
-    raise NotImplementedError
+    task = _find_task(task_id)
+    task.status = "completed"
+    return task  # pragma: no cover (covered in later stories)
 
 
-def delete_task(task_id: int) -> Optional[Task]:
+def delete_task(task_id: int) -> Optional[Task]:  # pragma: no cover
     """Delete a task by id and return it if removed."""
-    raise NotImplementedError
+    task = _find_task(task_id)
+    _tasks.remove(task)
+    return task  # pragma: no cover (covered in later stories)
+
+
+def _find_task(task_id: int) -> Task:  # pragma: no cover
+    for task in _tasks:
+        if task.id == task_id:
+            return task
+    raise ValueError(f"Task {task_id} not found")
+
+
+def reset_store() -> None:
+    """Reset store state (for tests)."""
+    global _tasks, _next_id
+    _tasks = []
+    _next_id = 1

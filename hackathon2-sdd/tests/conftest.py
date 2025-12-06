@@ -6,12 +6,22 @@ import sys
 from pathlib import Path
 from typing import Sequence, Tuple
 
+import pytest
+
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SRC_DIR = PROJECT_ROOT / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
 from cli.main import main  # noqa: E402
+from services import store  # noqa: E402
+
+
+@pytest.fixture(autouse=True)
+def reset_store_state():
+    store.reset_store()
+    yield
+    store.reset_store()
 
 
 def _run_cli(argv: Sequence[str] | None = None) -> Tuple[int, str, str]:
@@ -23,7 +33,7 @@ def _run_cli(argv: Sequence[str] | None = None) -> Tuple[int, str, str]:
             result = main(argv or [])
             if isinstance(result, int):
                 exit_code = result
-        except SystemExit as exc:
+        except SystemExit as exc:  # pragma: no cover
             exit_code = int(exc.code) if isinstance(exc.code, int) else 1
     return exit_code, stdout.getvalue(), stderr.getvalue()
 
