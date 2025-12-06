@@ -23,6 +23,9 @@ uv run python -m todo <command> [options]
 # examples (subject to implementation names)
 uv run python -m todo add --description "Buy milk"
 uv run python -m todo view
+# sample output
+# Created task 1: Buy milk [pending]
+# 1: Buy milk [pending]
 uv run python -m todo update --id 1 --description "Buy oat milk"
 uv run python -m todo complete --id 1
 uv run python -m todo delete --id 1
