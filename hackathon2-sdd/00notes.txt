@@ -39,13 +39,13 @@ commands[
     /sp.constitution
         Project principles and standards:
         - Write tests first (TDD approach)
-        - Use Python 3.12+ with type hints everywhere
+        - Use Python 3.13+ with type hints everywhere
         - Keep code clean and easy to read
         - Document important decisions with ADRs
         - Follow essential OOP principles: SOLID, DRY, KISS
 
         Technical stack:
-        - Python 3.12+ with UV package manager
+        - Python 3.13+ with UV package manager
         - pytest for testing
         - Keep all project files in git
 

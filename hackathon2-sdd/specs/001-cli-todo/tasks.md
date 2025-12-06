@@ -27,9 +27,9 @@ they fail before implementation, and target 100% coverage with mypy passing.
 
 ## Phase 1: Setup (Shared Infrastructure)
 
-- [ ] T001 Initialize project in hackathon2-sdd using `uv init` and ensure src/{cli,models,services,lib} plus tests/{unit,integration} exist (deliverable: uv-initialized project layout)
-- [ ] T002 Initialize uv environment and sync deps via `uv sync` at /home/aie/all_data/piaic71-hackathon/hackathon2-sdd (deliverable: up-to-date .venv)
-- [ ] T003 Add pytest and mypy config stubs in hackathon2-sdd/pyproject.toml if missing (deliverable: configs align with 100% coverage + type checks)
+- [X] T001 Initialize project in hackathon2-sdd using `uv init` and ensure src/{cli,models,services,lib} plus tests/{unit,integration} exist (deliverable: uv-initialized project layout)
+- [X] T002 Initialize uv environment and sync deps via `uv sync` at /home/aie/all_data/piaic71-hackathon/hackathon2-sdd (deliverable: up-to-date .venv)
+- [X] T003 Add pytest and mypy config stubs in hackathon2-sdd/pyproject.toml if missing (deliverable: configs align with 100% coverage + type checks)
 - [ ] T004 Document Context7 MCP usage plan in hackathon2-sdd/specs/001-cli-todo/research.md addendum (deliverable: note to pull docs via MCP where available)
 
 ## Phase 2: Foundational (Blocking Prerequisites)

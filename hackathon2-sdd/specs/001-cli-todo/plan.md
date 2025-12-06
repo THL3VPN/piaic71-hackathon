@@ -13,7 +13,7 @@ docstrings, full type hints, and TDD with 100% test coverage and mypy passing pe
 
 ## Technical Context
 
-**Language/Version**: Python 3.12  
+**Language/Version**: Python 3.13  
 **Primary Dependencies**: Standard library (`argparse` for CLI, `dataclasses`, `typing`)  
 **Storage**: In-memory list/dict for tasks (no persistence)  
 **Testing**: pytest + coverage; mypy for type checking  
@@ -30,7 +30,7 @@ dataclasses for task models, functional approach where reasonable, follow consti
 
 - Tests first: plans must schedule pytest cases before implementation, with red-green-refactor flow
   and ≥80% line coverage targets documented.
-- Runtime stack: Python 3.12+ only, type hints everywhere, and dataclasses for data models;
+- Runtime stack: Python 3.13+ only, type hints everywhere, and dataclasses for data models;
   dependencies managed with `uv` (lock and sync).
 - Simplicity: proposed designs must demonstrate SOLID/DRY/KISS adherence and avoid unnecessary
   abstractions.
@@ -79,5 +79,5 @@ components. CLI uses `argparse`; services remain pure/functional over in-memory 
 |-----------|------------|-------------------------------------|
 | - | - | - |
 
-**Post-design Constitution Check**: All gates satisfied (TDD-first flow, typed Python 3.12 with
+**Post-design Constitution Check**: All gates satisfied (TDD-first flow, typed Python 3.13 with
 dataclasses, uv-managed deps, no complexity exceptions).

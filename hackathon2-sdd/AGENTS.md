@@ -4,7 +4,7 @@ Auto-generated from all feature plans. Last updated: 2025-12-06
 
 ## Active Technologies
 
-- Python 3.12 + Standard library (`argparse` for CLI, `dataclasses`, `typing`) (001-cli-todo)
+- Python 3.13 + Standard library (`argparse` for CLI, `dataclasses`, `typing`) (001-cli-todo)
 
 ## Project Structure
 
@@ -19,11 +19,11 @@ cd src [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNOLO
 
 ## Code Style
 
-Python 3.12: Follow standard conventions
+Python 3.13: Follow standard conventions
 
 ## Recent Changes
 
-- 001-cli-todo: Added Python 3.12 + Standard library (`argparse` for CLI, `dataclasses`, `typing`)
+- 001-cli-todo: Added Python 3.13 + Standard library (`argparse` for CLI, `dataclasses`, `typing`)
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->

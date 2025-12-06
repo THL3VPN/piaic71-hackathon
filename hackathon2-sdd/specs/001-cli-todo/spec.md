@@ -3,7 +3,7 @@
 **Feature Branch**: `[001-cli-todo]`  
 **Created**: 2025-12-06  
 **Status**: Draft  
-**Input**: User description: "Feature: Build a command-line todo application that stores tasks in memory User journeys: - Add a task - Delete a task - Update a task - view a task - Mark Complete a task Acceptance criteria: - All operations work correct formating and input type as string - All operations return correct results - All operations have full test coverage - All functions use Python 3.12+ type hints - All functions have clear docstrings Success metrics: - 100% test coverage for all operations - Type checking passes with mypy - Code follows our constitution rules"
+**Input**: User description: "Feature: Build a command-line todo application that stores tasks in memory User journeys: - Add a task - Delete a task - Update a task - view a task - Mark Complete a task Acceptance criteria: - All operations work correct formating and input type as string - All operations return correct results - All operations have full test coverage - All functions use Python 3.13+ type hints - All functions have clear docstrings Success metrics: - 100% test coverage for all operations - Type checking passes with mypy - Code follows our constitution rules"
 
 ## User Scenarios & Testing *(mandatory)*
 

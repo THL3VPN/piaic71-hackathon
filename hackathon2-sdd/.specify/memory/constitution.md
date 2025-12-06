@@ -1,11 +1,11 @@
 <!--
 Sync Impact Report
-- Version: UNSET -> 1.0.0
-- Modified principles: Initial set established
-- Added sections: Core Principles, Technical Stack & Quality Gates, Development Workflow & Review, Governance
+- Version: 1.0.0 -> 1.1.0
+- Modified principles: II. Modern Typed Python 3.12 -> II. Modern Typed Python 3.13
+- Added sections: None
 - Removed sections: None
-- Templates requiring updates: ✅ .specify/templates/plan-template.md; ✅ .specify/templates/tasks-template.md
-- Follow-up TODOs: None
+- Templates requiring updates: None (feature docs and AGENTS updated)
+- Follow-up TODOs: Regenerate toolchain files (uv.lock) with Python 3.13 once interpreter available
 -->
 # Hackathon2 SDD Constitution
 
@@ -17,8 +17,8 @@ red-green-refactor cycle. All merges require a green suite with at least 80% lin
 unexplained reductions. Production code must not be written without a failing test that defines the
 behavior.
 
-### II. Modern Typed Python 3.12
-Use Python 3.12+ exclusively. Apply type hints everywhere and treat type checking as a gate for
+### II. Modern Typed Python 3.13
+Use Python 3.13+ exclusively. Apply type hints everywhere and treat type checking as a gate for
 acceptance. Model data with `dataclass` (or compatible `dataclasses.dataclass`) by default to keep
 schemas explicit and immutable where appropriate. Manage dependencies with `uv`; lock and sync
 environments before sharing work.
@@ -40,7 +40,7 @@ dependencies only through `uv` commands and commit lockfiles to keep environment
 
 ## Technical Stack & Quality Gates
 
-- Language: Python 3.12+ with comprehensive type hints; dataclasses are the default data structure.
+- Language: Python 3.13+ with comprehensive type hints; dataclasses are the default data structure.
 - Package manager: `uv` for dependency resolution and locking; lockfiles are version-controlled.
 - Testing: pytest is the standard runner; maintain ≥80% line coverage and raise thresholds when
   feasible. Tests are written first and must fail before implementation.
@@ -67,4 +67,4 @@ dependencies only through `uv` commands and commit lockfiles to keep environment
   coverage, type checks pass, and ADRs are linked where applicable. Periodic audits ensure no drift
   from the TDD, typing, and git discipline requirements.
 
-**Version**: 1.0.0 | **Ratified**: 2025-12-06 | **Last Amended**: 2025-12-06
+**Version**: 1.1.0 | **Ratified**: 2025-12-06 | **Last Amended**: 2025-12-06

@@ -1,7 +1,7 @@
 # Quickstart: CLI Todo App
 
 ## Prerequisites
-- Python 3.12+
+- Python 3.13+
 - `uv` installed for dependency management
 
 ## Setup
