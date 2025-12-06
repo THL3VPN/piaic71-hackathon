@@ -81,3 +81,6 @@ components. CLI uses `argparse`; services remain pure/functional over in-memory 
 
 **Post-design Constitution Check**: All gates satisfied (TDD-first flow, typed Python 3.13 with
 dataclasses, uv-managed deps, no complexity exceptions).
+
+**Foundation review checkpoint**: Completed T004–T008; approved to proceed to US1 RED tests on
+2025-12-06.

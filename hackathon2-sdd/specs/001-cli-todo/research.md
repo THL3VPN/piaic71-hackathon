@@ -36,3 +36,9 @@
 - **Decision**: TDD workflow with pytest and mypy; target 100% coverage per acceptance criteria.  
   **Rationale**: Matches constitution and feature requirements; ensures confidence in CLI behaviors.  
   **Alternatives considered**: Lower coverage thresholds (contradicts requirements).
+
+- **Decision**: Use Context7 MCP server for authoritative documentation lookups before choosing CLI
+  patterns or libraries; prefer MCP-sourced guidance over assumptions.  
+  **Rationale**: Reduces guesswork and aligns with environment-provided docs.  
+  **Alternatives considered**: Relying on personal defaults (risk of mismatch); external web search
+  (may be blocked).

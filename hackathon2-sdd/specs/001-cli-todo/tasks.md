@@ -30,14 +30,14 @@ they fail before implementation, and target 100% coverage with mypy passing.
 - [X] T001 Initialize project in hackathon2-sdd using `uv init` and ensure src/{cli,models,services,lib} plus tests/{unit,integration} exist (deliverable: uv-initialized project layout)
 - [X] T002 Initialize uv environment and sync deps via `uv sync` at /home/aie/all_data/piaic71-hackathon/hackathon2-sdd (deliverable: up-to-date .venv)
 - [X] T003 Add pytest and mypy config stubs in hackathon2-sdd/pyproject.toml if missing (deliverable: configs align with 100% coverage + type checks)
-- [ ] T004 Document Context7 MCP usage plan in hackathon2-sdd/specs/001-cli-todo/research.md addendum (deliverable: note to pull docs via MCP where available)
+- [X] T004 Document Context7 MCP usage plan in hackathon2-sdd/specs/001-cli-todo/research.md addendum (deliverable: note to pull docs via MCP where available)
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
-- [ ] T005 Create task dataclass scaffold in hackathon2-sdd/src/models/task.py with type hints only (no logic) (deliverable: dataclass placeholder)
-- [ ] T006 Stub in-memory store interface in hackathon2-sdd/src/services/store.py with function signatures only (add/find/update/delete) (deliverable: typed interfaces)
-- [ ] T007 Prepare base test helpers for CLI output capture in hackathon2-sdd/tests/conftest.py (deliverable: reusable fixtures)
-- [ ] T008 Human review checkpoint: confirm foundations and TDD plan before user stories (deliverable: approval note in plan.md)
+- [X] T005 Create task dataclass scaffold in hackathon2-sdd/src/models/task.py with type hints only (no logic) (deliverable: dataclass placeholder)
+- [X] T006 Stub in-memory store interface in hackathon2-sdd/src/services/store.py with function signatures only (add/find/update/delete) (deliverable: typed interfaces)
+- [X] T007 Prepare base test helpers for CLI output capture in hackathon2-sdd/tests/conftest.py (deliverable: reusable fixtures)
+- [X] T008 Human review checkpoint: confirm foundations and TDD plan before user stories (deliverable: approval note in plan.md)
 
 ## Phase 3: User Story 1 - Capture and View Tasks (Priority: P1) 🎯 MVP
 
