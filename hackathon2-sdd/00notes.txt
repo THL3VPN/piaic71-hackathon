@@ -17,10 +17,22 @@ speckitplus[
         Implement - Let the AI build the features
         PHR - Your conversations are automatically saved in history/prompts/ organized by feature and stage
         Test & Merge - Test everything and merge to main branch
-     
+
+    Specify → Plan → Tasks → Implement.
+
+    Key Learning: In vibe coding, you created each operation with a separate prompt. In SDD, you group related functionality into ONE feature, then break it into small tasks during planning. This teaches you the difference between FEATURES (user-facing) and TASKS (implementation steps).
+
+    Phase 1: Specify
+    Phase 2: Plan
+    Phase 3: Tasks
+    Phase 4: Implement
+
 ]
 
 commands[
+
+    https://github.com/panaversity/spec-kit-plus/tree/main/docs-plus/05_quickstart
+
     uvx specifyplus init calculator-spp //created the project structure
     codex and npm update
 
@@ -44,5 +56,5 @@ commands[
     
     Show me the generated constitution file and explain what it contains.
     Use the agent to commit and open a PR for the constitution: /sp.git.commit_pr Commit and push the constitution along with current work.
-    
+
 ]
