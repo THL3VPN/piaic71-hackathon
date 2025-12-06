@@ -18,7 +18,6 @@ def build_parser() -> argparse.ArgumentParser:
 
     subparsers.add_parser("view", help="View all tasks")
 
-    # Future commands (covered in later user stories)
     update_cmd = subparsers.add_parser("update", help="Update a task description")
     update_cmd.add_argument("--id", type=int, required=True)
     update_cmd.add_argument("--description", required=True)
@@ -50,15 +49,18 @@ def main(argv: Sequence[str] | None = None) -> int:
                 print(f"{task.id}: {task.description} [{task.status}]")
             return 0
 
-        if args.command == "update":  # pragma: no cover
+        if args.command == "update":
             task = store.update_task(args.id, args.description)
             print(f"Updated task {task.id}: {task.description} [{task.status}]")
-            return 0  # pragma: no cover (covered in later stories)
+            return 0
 
-        if args.command == "complete":  # pragma: no cover
-            task = store.complete_task(args.id)
-            print(f"Completed task {task.id}: {task.description}")
-            return 0  # pragma: no cover (covered in later stories)
+        if args.command == "complete":
+            task, already = store.complete_task(args.id)
+            if already:
+                print(f"Task {task.id} is already completed")
+            else:
+                print(f"Completed task {task.id}: {task.description}")
+            return 0
 
         if args.command == "delete":  # pragma: no cover
             store.delete_task(args.id)

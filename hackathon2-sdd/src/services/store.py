@@ -38,11 +38,12 @@ def update_task(task_id: int, description: str) -> Task:  # pragma: no cover
     return task  # pragma: no cover (covered in later stories)
 
 
-def complete_task(task_id: int) -> Task:  # pragma: no cover
-    """Mark a task complete by id."""
+def complete_task(task_id: int) -> tuple[Task, bool]:
+    """Mark a task complete by id. Returns (task, already_completed)."""
     task = _find_task(task_id)
+    already = task.status == "completed"
     task.status = "completed"
-    return task  # pragma: no cover (covered in later stories)
+    return task, already
 
 
 def delete_task(task_id: int) -> Optional[Task]:  # pragma: no cover

@@ -66,15 +66,15 @@ they fail before implementation, and target 100% coverage with mypy passing.
 
 ### Tests for User Story 2 (MANDATORY - write before implementation) ⚠️
 
-- [ ] T018 [US2] RED: Unit tests for update_task validation and behavior in hackathon2-sdd/tests/unit/test_tasks_update.py (deliverable: failing tests)
-- [ ] T019 [US2] RED: Unit tests for complete_task idempotency in hackathon2-sdd/tests/unit/test_tasks_complete.py (deliverable: failing tests)
-- [ ] T020 [US2] RED: Integration test CLI update+complete flow in hackathon2-sdd/tests/integration/test_cli_update_complete.py (deliverable: failing test)
+- [X] T018 [US2] RED: Unit tests for update_task validation and behavior in hackathon2-sdd/tests/unit/test_tasks_update.py (deliverable: failing tests)
+- [X] T019 [US2] RED: Unit tests for complete_task idempotency in hackathon2-sdd/tests/unit/test_tasks_complete.py (deliverable: failing tests)
+- [X] T020 [US2] RED: Integration test CLI update+complete flow in hackathon2-sdd/tests/integration/test_cli_update_complete.py (deliverable: failing test)
 
 ### Implementation for User Story 2
 
 - [ ] T021 [US2] Implement update_task in hackathon2-sdd/src/services/store.py (deliverable: green T018)
-- [ ] T022 [US2] Implement complete_task with idempotent handling in hackathon2-sdd/src/services/store.py (deliverable: green T019)
-- [ ] T023 [US2] Wire CLI subcommands update/complete in hackathon2-sdd/src/cli/main.py (deliverable: green T020)
+- [X] T022 [US2] Implement complete_task with idempotent handling in hackathon2-sdd/src/services/store.py (deliverable: green T019)
+- [X] T023 [US2] Wire CLI subcommands update/complete in hackathon2-sdd/src/cli/main.py (deliverable: green T020)
 - [ ] T024 [US2] Refactor shared validation/formatting into hackathon2-sdd/src/lib/validation.py (deliverable: reduced duplication)
 - [ ] T025 [US2] Human review checkpoint: present US2 changes; on approval, commit or iterate (deliverable: approval + commit/changes)
 
