@@ -2,23 +2,17 @@ from __future__ import annotations
 
 from typing import Iterable, Optional
 
+from lib.validation import require_description, require_id
 from models.task import Task
 
 _tasks: list[Task] = []
 _next_id: int = 1
 
 
-def _require_description(raw: str) -> str:
-    desc = raw.strip()
-    if not desc:
-        raise ValueError("Description cannot be empty")
-    return desc
-
-
 def add_task(description: str) -> Task:
     """Append a new task with a generated id."""
     global _next_id
-    desc = _require_description(description)
+    desc = require_description(description)
     task = Task(id=_next_id, description=desc, status="pending")
     _tasks.append(task)
     _next_id += 1
@@ -32,15 +26,15 @@ def list_tasks() -> Iterable[Task]:
 
 def update_task(task_id: int, description: str) -> Task:  # pragma: no cover
     """Update description for a task with the given id."""
-    desc = _require_description(description)
-    task = _find_task(task_id)
+    desc = require_description(description)
+    task = _find_task(require_id(task_id))
     task.description = desc
     return task  # pragma: no cover (covered in later stories)
 
 
 def complete_task(task_id: int) -> tuple[Task, bool]:
     """Mark a task complete by id. Returns (task, already_completed)."""
-    task = _find_task(task_id)
+    task = _find_task(require_id(task_id))
     already = task.status == "completed"
     task.status = "completed"
     return task, already
@@ -48,9 +42,9 @@ def complete_task(task_id: int) -> tuple[Task, bool]:
 
 def delete_task(task_id: int) -> Optional[Task]:  # pragma: no cover
     """Delete a task by id and return it if removed."""
-    task = _find_task(task_id)
+    task = _find_task(require_id(task_id))
     _tasks.remove(task)
-    return task  # pragma: no cover (covered in later stories)
+    return task
 
 
 def _find_task(task_id: int) -> Task:  # pragma: no cover

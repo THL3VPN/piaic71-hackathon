@@ -6,6 +6,7 @@ import argparse
 import sys
 from typing import Sequence
 
+from lib.validation import require_description
 from services import store
 
 
@@ -36,7 +37,7 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     try:
         if args.command == "add":
-            task = store.add_task(args.description)
+            task = store.add_task(require_description(args.description))
             print(f"Created task {task.id}: {task.description} [{task.status}]")
             return 0
 
@@ -50,7 +51,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             return 0
 
         if args.command == "update":
-            task = store.update_task(args.id, args.description)
+            task = store.update_task(args.id, require_description(args.description))
             print(f"Updated task {task.id}: {task.description} [{task.status}]")
             return 0
 

@@ -75,7 +75,7 @@ they fail before implementation, and target 100% coverage with mypy passing.
 - [ ] T021 [US2] Implement update_task in hackathon2-sdd/src/services/store.py (deliverable: green T018)
 - [X] T022 [US2] Implement complete_task with idempotent handling in hackathon2-sdd/src/services/store.py (deliverable: green T019)
 - [X] T023 [US2] Wire CLI subcommands update/complete in hackathon2-sdd/src/cli/main.py (deliverable: green T020)
-- [ ] T024 [US2] Refactor shared validation/formatting into hackathon2-sdd/src/lib/validation.py (deliverable: reduced duplication)
+- [X] T024 [US2] Refactor shared validation/formatting into hackathon2-sdd/src/lib/validation.py (deliverable: reduced duplication)
 - [ ] T025 [US2] Human review checkpoint: present US2 changes; on approval, commit or iterate (deliverable: approval + commit/changes)
 
 ## Phase 5: User Story 3 - Remove Tasks (Priority: P3)
@@ -85,13 +85,13 @@ they fail before implementation, and target 100% coverage with mypy passing.
 
 ### Tests for User Story 3 (MANDATORY - write before implementation) ⚠️
 
-- [ ] T026 [US3] RED: Unit tests for delete_task behavior in hackathon2-sdd/tests/unit/test_tasks_delete.py (deliverable: failing tests)
-- [ ] T027 [US3] RED: Integration test CLI delete flow in hackathon2-sdd/tests/integration/test_cli_delete.py (deliverable: failing test)
+- [X] T026 [US3] RED: Unit tests for delete_task behavior in hackathon2-sdd/tests/unit/test_tasks_delete.py (deliverable: failing tests)
+- [X] T027 [US3] RED: Integration test CLI delete flow in hackathon2-sdd/tests/integration/test_cli_delete.py (deliverable: failing test)
 
 ### Implementation for User Story 3
 
-- [ ] T028 [US3] Implement delete_task in hackathon2-sdd/src/services/store.py (deliverable: green T026)
-- [ ] T029 [US3] Wire CLI delete subcommand in hackathon2-sdd/src/cli/main.py (deliverable: green T027)
+- [X] T028 [US3] Implement delete_task in hackathon2-sdd/src/services/store.py (deliverable: green T026)
+- [X] T029 [US3] Wire CLI delete subcommand in hackathon2-sdd/src/cli/main.py (deliverable: green T027)
 - [ ] T030 [US3] Refactor common CLI messaging and exit handling in hackathon2-sdd/src/lib/cli_output.py (deliverable: consistent outputs)
 - [ ] T031 [US3] Human review checkpoint: present US3 changes; on approval, commit or iterate (deliverable: approval + commit/changes)
 
