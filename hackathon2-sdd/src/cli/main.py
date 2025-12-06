@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 import argparse
-import sys
 from typing import Sequence
 
+from lib import cli_output
 from lib.validation import require_description
 from services import store
 
@@ -38,7 +38,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     try:
         if args.command == "add":
             task = store.add_task(require_description(args.description))
-            print(f"Created task {task.id}: {task.description} [{task.status}]")
+            cli_output.print_created(task)
             return 0
 
         if args.command == "view":
@@ -46,30 +46,26 @@ def main(argv: Sequence[str] | None = None) -> int:
             if not tasks:
                 print("No tasks yet.")
                 return 0
-            for task in tasks:
-                print(f"{task.id}: {task.description} [{task.status}]")
+            cli_output.print_tasks(tasks)
             return 0
 
         if args.command == "update":
             task = store.update_task(args.id, require_description(args.description))
-            print(f"Updated task {task.id}: {task.description} [{task.status}]")
+            cli_output.print_updated(task)
             return 0
 
         if args.command == "complete":
             task, already = store.complete_task(args.id)
-            if already:
-                print(f"Task {task.id} is already completed")
-            else:
-                print(f"Completed task {task.id}: {task.description}")
+            cli_output.print_completed(task, already)
             return 0
 
         if args.command == "delete":  # pragma: no cover
             store.delete_task(args.id)
-            print(f"Deleted task {args.id}")
+            cli_output.print_deleted(args.id)
             return 0  # pragma: no cover (covered in later stories)
 
     except ValueError as exc:
-        print(str(exc), file=sys.stderr)
+        cli_output.print_error(str(exc))
         return 1
 
     return 1  # pragma: no cover
