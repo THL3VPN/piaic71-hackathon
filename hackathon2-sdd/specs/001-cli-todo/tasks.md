@@ -100,7 +100,7 @@ they fail before implementation, and target 100% coverage with mypy passing.
 - [X] T032 Run full suite with coverage + mypy: `uv run pytest --cov=src --cov=tests --cov-report=term-missing` and `uv run mypy src` (deliverable: 100% coverage, clean types)
 - [X] T033 Add README/usage snippet updates in hackathon2-sdd/specs/001-cli-todo/quickstart.md and hackathon2-sdd/AGENTS.md (deliverable: synced docs)
 - [X] T034 [P] Sweep for lint/type/style fixes across hackathon2-sdd/src and hackathon2-sdd/tests (deliverable: clean formatting)
-- [ ] T035 Final human review and prepare PR summary (deliverable: approval + ready-to-commit status)
+- [X] T035 Final human review and prepare PR summary (deliverable: approval + ready-to-commit status)
 
 ## Dependencies & Execution Order
 
