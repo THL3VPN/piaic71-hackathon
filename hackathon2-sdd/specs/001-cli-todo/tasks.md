@@ -72,7 +72,7 @@ they fail before implementation, and target 100% coverage with mypy passing.
 
 ### Implementation for User Story 2
 
-- [ ] T021 [US2] Implement update_task in hackathon2-sdd/src/services/store.py (deliverable: green T018)
+- [X] T021 [US2] Implement update_task in hackathon2-sdd/src/services/store.py (deliverable: green T018)
 - [X] T022 [US2] Implement complete_task with idempotent handling in hackathon2-sdd/src/services/store.py (deliverable: green T019)
 - [X] T023 [US2] Wire CLI subcommands update/complete in hackathon2-sdd/src/cli/main.py (deliverable: green T020)
 - [X] T024 [US2] Refactor shared validation/formatting into hackathon2-sdd/src/lib/validation.py (deliverable: reduced duplication)
@@ -93,13 +93,13 @@ they fail before implementation, and target 100% coverage with mypy passing.
 - [X] T028 [US3] Implement delete_task in hackathon2-sdd/src/services/store.py (deliverable: green T026)
 - [X] T029 [US3] Wire CLI delete subcommand in hackathon2-sdd/src/cli/main.py (deliverable: green T027)
 - [X] T030 [US3] Refactor common CLI messaging and exit handling in hackathon2-sdd/src/lib/cli_output.py (deliverable: consistent outputs)
-- [ ] T031 [US3] Human review checkpoint: present US3 changes; on approval, commit or iterate (deliverable: approval + commit/changes)
+- [X] T031 [US3] Human review checkpoint: present US3 changes; on approval, commit or iterate (deliverable: approval + commit/changes)
 
 ## Phase N: Polish & Cross-Cutting Concerns
 
 - [X] T032 Run full suite with coverage + mypy: `uv run pytest --cov=src --cov=tests --cov-report=term-missing` and `uv run mypy src` (deliverable: 100% coverage, clean types)
-- [ ] T033 Add README/usage snippet updates in hackathon2-sdd/specs/001-cli-todo/quickstart.md and hackathon2-sdd/AGENTS.md (deliverable: synced docs)
-- [ ] T034 [P] Sweep for lint/type/style fixes across hackathon2-sdd/src and hackathon2-sdd/tests (deliverable: clean formatting)
+- [X] T033 Add README/usage snippet updates in hackathon2-sdd/specs/001-cli-todo/quickstart.md and hackathon2-sdd/AGENTS.md (deliverable: synced docs)
+- [X] T034 [P] Sweep for lint/type/style fixes across hackathon2-sdd/src and hackathon2-sdd/tests (deliverable: clean formatting)
 - [ ] T035 Final human review and prepare PR summary (deliverable: approval + ready-to-commit status)
 
 ## Dependencies & Execution Order
