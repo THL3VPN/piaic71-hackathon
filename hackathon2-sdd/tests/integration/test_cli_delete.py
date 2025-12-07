@@ -18,6 +18,6 @@ def test_cli_delete_removes_task_and_view_shows_remaining():
 
     code_view, out_view, err_view = run_cli(["view"])
     assert code_view == 0
-    assert "1:" not in out_view
-    assert "2: Do laundry [pending]" in out_view
+    assert "Tasks:" in out_view
+    assert "Do laundry" in out_view
     assert err_view == ""

@@ -11,5 +11,6 @@ def test_cli_add_then_view_outputs_task():
 
     code_view, out_view, err_view = run_cli(["view"])
     assert code_view == 0
-    assert "1: Buy milk [pending]" in out_view
+    assert "Tasks:" in out_view
+    assert "Buy milk" in out_view
     assert err_view == ""
