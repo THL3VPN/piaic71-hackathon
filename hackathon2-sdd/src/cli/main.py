@@ -12,7 +12,7 @@ from services import store
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="todo", description="CLI todo application")
+    parser = argparse.ArgumentParser(prog="todo", description="CLI todo application", add_help=True)
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     add_cmd = subparsers.add_parser("add", help="Add a new task")
@@ -36,7 +36,11 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = build_parser()
-    args = parser.parse_args(argv)
+    try:
+        args = parser.parse_args(argv)
+    except SystemExit:
+        # argparse already printed usage; treat as error exit
+        return 1
 
     try:
         if args.command == "add":

@@ -78,13 +78,13 @@ they fail before implementation, and target 100% coverage with mypy passing.
 
 ### Tests for User Story 3 (MANDATORY - write before implementation) ⚠️
 
-- [ ] T019 [US3] RED: Unit tests for validation/error panels and usage printing in hackathon2-sdd/tests/unit/test_cli_errors.py (deliverable: failing tests)
-- [ ] T020 [US3] RED: Integration tests for invalid args/unknown commands showing usage/help in hackathon2-sdd/tests/integration/test_cli_usage.py (deliverable: failing tests)
+- [X] T019 [US3] RED: Unit tests for validation/error panels and usage printing in hackathon2-sdd/tests/unit/test_cli_errors.py (deliverable: failing tests)
+- [X] T020 [US3] RED: Integration tests for invalid args/unknown commands showing usage/help in hackathon2-sdd/tests/integration/test_cli_usage.py (deliverable: failing tests)
 
 ### Implementation for User Story 3
 
-- [ ] T021 [US3] Implement error/usage handling in hackathon2-sdd/src/cli/main.py (argparse hooks, Rich errors) (deliverable: green T019/T020)
-- [ ] T022 [US3] Ensure interactive mode handles cancel/invalid input gracefully in hackathon2-sdd/src/cli/interactive.py (deliverable: green T019/T020 for interactive)
+- [X] T021 [US3] Implement error/usage handling in hackathon2-sdd/src/cli/main.py (argparse hooks, Rich errors) (deliverable: green T019/T020)
+- [X] T022 [US3] Ensure interactive mode handles cancel/invalid input gracefully in hackathon2-sdd/src/cli/interactive.py (deliverable: green T019/T020 for interactive)
 - [ ] T023 [US3] Human review checkpoint for error/usage flows; commit or iterate (deliverable: approval + commit note)
 
 ## Phase N: Polish & Cross-Cutting Concerns
