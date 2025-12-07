@@ -26,5 +26,10 @@ Python 3.13: Follow standard conventions
 - 002-rich-cli: Added Python 3.13 + Questionary (interactive prompts), Rich (formatted output), argparse (CLI)
 - 001-cli-todo: Added Python 3.13 + Standard library (`argparse` for CLI, `dataclasses`, `typing`)
 
+## Usage Reminders
+- Run CLI via `uv run python -m todo ...` or `uv run python -m todo interactive`.
+- Rich tables/panels print to stdout; errors use Rich panels on stderr.
+- Validation: ids must be positive integers; descriptions must be non-empty.
+
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->

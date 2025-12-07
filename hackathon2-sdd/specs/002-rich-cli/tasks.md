@@ -53,7 +53,7 @@ they fail before implementation, and target 100% coverage with mypy passing.
 
 - [X] T011 [US1] Implement argparse handlers in hackathon2-sdd/src/cli/main.py calling services with validation (deliverable: green T009/T010 add/update/complete/delete)
 - [X] T012 [US1] Implement plain output path (before Rich) in hackathon2-sdd/src/lib/cli_output.py for commands (deliverable: readable text outputs)
-- [ ] T013 [US1] Human review checkpoint for US1 outputs and exit codes; commit or iterate (deliverable: approval + commit note)
+- [X] T013 [US1] Human review checkpoint for US1 outputs and exit codes; commit or iterate (deliverable: approval + commit note)
 
 ## Phase 4: User Story 2 - Interactive Selection & Formatting (Priority: P2)
 
@@ -69,7 +69,7 @@ they fail before implementation, and target 100% coverage with mypy passing.
 
 - [X] T016 [US2] Implement interactive menu and prompts in hackathon2-sdd/src/cli/interactive.py (deliverable: green T014/T015)
 - [X] T017 [US2] Implement Rich formatting in hackathon2-sdd/src/lib/cli_output.py (tables/panels) and integrate into main/interactive (deliverable: Rich-rendered outputs)
-- [ ] T018 [US2] Human review checkpoint for interactive UX and Rich output; commit or iterate (deliverable: approval + commit note)
+- [X] T018 [US2] Human review checkpoint for interactive UX and Rich output; commit or iterate (deliverable: approval + commit note)
 
 ## Phase 5: User Story 3 - Errors and Usage Help (Priority: P3)
 
@@ -85,14 +85,14 @@ they fail before implementation, and target 100% coverage with mypy passing.
 
 - [X] T021 [US3] Implement error/usage handling in hackathon2-sdd/src/cli/main.py (argparse hooks, Rich errors) (deliverable: green T019/T020)
 - [X] T022 [US3] Ensure interactive mode handles cancel/invalid input gracefully in hackathon2-sdd/src/cli/interactive.py (deliverable: green T019/T020 for interactive)
-- [ ] T023 [US3] Human review checkpoint for error/usage flows; commit or iterate (deliverable: approval + commit note)
+- [X] T023 [US3] Human review checkpoint for error/usage flows; commit or iterate (deliverable: approval + commit note)
 
 ## Phase N: Polish & Cross-Cutting Concerns
 
-- [ ] T024 Run full suite with coverage + mypy: `PYTHONPATH=src uv run pytest --cov=src --cov=tests --cov-report=term-missing` and `PYTHONPATH=src uv run mypy src` (deliverable: 100% coverage, clean types)
-- [ ] T025 Update docs (quickstart and AGENTS) for interactive/Rich usage in hackathon2-sdd/specs/002-rich-cli/quickstart.md and hackathon2-sdd/AGENTS.md (deliverable: synced docs)
-- [ ] T026 [P] Sweep for lint/type/style fixes across hackathon2-sdd/src and hackathon2-sdd/tests (deliverable: clean formatting)
-- [ ] T027 Final human review and prepare PR summary (deliverable: approval + ready-to-commit status)
+- [X] T024 Run full suite with coverage + mypy: `PYTHONPATH=src uv run pytest --cov=src --cov=tests --cov-report=term-missing` and `PYTHONPATH=src uv run mypy src` (deliverable: 100% coverage, clean types)
+- [X] T025 Update docs (quickstart and AGENTS) for interactive/Rich usage in hackathon2-sdd/specs/002-rich-cli/quickstart.md and hackathon2-sdd/AGENTS.md (deliverable: synced docs)
+- [X] T026 [P] Sweep for lint/type/style fixes across hackathon2-sdd/src and hackathon2-sdd/tests (deliverable: clean formatting)
+- [X] T027 Final human review and prepare PR summary (deliverable: approval + ready-to-commit status)
 
 ## Dependencies & Execution Order
 

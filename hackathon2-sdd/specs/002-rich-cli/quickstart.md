@@ -17,6 +17,8 @@ uv run python -m todo view
 uv run python -m todo update --id 1 --description "Buy oat milk"
 uv run python -m todo complete --id 1
 uv run python -m todo delete --id 1
+# show usage/help
+uv run python -m todo --help
 ```
 
 ## Interactive Mode
@@ -30,3 +32,7 @@ uv run python -m todo interactive
 PYTHONPATH=src uv run pytest --cov=src --cov=tests --cov-report=term-missing
 PYTHONPATH=src uv run mypy src
 ```
+
+## Notes
+- Outputs render with Rich tables/panels; stderr shows Rich error panels on invalid input.
+- All commands validate ids (positive integers) and non-empty descriptions.
