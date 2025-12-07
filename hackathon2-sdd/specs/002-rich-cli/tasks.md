@@ -62,13 +62,13 @@ they fail before implementation, and target 100% coverage with mypy passing.
 
 ### Tests for User Story 2 (MANDATORY - write before implementation) ⚠️
 
-- [ ] T014 [US2] RED: Unit tests for interactive menu flows in hackathon2-sdd/tests/unit/test_cli_interactive.py (deliverable: failing tests)
-- [ ] T015 [US2] RED: Integration test for interactive add+view with Rich table rendering in hackathon2-sdd/tests/integration/test_cli_interactive.py (deliverable: failing test)
+- [X] T014 [US2] RED: Unit tests for interactive menu flows in hackathon2-sdd/tests/unit/test_cli_interactive.py (deliverable: failing tests)
+- [X] T015 [US2] RED: Integration test for interactive add+view with Rich table rendering in hackathon2-sdd/tests/integration/test_cli_interactive.py (deliverable: failing test)
 
 ### Implementation for User Story 2
 
-- [ ] T016 [US2] Implement interactive menu and prompts in hackathon2-sdd/src/cli/interactive.py (deliverable: green T014/T015)
-- [ ] T017 [US2] Implement Rich formatting in hackathon2-sdd/src/lib/cli_output.py (tables/panels) and integrate into main/interactive (deliverable: Rich-rendered outputs)
+- [X] T016 [US2] Implement interactive menu and prompts in hackathon2-sdd/src/cli/interactive.py (deliverable: green T014/T015)
+- [X] T017 [US2] Implement Rich formatting in hackathon2-sdd/src/lib/cli_output.py (tables/panels) and integrate into main/interactive (deliverable: Rich-rendered outputs)
 - [ ] T018 [US2] Human review checkpoint for interactive UX and Rich output; commit or iterate (deliverable: approval + commit note)
 
 ## Phase 5: User Story 3 - Errors and Usage Help (Priority: P3)
