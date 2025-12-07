@@ -20,7 +20,8 @@ MENU_CHOICES = [
 
 
 def prompt_main_menu() -> str | None:
-    return questionary.select("Choose an action", choices=MENU_CHOICES).ask()
+    choice = questionary.select("Choose an action", choices=MENU_CHOICES).ask()
+    return str(choice) if choice is not None else None
 
 
 def _prompt_description(prompt: str = "Task description") -> str:
@@ -65,4 +66,3 @@ def run_interactive(store: Any) -> int:
                 print(render_success_panel(f"Deleted task {task_id}"))
         except ValueError as exc:
             print(render_error_panel(str(exc)), file=sys.stderr)
-    return 0
