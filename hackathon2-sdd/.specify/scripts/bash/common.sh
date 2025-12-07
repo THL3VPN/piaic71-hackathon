@@ -3,12 +3,19 @@
 
 # Get repository root, with fallback for non-git repositories
 get_repo_root() {
+    # Prefer the project root where .specify lives (three levels above this script).
+    local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    local project_root="$(cd "$script_dir/../../.." && pwd)"
+    if [[ -d "$project_root/.specify" ]]; then
+        echo "$project_root"
+        return
+    fi
+
+    # Fallback to git root if discovered.
     if git rev-parse --show-toplevel >/dev/null 2>&1; then
         git rev-parse --show-toplevel
     else
-        # Fall back to script location for non-git repos
-        local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-        (cd "$script_dir/../../.." && pwd)
+        echo "$project_root"
     fi
 }
 
@@ -153,4 +160,3 @@ EOF
 
 check_file() { [[ -f "$1" ]] && echo "  ✓ $2" || echo "  ✗ $2"; }
 check_dir() { [[ -d "$1" && -n $(ls -A "$1" 2>/dev/null) ]] && echo "  ✓ $2" || echo "  ✗ $2"; }
-
