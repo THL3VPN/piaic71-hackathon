@@ -58,3 +58,8 @@ commands[
     Use the agent to commit and open a PR for the constitution: /sp.git.commit_pr Commit and push the constitution along with current work.
 
 ]
+
+environment setup[
+    uv installation : https://docs.astral.sh/uv/getting-started/installation/
+
+]
