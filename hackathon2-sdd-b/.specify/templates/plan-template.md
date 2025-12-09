@@ -31,7 +31,11 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- Confirm the feature plan maps to the five-phase flow (Research, Specification, Design & Contracts, Implementation, Validation & Release) with a concrete artifact for each phase.
+- Declare Python version (3.12+) and show `uv` commands for setup/test; no alternate package managers.
+- Outline testing strategy using pytest with coverage, demonstrating how ≥80% coverage will be achieved and enforced.
+- Describe the incremental value delivered per phase and the acceptance criteria to exit each phase.
+- Link plan items to specs/tasks to ensure traceability and reviewability.
 
 ## Project Structure
 
