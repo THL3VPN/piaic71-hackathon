@@ -1,55 +1,51 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report
+- Version: 0.0.0 (template) → 1.0.0
+- Modified principles: PRINCIPLE_1_NAME → Spec-Driven Five-Phase Delivery; PRINCIPLE_2_NAME → Test Discipline & Coverage; PRINCIPLE_3_NAME → Python 3.12 + uv Reproducibility; PRINCIPLE_4_NAME → Incremental Value per Phase; PRINCIPLE_5_NAME → Reviewable & Traceable Work
+- Added sections: Technical Constraints & Quality Requirements; Development Workflow & Phases
+- Removed sections: Placeholder Principle 6 (unused)
+- Templates requiring updates: .specify/templates/plan-template.md ✅ updated; .specify/templates/spec-template.md ⚠ pending (no changes needed); .specify/templates/tasks-template.md ✅ updated; .specify/templates/checklist-template.md ⚠ pending (no changes needed); .specify/templates/agent-file-template.md ⚠ pending (auto-generated)
+- Follow-up TODOs: none
+-->
+# Evolution of Todo Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Spec-Driven Five-Phase Delivery (NON-NEGOTIABLE)
+Every change moves through five written phases: Research, Specification, Design & Contracts, Implementation, and Validation & Release. Each phase must produce an artifact (research notes, spec, design/contracts, code with tests, validation report) that can be reviewed independently before advancing. No phase may be skipped or merged without a documented amendment.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Test Discipline & Coverage
+Tests are authored before or alongside implementation using pytest. All tests must pass at all times. Coverage must remain at or above 80% for new and changed code, measured via pytest + coverage, with gaps explicitly justified. Gate builds on failing tests or coverage regressions.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Python 3.12 + uv Reproducibility
+Python 3.12+ is the only supported runtime. Dependency management uses `uv` with locked versions; no alternative package managers are permitted. All commands in plans, specs, and tasks must use `uv run`/`uv pip` to ensure reproducible environments across local and CI.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Incremental Value per Phase
+Each phase must deliver a user-visible or testable increment tied to the phase goal (e.g., validated spec, signed-off contracts, running slice of functionality). Work items remain small enough to complete within a single phase cycle and keep dependency risk low.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Reviewable & Traceable Work
+Plans, specs, tasks, and code changes must reference each other so reviewers can trace decisions to artifacts. Every change must be reviewable asynchronously with clear acceptance criteria, test evidence, and coverage data captured before merge.
 
-### [PRINCIPLE_6_NAME]
+## Technical Constraints & Quality Requirements
+- Language: Python 3.12+ only.
+- Package manager: `uv` with locked dependencies tracked in VCS.
+- Testing: pytest with coverage reporting; failing or missing tests block merges.
+- Quality thresholds: all tests green at all times; ≥80% coverage on new/changed code with rationale for any exception.
+- Tooling commands in docs and tasks must use `uv run` to ensure consistency across environments.
 
+## Development Workflow & Phases
+1. **Research**: Capture problem context, risks, and success measures.
+2. **Specification**: Write a clear, testable spec informed by research.
+3. **Design & Contracts**: Define data models, contracts, and plan structure aligned to the spec; exit requires review.
+4. **Implementation**: Build to spec with tests-first, keeping changes scoped to planned increments.
+5. **Validation & Release**: Run pytest with coverage, document results, and capture user-facing validation before release.
 
-[PRINCIPLE__DESCRIPTION]
-
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
-
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
-
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+Phase transitions require explicit acceptance of the prior phase artifact. Work that cannot fit a single phase must be split before starting Implementation.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+- This constitution supersedes other process documents. All plans/specs/tasks must cite the relevant principles and note any exceptions with justification.
+- Amendments require: a documented proposal, impact analysis, version bump per semantic versioning (MAJOR for principle removal/redefinition, MINOR for new/expanded principles, PATCH for clarifications), and reviewer approval.
+- Compliance checks: every PR must state phase, artifacts produced, pytest results, and coverage numbers. Deviations must include time-bound remediation tasks.
+- Runtime guidance (e.g., quickstart or agent guides) must stay in sync with principles and constraints in this document.
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
-
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2025-12-10 | **Last Amended**: 2025-12-10
