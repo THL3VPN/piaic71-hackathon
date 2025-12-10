@@ -86,14 +86,14 @@ def test_add_optioninfo_like(monkeypatch):
     assert result.exit_code == 0
 
 
-def test_view_placeholder(monkeypatch):
-    messages: List[str] = []
-    monkeypatch.setattr("cli.app.output.render_cancelled", lambda msg: messages.append(msg))
-    monkeypatch.setattr("cli.app.prompts.select_task", lambda tasks: None)
+def test_view_lists_when_no_id(monkeypatch):
+    tables: List[list] = []
+    monkeypatch.setattr("cli.app.task_service.list_tasks", lambda priority=None, status=None: [{"title": "A"}])
+    monkeypatch.setattr("cli.app.output.render_task_table", lambda tasks: tables.append(list(tasks)))
     runner = CliRunner()
     result = runner.invoke(cli_app.app, ["view"])
     assert result.exit_code == 0
-    assert "No task selected." in messages
+    assert tables and tables[0][0]["title"] == "A"
 
 
 def test_delete_missing_id(monkeypatch):
@@ -161,9 +161,7 @@ def test_menu_dispatch_update(monkeypatch):
         ]
     )
     monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: next(seq))
-    monkeypatch.setattr("cli.app.prompts.select_task", lambda tasks: "abc")
-    monkeypatch.setattr("cli.app.task_service.update_task", lambda *args, **kwargs: True)
-    monkeypatch.setattr("cli.app.output.render_success", lambda msg: calls.append("update"))
+    monkeypatch.setattr("cli.app.update", lambda: calls.append("update"))
     cli_app.menu()
     assert "update" in calls
 
@@ -211,22 +209,18 @@ def test_menu_dispatch_view(monkeypatch):
         ]
     )
     monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: next(seq))
-    monkeypatch.setattr("cli.app.prompts.select_task", lambda tasks: "abc")
-    monkeypatch.setattr("cli.app.output.render_task_details", lambda task: calls.append("view"))
-    monkeypatch.setattr("cli.app.task_service.get_task", lambda tid: {"id": tid})
     monkeypatch.setattr("cli.app.output.render_task_table", lambda tasks: calls.append("list"))
     monkeypatch.setattr("cli.app.task_service.list_tasks", lambda priority=None, status=None: [{"id": "abc", "title": "T", "status": "pending", "priority": "low", "notes": ""}])
     cli_app.menu()
-    assert "list" in calls and "view" in calls
+    assert "list" in calls
 
 
 def test_view_not_found(monkeypatch):
     messages: List[str] = []
     monkeypatch.setattr("cli.app.output.render_error", lambda msg: messages.append(msg))
-    monkeypatch.setattr("cli.app.prompts.select_task", lambda tasks: "missing")
     monkeypatch.setattr("cli.app.task_service.get_task", lambda tid: None)
     runner = CliRunner()
-    result = runner.invoke(cli_app.app, ["view"])
+    result = runner.invoke(cli_app.app, ["view", "--task-id", "missing"])
     assert result.exit_code == 0
     assert "Task not found." in messages
 
@@ -234,10 +228,9 @@ def test_view_not_found(monkeypatch):
 def test_view_success(monkeypatch):
     messages: List[str] = []
     monkeypatch.setattr("cli.app.output.render_task_details", lambda task: messages.append(task["id"]))
-    monkeypatch.setattr("cli.app.prompts.select_task", lambda tasks: "abc")
     monkeypatch.setattr("cli.app.task_service.get_task", lambda tid: {"id": tid})
     runner = CliRunner()
-    result = runner.invoke(cli_app.app, ["view"])
+    result = runner.invoke(cli_app.app, ["view", "--task-id", "abc"])
     assert result.exit_code == 0
     assert messages == ["abc"]
 
@@ -293,17 +286,51 @@ def test_menu_prompt_failure(monkeypatch):
 def test_update_success(monkeypatch):
     messages: List[str] = []
     monkeypatch.setattr("cli.app.prompts.select_task", lambda tasks: "abc")
+    monkeypatch.setattr("cli.app.task_service.get_task", lambda tid: {"id": tid, "title": "Old", "priority": "low", "notes": "n"})
+    monkeypatch.setattr("cli.app.prompts.prompt_optional_text", lambda message, current: "New" if "Title" in message else "note")
+    monkeypatch.setattr("cli.app.prompts.prompt_priority", lambda current: "medium")
+    monkeypatch.setattr("cli.app.prompts.confirm_action", lambda msg, default=True: True)
     monkeypatch.setattr("cli.app.task_service.update_task", lambda *args, **kwargs: True)
     monkeypatch.setattr("cli.app.output.render_success", lambda msg: messages.append(msg))
     runner = CliRunner()
-    result = runner.invoke(cli_app.app, ["update", "--title", "New", "--priority", "low", "--notes", "n"])
+    result = runner.invoke(cli_app.app, ["update"])
     assert result.exit_code == 0
     assert "Task updated" in messages
+
+
+def test_update_cancelled(monkeypatch):
+    messages: List[str] = []
+    monkeypatch.setattr("cli.app.prompts.select_task", lambda tasks: "abc")
+    monkeypatch.setattr("cli.app.task_service.get_task", lambda tid: {"id": tid, "title": "Old", "priority": "low", "notes": "n"})
+    monkeypatch.setattr("cli.app.prompts.prompt_optional_text", lambda message, current: current)
+    monkeypatch.setattr("cli.app.prompts.prompt_priority", lambda current: current)
+    monkeypatch.setattr("cli.app.prompts.confirm_action", lambda msg, default=True: False)
+    monkeypatch.setattr("cli.app.output.render_cancelled", lambda msg: messages.append(msg))
+    monkeypatch.setattr("cli.app.task_service.update_task", lambda *args, **kwargs: (_ for _ in ()).throw(Exception("should not call")))
+    runner = CliRunner()
+    result = runner.invoke(cli_app.app, ["update"])
+    assert result.exit_code == 0
+    assert "Update cancelled" in messages
 
 
 def test_update_not_found(monkeypatch):
     messages: List[str] = []
     monkeypatch.setattr("cli.app.prompts.select_task", lambda tasks: "abc")
+    monkeypatch.setattr("cli.app.task_service.get_task", lambda tid: None)
+    monkeypatch.setattr("cli.app.output.render_error", lambda msg: messages.append(msg))
+    runner = CliRunner()
+    result = runner.invoke(cli_app.app, ["update"])
+    assert result.exit_code == 0
+    assert "Task not found." in messages
+
+
+def test_update_task_missing_after_fetch(monkeypatch):
+    messages: List[str] = []
+    monkeypatch.setattr("cli.app.prompts.select_task", lambda tasks: "abc")
+    monkeypatch.setattr("cli.app.task_service.get_task", lambda tid: {"id": tid, "title": "Old", "priority": "low", "notes": ""})
+    monkeypatch.setattr("cli.app.prompts.prompt_optional_text", lambda message, current: current)
+    monkeypatch.setattr("cli.app.prompts.prompt_priority", lambda current: current)
+    monkeypatch.setattr("cli.app.prompts.confirm_action", lambda msg, default=True: True)
     monkeypatch.setattr("cli.app.task_service.update_task", lambda *args, **kwargs: False)
     monkeypatch.setattr("cli.app.output.render_error", lambda msg: messages.append(msg))
     runner = CliRunner()

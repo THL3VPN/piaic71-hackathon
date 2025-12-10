@@ -76,4 +76,24 @@ def select_task(tasks: list[dict]) -> Optional[str]:
         questionary.Choice(f"{idx+1}. {t.get('title')} ({t.get('status')})", value=t.get("id"))
         for idx, t in enumerate(tasks)
     ]  # type: ignore[attr-defined]
-    return questionary.select("Choose a task", choices=choices).ask()  # type: ignore[union-attr]
+    choices.append(questionary.Choice("Back", value=None))  # type: ignore[attr-defined]
+    return questionary.select("Select a task or Back", choices=choices).ask()  # type: ignore[union-attr]
+
+
+def prompt_optional_text(message: str, current: str) -> str:
+    """Prompt for text; empty input keeps current."""
+    _require_questionary()
+    val = questionary.text(f"{message} (leave blank to keep '{current}')").ask()  # type: ignore[union-attr]
+    return current if val is None or val.strip() == "" else val.strip()
+
+
+def prompt_priority(current: str) -> str:
+    """Prompt for priority with default current."""
+    _require_questionary()
+    val = questionary.select(
+        f"Priority (current: {current})",
+        choices=["low", "medium", "high", "Back"],  # type: ignore[attr-defined]
+    ).ask()  # type: ignore[union-attr]
+    if val == "Back":
+        return current
+    return val or current

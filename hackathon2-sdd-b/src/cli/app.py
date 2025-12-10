@@ -77,11 +77,8 @@ def list(priority: Optional[str] = typer.Option(None), status: Optional[str] = t
 def view(task_id: Optional[str] = typer.Option(None)):
     """Show task details."""
     task_id = _coerce_arg(task_id)
-    tasks = task_service.list_tasks()
     if not task_id:
-        task_id = prompts.select_task(tasks)
-    if not task_id:
-        output.render_cancelled("No task selected.")
+        output.render_task_table(task_service.list_tasks())
         return
     task = task_service.get_task(task_id)
     if not task:
@@ -123,9 +120,22 @@ def update(
     if not task_id:
         output.render_cancelled("No task selected.")
         return
+    existing = task_service.get_task(task_id)
+    if not existing:
+        output.render_error("Task not found.")
+        return
     priority = _validate_priority(_coerce_arg(priority))
     title = _coerce_arg(title)
     notes = _coerce_arg(notes)
+    if title is None:
+        title = prompts.prompt_optional_text("Title", existing.get("title", ""))
+    if priority is None:
+        priority = _validate_priority(prompts.prompt_priority(existing.get("priority", "low")))
+    if notes is None:
+        notes = prompts.prompt_optional_text("Notes", existing.get("notes", ""))
+    if not prompts.confirm_action("Save updates?", default=True):
+        output.render_cancelled("Update cancelled")
+        return
     if task_service.update_task(task_id, title=title, priority=priority, notes=notes):
         output.render_success("Task updated")
     else:
@@ -173,7 +183,6 @@ def menu():
             update()
         elif choice.startswith("View Task List"):
             list()
-            view()
         elif choice.startswith("Mark as Complete"):
             complete()
         else:

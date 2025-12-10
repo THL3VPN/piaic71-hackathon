@@ -70,6 +70,43 @@ def test_select_task_empty_list_returns_none():
     assert prompts.select_task([]) is None
 
 
+def test_prompt_optional_text_keeps_current(monkeypatch):
+    class FakePrompt:
+        def ask(self):
+            return ""
+    class FakeQuestionary:
+        def text(self, msg):
+            return FakePrompt()
+    monkeypatch.setattr(prompts, "questionary", FakeQuestionary())
+    assert prompts.prompt_optional_text("Title", "Current") == "Current"
+
+
+def test_prompt_priority_back(monkeypatch):
+    class FakePrompt:
+        def __init__(self, value):
+            self.value = value
+        def ask(self):
+            return self.value
+    class FakeQuestionary:
+        def select(self, msg, choices):
+            return FakePrompt("Back")
+    monkeypatch.setattr(prompts, "questionary", FakeQuestionary())
+    assert prompts.prompt_priority("medium") == "medium"
+
+
+def test_prompt_priority_change(monkeypatch):
+    class FakePrompt:
+        def __init__(self, value):
+            self.value = value
+        def ask(self):
+            return self.value
+    class FakeQuestionary:
+        def select(self, msg, choices):
+            return FakePrompt("high")
+    monkeypatch.setattr(prompts, "questionary", FakeQuestionary())
+    assert prompts.prompt_priority("medium") == "high"
+
+
 def test_prompt_unavailable(monkeypatch):
     monkeypatch.setattr(prompts, "questionary", None)
     with pytest.raises(prompts.PromptUnavailable):
