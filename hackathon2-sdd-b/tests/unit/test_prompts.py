@@ -48,6 +48,28 @@ def test_prompt_helpers_use_questionary(monkeypatch):
     assert prompts.prompt_confirm("m") is True
 
 
+def test_select_task_with_choices(monkeypatch):
+    class FakePrompt:
+        def __init__(self, value):
+            self.value = value
+        def ask(self):
+            return self.value
+    class FakeQuestionary:
+        class Choice:
+            def __init__(self, title, value):
+                self.title = title
+                self.value = value
+        def select(self, msg, choices):
+            return FakePrompt("id-1")
+    monkeypatch.setattr(prompts, "questionary", FakeQuestionary())
+    task_id = prompts.select_task([{"id": "id-1", "title": "T1", "status": "pending"}])
+    assert task_id == "id-1"
+
+
+def test_select_task_empty_list_returns_none():
+    assert prompts.select_task([]) is None
+
+
 def test_prompt_unavailable(monkeypatch):
     monkeypatch.setattr(prompts, "questionary", None)
     with pytest.raises(prompts.PromptUnavailable):

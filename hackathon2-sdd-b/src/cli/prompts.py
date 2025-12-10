@@ -65,3 +65,15 @@ def stub_list_tasks(priority: Optional[str], status: Optional[str]):
     if status:
         sample = [t for t in sample if t["status"] == status]
     return sample
+
+
+def select_task(tasks: list[dict]) -> Optional[str]:
+    """Return selected task id or None if cancelled."""
+    if not tasks:
+        return None
+    _require_questionary()
+    choices = [
+        questionary.Choice(f"{idx+1}. {t.get('title')} ({t.get('status')})", value=t.get("id"))
+        for idx, t in enumerate(tasks)
+    ]  # type: ignore[attr-defined]
+    return questionary.select("Choose a task", choices=choices).ask()  # type: ignore[union-attr]

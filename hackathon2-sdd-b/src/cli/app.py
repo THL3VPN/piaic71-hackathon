@@ -77,8 +77,11 @@ def list(priority: Optional[str] = typer.Option(None), status: Optional[str] = t
 def view(task_id: Optional[str] = typer.Option(None)):
     """Show task details."""
     task_id = _coerce_arg(task_id)
+    tasks = task_service.list_tasks()
     if not task_id:
-        output.render_error("Please provide a task id (use list to find one).")
+        task_id = prompts.select_task(tasks)
+    if not task_id:
+        output.render_cancelled("No task selected.")
         return
     task = task_service.get_task(task_id)
     if not task:
@@ -90,9 +93,10 @@ def view(task_id: Optional[str] = typer.Option(None)):
 @app.command()
 def delete(task_id: Optional[str] = typer.Option(None), force: bool = typer.Option(False)):
     """Delete a task by id."""
-    task_id = _coerce_arg(task_id)
+    tasks = task_service.list_tasks()
+    task_id = _coerce_arg(task_id) or prompts.select_task(tasks)
     if not task_id:
-        output.render_error("Please provide a task id (use list to find one).")
+        output.render_cancelled("No task selected.")
         return
     if not force:
         confirm = prompts.confirm_action("Delete task?", default=False)
@@ -107,17 +111,74 @@ def delete(task_id: Optional[str] = typer.Option(None), force: bool = typer.Opti
 
 
 @app.command()
+def update(
+    task_id: Optional[str] = typer.Option(None),
+    title: Optional[str] = typer.Option(None),
+    priority: Optional[str] = typer.Option(None),
+    notes: Optional[str] = typer.Option(None),
+):
+    """Update task details."""
+    tasks = task_service.list_tasks()
+    task_id = _coerce_arg(task_id) or prompts.select_task(tasks)
+    if not task_id:
+        output.render_cancelled("No task selected.")
+        return
+    priority = _validate_priority(_coerce_arg(priority))
+    title = _coerce_arg(title)
+    notes = _coerce_arg(notes)
+    if task_service.update_task(task_id, title=title, priority=priority, notes=notes):
+        output.render_success("Task updated")
+    else:
+        output.render_error("Task not found.")
+
+
+@app.command()
+def complete(task_id: Optional[str] = typer.Option(None)):
+    """Mark a task as complete."""
+    tasks = task_service.list_tasks()
+    task_id = _coerce_arg(task_id) or prompts.select_task(tasks)
+    if not task_id:
+        output.render_cancelled("No task selected.")
+        return
+    if task_service.mark_complete(task_id):
+        output.render_success("Marked complete")
+    else:
+        output.render_error("Task not found.")
+
+
+@app.command()
 def menu():
     """Interactive menu to choose CLI action."""
-    choice = prompts.prompt_select("What do you want to do?", ["add", "list", "delete", "quit"])
-    if choice == "add":
-        add()
-    elif choice == "list":
-        list()
-    elif choice == "delete":
-        delete()
-    else:
-        output.render_cancelled("Goodbye")
+    while True:
+        try:
+            choice = prompts.prompt_select(
+                "Select an option",
+                [
+                    "Add Task – Create new todo items",
+                    "Delete Task – Remove tasks from the list",
+                    "Update Task – Modify existing task details",
+                    "View Task List – Display all tasks",
+                    "Mark as Complete – Toggle task completion status",
+                    "Quit",
+                ],
+            )
+        except Exception:
+            output.render_cancelled("Goodbye")
+            break
+        if choice.startswith("Add Task"):
+            add()
+        elif choice.startswith("Delete Task"):
+            delete()
+        elif choice.startswith("Update Task"):
+            update()
+        elif choice.startswith("View Task List"):
+            list()
+            view()
+        elif choice.startswith("Mark as Complete"):
+            complete()
+        else:
+            output.render_cancelled("Goodbye")
+            break
 
 
 def run():  # pragma: no cover - convenience wrapper

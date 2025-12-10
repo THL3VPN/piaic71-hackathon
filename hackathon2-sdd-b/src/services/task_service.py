@@ -45,3 +45,24 @@ def delete_task(task_id: str) -> bool:
     before = len(_TASKS)
     _TASKS = [t for t in _TASKS if t.get("id") != task_id]
     return len(_TASKS) < before
+
+
+def mark_complete(task_id: str) -> bool:
+    task = get_task(task_id)
+    if not task:
+        return False
+    task["status"] = "done"
+    return True
+
+
+def update_task(task_id: str, title: Optional[str] = None, priority: Optional[str] = None, notes: Optional[str] = None) -> bool:
+    task = get_task(task_id)
+    if not task:
+        return False
+    if title is not None:
+        task["title"] = title
+    if priority is not None:
+        task["priority"] = priority
+    if notes is not None:
+        task["notes"] = notes
+    return True

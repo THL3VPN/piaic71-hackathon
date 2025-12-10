@@ -44,3 +44,22 @@ def test_list_tasks_status_filter(monkeypatch):
     task_service.create_task("b", "low", "", None)
     tasks = task_service.list_tasks(status="done")
     assert tasks == []
+
+
+def test_update_task_missing():
+    assert task_service.update_task("none", title="x") is False
+
+
+def test_mark_complete_missing():
+    assert task_service.mark_complete("none") is False
+
+
+def test_mark_complete_and_update():
+    task = task_service.create_task("c", "low", "n", None)
+    assert task_service.mark_complete(task["id"]) is True
+    updated = task_service.update_task(task["id"], title="new", priority="high", notes="u")
+    assert updated is True
+    fetched = task_service.get_task(task["id"])
+    assert fetched["title"] == "new"
+    assert fetched["priority"] == "high"
+    assert fetched["status"] == "done"

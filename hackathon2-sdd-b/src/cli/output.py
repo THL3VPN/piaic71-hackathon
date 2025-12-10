@@ -61,13 +61,14 @@ def render_task_table(tasks: Iterable[dict]):
     data = list(tasks)
     if Table and _console:
         table = Table(title="Tasks")
-        for col in ["title", "priority", "status", "due_date", "notes"]:
+        for col in ["#", "title", "priority", "status", "due_date", "notes"]:
             table.add_column(col.title())
         if not data:
-            table.add_row("No tasks", "-", "-", "-", "-" )
+            table.add_row("-", "No tasks", "-", "-", "-", "-" )
         else:
-            for t in data:
+            for idx, t in enumerate(data, start=1):
                 table.add_row(
+                    str(idx),
                     str(t.get("title", "")),
                     str(t.get("priority", "")),
                     str(t.get("status", "")),
