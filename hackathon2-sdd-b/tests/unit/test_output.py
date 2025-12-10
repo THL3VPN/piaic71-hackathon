@@ -38,6 +38,13 @@ def test_render_task_table_with_data(monkeypatch):
     assert "A" in buf.getvalue()
 
 
+def test_render_task_details(monkeypatch):
+    console, buf = make_console_capture()
+    monkeypatch.setattr(output, "_console", console)
+    output.render_task_details({"id": "1", "title": "X", "priority": "low", "status": "pending", "due_date": None, "notes": ""})
+    assert "Task" in buf.getvalue()
+
+
 def test_render_fallback_paths(monkeypatch, capsys):
     monkeypatch.setattr(output, "_console", None)
     monkeypatch.setattr(output, "Panel", None)

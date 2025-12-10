@@ -33,11 +33,13 @@ def test_delete_cancel(monkeypatch):
     messages: List[str] = []
     monkeypatch.setattr("cli.app.prompts.confirm_action", lambda msg, default=False: False)
     monkeypatch.setattr("cli.app.output.render_cancelled", lambda msg: messages.append(msg))
+    monkeypatch.setattr("cli.app.output.render_error", lambda msg: messages.append(msg))
+    monkeypatch.setattr("cli.app.task_service.delete_task", lambda tid: True)
 
     runner = CliRunner()
-    result = runner.invoke(cli_app.app, ["delete"])
+    result = runner.invoke(cli_app.app, ["delete", "--task-id", "abc"])
     assert result.exit_code == 0
-    assert messages == ["Deletion cancelled"]
+    assert "Deletion cancelled" in messages
 
 
 def test_add_cancel(monkeypatch):
@@ -80,16 +82,18 @@ def test_view_placeholder(monkeypatch):
     runner = CliRunner()
     result = runner.invoke(cli_app.app, ["view"])
     assert result.exit_code == 0
-    assert messages and "View not yet implemented" in messages[0]
+    assert messages and "provide a task id" in messages[0]
 
 
 def test_delete_force(monkeypatch):
     messages: List[str] = []
     monkeypatch.setattr("cli.app.output.render_success", lambda msg: messages.append(msg))
+    monkeypatch.setattr("cli.app.output.render_error", lambda msg: messages.append(msg))
+    monkeypatch.setattr("cli.app.task_service.delete_task", lambda tid: True)
     runner = CliRunner()
-    result = runner.invoke(cli_app.app, ["delete", "--force"])
+    result = runner.invoke(cli_app.app, ["delete", "--force", "--task-id", "abc"])
     assert result.exit_code == 0
-    assert messages == ["Deleted task (placeholder)"]
+    assert "Deleted task" in messages
 
 
 def test_delete_confirm_true(monkeypatch):
@@ -97,10 +101,11 @@ def test_delete_confirm_true(monkeypatch):
     successes: List[str] = []
     monkeypatch.setattr("cli.app.prompts.confirm_action", lambda msg, default=False: True)
     monkeypatch.setattr("cli.app.output.render_success", lambda msg: successes.append(msg))
+    monkeypatch.setattr("cli.app.task_service.delete_task", lambda tid: True)
     runner = CliRunner()
-    result = runner.invoke(cli_app.app, ["delete"])
+    result = runner.invoke(cli_app.app, ["delete", "--task-id", "abc"])
     assert result.exit_code == 0
-    assert successes == ["Deleted task (placeholder)"]
+    assert "Deleted task" in successes
 
 
 def test_list_success(monkeypatch):
@@ -153,3 +158,43 @@ def test_menu_quit(monkeypatch):
     result = runner.invoke(cli_app.app, ["menu"])
     assert result.exit_code == 0
     assert messages == ["Goodbye"]
+
+
+def test_delete_missing_id(monkeypatch):
+    messages: List[str] = []
+    monkeypatch.setattr("cli.app.output.render_error", lambda msg: messages.append(msg))
+    runner = CliRunner()
+    result = runner.invoke(cli_app.app, ["delete"])
+    assert result.exit_code == 0
+    assert "provide a task id" in messages[0]
+
+
+def test_delete_not_found(monkeypatch):
+    messages: List[str] = []
+    monkeypatch.setattr("cli.app.output.render_error", lambda msg: messages.append(msg))
+    monkeypatch.setattr("cli.app.prompts.confirm_action", lambda msg, default=False: True)
+    monkeypatch.setattr("cli.app.task_service.delete_task", lambda tid: False)
+    runner = CliRunner()
+    result = runner.invoke(cli_app.app, ["delete", "--task-id", "missing"])
+    assert result.exit_code == 0
+    assert "Task not found." in messages
+
+
+def test_view_not_found(monkeypatch):
+    messages: List[str] = []
+    monkeypatch.setattr("cli.app.output.render_error", lambda msg: messages.append(msg))
+    monkeypatch.setattr("cli.app.task_service.get_task", lambda tid: None)
+    runner = CliRunner()
+    result = runner.invoke(cli_app.app, ["view", "--task-id", "missing"])
+    assert result.exit_code == 0
+    assert "Task not found." in messages
+
+
+def test_view_success(monkeypatch):
+    messages: List[str] = []
+    monkeypatch.setattr("cli.app.output.render_task_details", lambda task: messages.append(task["id"]))
+    monkeypatch.setattr("cli.app.task_service.get_task", lambda tid: {"id": tid})
+    runner = CliRunner()
+    result = runner.invoke(cli_app.app, ["view", "--task-id", "abc"])
+    assert result.exit_code == 0
+    assert messages == ["abc"]

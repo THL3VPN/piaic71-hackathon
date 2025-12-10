@@ -68,19 +68,33 @@ def list(priority: Optional[str] = typer.Option(None), status: Optional[str] = t
 
 @app.command()
 def view(task_id: Optional[str] = typer.Option(None)):
-    """Placeholder view command."""
-    output.render_error("View not yet implemented")
+    """Show task details."""
+    if not task_id:
+        output.render_error("Please provide a task id (use list to find one).")
+        return
+    task = task_service.get_task(task_id)
+    if not task:
+        output.render_error("Task not found.")
+        return
+    output.render_task_details(task)
 
 
 @app.command()
 def delete(task_id: Optional[str] = typer.Option(None), force: bool = typer.Option(False)):
-    """Placeholder delete command with confirmation."""
+    """Delete a task by id."""
+    if not task_id:
+        output.render_error("Please provide a task id (use list to find one).")
+        return
     if not force:
         confirm = prompts.confirm_action("Delete task?", default=False)
         if not confirm:
             output.render_cancelled("Deletion cancelled")
             return
-    output.render_success("Deleted task (placeholder)")
+    deleted = task_service.delete_task(task_id)
+    if deleted:
+        output.render_success("Deleted task")
+    else:
+        output.render_error("Task not found.")
 
 
 @app.command()

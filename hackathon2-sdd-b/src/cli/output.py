@@ -45,6 +45,18 @@ def render_task_created(task: dict):
         _print(f"Task Created: {task}")
 
 
+def render_task_details(task: dict):
+    if Panel:
+        panel = Panel.fit(
+            f"Title: {task.get('title')}\nPriority: {task.get('priority')}\nStatus: {task.get('status')}\nDue: {task.get('due_date')}\nNotes: {task.get('notes')}",
+            title=f"Task {task.get('id')}",
+            border_style="cyan",
+        )
+        _print(panel)
+    else:  # pragma: no cover
+        _print(f"Task: {task}")
+
+
 def render_task_table(tasks: Iterable[dict]):
     data = list(tasks)
     if Table and _console:
