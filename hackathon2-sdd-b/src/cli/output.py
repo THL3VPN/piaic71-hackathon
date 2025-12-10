@@ -21,16 +21,31 @@ def _print(text: str):
         print(text)
 
 
+def render_spacing(lines: int = 1):
+    for _ in range(lines):
+        _print("")
+
+
+def render_divider(title: str = ""):
+    if _console:
+        _console.rule(f"[bold cyan]{title}[/bold cyan]" if title else "")
+    else:  # pragma: no cover
+        _print("-" * 20)
+
+
 def render_success(message: str):
     _print(f"[green]{message}[/green]" if _console else message)
+    render_spacing()
 
 
 def render_error(message: str):
     _print(f"[red]{message}[/red]" if _console else message)
+    render_spacing()
 
 
 def render_cancelled(message: str):
     _print(f"[yellow]{message}[/yellow]" if _console else message)
+    render_spacing()
 
 
 def render_task_created(task: dict):
@@ -43,6 +58,7 @@ def render_task_created(task: dict):
         _print(panel)
     else:  # pragma: no cover
         _print(f"Task Created: {task}")
+    render_spacing()
 
 
 def render_task_details(task: dict):
@@ -55,10 +71,13 @@ def render_task_details(task: dict):
         _print(panel)
     else:  # pragma: no cover
         _print(f"Task: {task}")
+    render_spacing()
 
 
 def render_task_table(tasks: Iterable[dict]):
     data = list(tasks)
+    render_spacing()
+    render_divider("Task List")
     if Table and _console:
         table = Table(title="Tasks")
         for col in ["#", "title", "priority", "status", "due_date", "notes"]:
@@ -71,7 +90,7 @@ def render_task_table(tasks: Iterable[dict]):
                     str(idx),
                     str(t.get("title", "")),
                     str(t.get("priority", "")),
-                    str(t.get("status", "")),
+                    f"[green]{t.get('status', '')}[/green]" if str(t.get("status", "")).lower() == "done" else str(t.get("status", "")),
                     str(t.get("due_date", "")),
                     str(t.get("notes", "")),
                 )
@@ -82,3 +101,4 @@ def render_task_table(tasks: Iterable[dict]):
         else:
             for t in data:
                 _print(f"- {t.get('title')} ({t.get('priority')}, {t.get('status')})")
+    render_spacing()

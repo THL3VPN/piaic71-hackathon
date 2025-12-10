@@ -45,6 +45,16 @@ def test_render_task_details(monkeypatch):
     assert "Task" in buf.getvalue()
 
 
+def test_render_divider_and_spacing(monkeypatch):
+    console, buf = make_console_capture()
+    monkeypatch.setattr(output, "_console", console)
+    output.render_divider("Title")
+    output.render_spacing(2)
+    content = buf.getvalue()
+    assert "Title" in content
+    assert content.count("\n") >= 2
+
+
 def test_render_fallback_paths(monkeypatch, capsys):
     monkeypatch.setattr(output, "_console", None)
     monkeypatch.setattr(output, "Panel", None)

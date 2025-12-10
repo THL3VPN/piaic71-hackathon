@@ -161,6 +161,7 @@ def menu():
     """Interactive menu to choose CLI action."""
     while True:
         try:
+            output.render_divider("Main Menu")
             choice = prompts.prompt_select(
                 "Select an option",
                 [
@@ -177,14 +178,19 @@ def menu():
             break
         if choice.startswith("Add Task"):
             add()
+            output.render_spacing()
         elif choice.startswith("Delete Task"):
             delete()
+            output.render_spacing()
         elif choice.startswith("Update Task"):
             update()
+            output.render_spacing()
         elif choice.startswith("View Task List"):
             list()
+            output.render_spacing()
         elif choice.startswith("Mark as Complete"):
             complete()
+            output.render_spacing()
         else:
             output.render_cancelled("Goodbye")
             break
