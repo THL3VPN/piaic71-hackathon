@@ -1,3 +1,4 @@
+import json
 from typing import List
 
 import pytest
@@ -143,7 +144,7 @@ def test_delete_confirm_true(monkeypatch):
 
 def test_list_success(monkeypatch):
     tables: List[list] = []
-    monkeypatch.setattr("cli.app.task_service.list_tasks", lambda priority=None, status=None: [{"title": "A"}])
+    monkeypatch.setattr("cli.app.task_service.list_tasks", lambda priority=None, status=None: [{"title": "A", "status": "pending"}])
     monkeypatch.setattr("cli.app.output.render_task_table", lambda tasks: tables.append(list(tasks)))
 
     runner = CliRunner()
@@ -156,8 +157,8 @@ def test_menu_dispatch_update(monkeypatch):
     calls: List[str] = []
     seq = iter(
         [
-            "Update Task – Modify existing task details",
-            "Quit",
+            "update",
+            "quit",
         ]
     )
     monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: next(seq))
@@ -168,7 +169,7 @@ def test_menu_dispatch_update(monkeypatch):
 
 def test_menu_dispatch_add(monkeypatch):
     calls: List[str] = []
-    seq = iter(["Add Task – Create new todo items", "Quit"])
+    seq = iter(["add", "quit"])
     monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: next(seq))
     monkeypatch.setattr("cli.app.add", lambda: calls.append("add"))
     cli_app.menu()
@@ -177,7 +178,7 @@ def test_menu_dispatch_add(monkeypatch):
 
 def test_menu_dispatch_delete(monkeypatch):
     calls: List[str] = []
-    seq = iter(["Delete Task – Remove tasks from the list", "Quit"])
+    seq = iter(["delete", "quit"])
     monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: next(seq))
     monkeypatch.setattr("cli.app.delete", lambda: calls.append("delete"))
     cli_app.menu()
@@ -188,8 +189,8 @@ def test_menu_dispatch_complete(monkeypatch):
     calls: List[str] = []
     seq = iter(
         [
-            "Mark as Complete – Toggle task completion status",
-            "Quit",
+            "complete",
+            "quit",
         ]
     )
     monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: next(seq))
@@ -204,11 +205,12 @@ def test_menu_dispatch_view(monkeypatch):
     calls: List[str] = []
     seq = iter(
         [
-            "View Task List – Display all tasks",
-            "Quit",
+            "view",
+            "quit",
         ]
     )
     monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: next(seq))
+    monkeypatch.setattr("cli.app._choose_filters_for_view", lambda: (None, None, "All"))
     monkeypatch.setattr("cli.app.output.render_task_table", lambda tasks: calls.append("list"))
     monkeypatch.setattr("cli.app.task_service.list_tasks", lambda priority=None, status=None: [{"id": "abc", "title": "T", "status": "pending", "priority": "low", "notes": ""}])
     cli_app.menu()
@@ -295,7 +297,7 @@ def test_update_success(monkeypatch):
     runner = CliRunner()
     result = runner.invoke(cli_app.app, ["update"])
     assert result.exit_code == 0
-    assert "Task updated" in messages
+    assert any("Task updated" in msg for msg in messages)
 
 
 def test_update_cancelled(monkeypatch):
@@ -337,3 +339,71 @@ def test_update_task_missing_after_fetch(monkeypatch):
     result = runner.invoke(cli_app.app, ["update"])
     assert result.exit_code == 0
     assert "Task not found." in messages
+
+
+def test_remember_filter_roundtrip(monkeypatch, tmp_path):
+    monkeypatch.setattr(cli_app, "_STATE_PATH", tmp_path / "state.json")
+    cli_app._remember_filter("low", "pending")
+    assert cli_app._get_last_filter() == ("low", "pending")
+
+
+def test_choose_filters_use_last(monkeypatch, tmp_path):
+    monkeypatch.setattr(cli_app, "_STATE_PATH", tmp_path / "state.json")
+    (tmp_path / "state.json").write_text(json.dumps({"last_filter": {"priority": "high", "status": "done"}}))
+    monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: "Use last filter")
+    priority, status, label = cli_app._choose_filters_for_view()
+    assert priority == "high"
+    assert status == "done"
+    assert label == "Last used filter"
+
+
+def test_choose_filters_pending(monkeypatch, tmp_path):
+    monkeypatch.setattr(cli_app, "_STATE_PATH", tmp_path / "state.json")
+    monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: "Pending only")
+    priority, status, label = cli_app._choose_filters_for_view()
+    assert priority is None
+    assert status == "pending"
+    assert label == "Pending tasks"
+
+
+def test_choose_filters_priority(monkeypatch, tmp_path):
+    monkeypatch.setattr(cli_app, "_STATE_PATH", tmp_path / "state.json")
+    monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: "Priority: low")
+    priority, status, label = cli_app._choose_filters_for_view()
+    assert priority == "low"
+    assert status is None
+    assert label == "Priority low"
+
+
+def test_choose_filters_back(monkeypatch, tmp_path):
+    monkeypatch.setattr(cli_app, "_STATE_PATH", tmp_path / "state.json")
+    monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: "Back")
+    priority, status, label = cli_app._choose_filters_for_view()
+    assert priority is None and status is None and label is None
+
+
+def test_choose_filters_exception(monkeypatch):
+    monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: (_ for _ in ()).throw(Exception("fail")))
+    priority, status, label = cli_app._choose_filters_for_view()
+    assert priority is None and status is None and label is None
+
+
+def test_choose_filters_all_and_done(monkeypatch, tmp_path):
+    monkeypatch.setattr(cli_app, "_STATE_PATH", tmp_path / "state.json")
+    seq = iter(["All tasks", "Done only"])
+    monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: next(seq))
+    priority, status, label = cli_app._choose_filters_for_view()
+    assert label == "Showing all tasks"
+    priority, status, label = cli_app._choose_filters_for_view()
+    assert status == "done"
+    assert label == "Completed tasks"
+
+
+def test_list_display_label(monkeypatch):
+    infos: List[str] = []
+    monkeypatch.setattr("cli.app.output.render_info", lambda msg: infos.append(msg))
+    monkeypatch.setattr("cli.app.output.render_task_table", lambda tasks: None)
+    monkeypatch.setattr("cli.app.task_service.list_tasks", lambda priority=None, status=None: [])
+    result = CliRunner().invoke(cli_app.app, ["list", "--display-label", "All"])
+    assert result.exit_code == 0
+    assert "All" in infos[0]

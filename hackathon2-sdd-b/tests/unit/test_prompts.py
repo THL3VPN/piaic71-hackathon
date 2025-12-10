@@ -107,6 +107,25 @@ def test_prompt_priority_change(monkeypatch):
     assert prompts.prompt_priority("medium") == "high"
 
 
+def test_menu_choice_with_questionary(monkeypatch):
+    class FakeChoice:
+        def __init__(self, title=None, value=None, shortcut_key=None):
+            self.title = title
+            self.value = value
+            self.shortcut_key = shortcut_key
+    class FakeQuestionary:
+        Choice = FakeChoice
+    monkeypatch.setattr(prompts, "questionary", FakeQuestionary)
+    choice = prompts.menu_choice("Add", "add", "a")
+    assert isinstance(choice, FakeChoice)
+    assert choice.value == "add"
+
+
+def test_menu_choice_without_questionary(monkeypatch):
+    monkeypatch.setattr(prompts, "questionary", None)
+    assert prompts.menu_choice("Add", "add", "a") == "add"
+
+
 def test_prompt_unavailable(monkeypatch):
     monkeypatch.setattr(prompts, "questionary", None)
     with pytest.raises(prompts.PromptUnavailable):
