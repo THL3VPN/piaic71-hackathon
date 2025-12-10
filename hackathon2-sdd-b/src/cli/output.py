@@ -33,6 +33,11 @@ def render_divider(title: str = ""):
         _print("-" * 20)
 
 
+def render_info(message: str):
+    _print(f"[cyan]{message}[/cyan]" if _console else message)
+    render_spacing()
+
+
 def render_success(message: str):
     _print(f"[green]{message}[/green]" if _console else message)
     render_spacing()

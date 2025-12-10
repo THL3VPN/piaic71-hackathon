@@ -55,6 +55,13 @@ def test_render_divider_and_spacing(monkeypatch):
     assert content.count("\n") >= 2
 
 
+def test_render_info(monkeypatch):
+    console, buf = make_console_capture()
+    monkeypatch.setattr(output, "_console", console)
+    output.render_info("hint")
+    assert "hint" in buf.getvalue()
+
+
 def test_render_fallback_paths(monkeypatch, capsys):
     monkeypatch.setattr(output, "_console", None)
     monkeypatch.setattr(output, "Panel", None)

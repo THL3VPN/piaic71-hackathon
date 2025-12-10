@@ -1,5 +1,7 @@
 """Typer application entrypoint for interactive CLI UX."""
-from typing import Optional
+import json
+from pathlib import Path
+from typing import Dict, Optional, Tuple
 
 import typer
 
@@ -9,6 +11,32 @@ from services import task_service
 app = typer.Typer(help="Interactive CLI for tasks")
 
 ALLOWED_PRIORITIES = {"low", "medium", "high"}
+_STATE_PATH = Path(__file__).resolve().parents[2] / ".cli_state.json"
+
+
+def _load_state() -> Dict[str, Dict[str, Optional[str]]]:
+    if _STATE_PATH.exists():
+        try:
+            return json.loads(_STATE_PATH.read_text())
+        except json.JSONDecodeError:  # pragma: no cover - defensive
+            return {"last_filter": {"priority": None, "status": None}}
+    return {"last_filter": {"priority": None, "status": None}}
+
+
+def _save_state(state: Dict[str, Dict[str, Optional[str]]]):
+    _STATE_PATH.write_text(json.dumps(state))
+
+
+def _remember_filter(priority: Optional[str], status: Optional[str]):
+    state = _load_state()
+    state["last_filter"] = {"priority": priority, "status": status}
+    _save_state(state)
+
+
+def _get_last_filter() -> Tuple[Optional[str], Optional[str]]:
+    state = _load_state()
+    last = state.get("last_filter", {})
+    return last.get("priority"), last.get("status")
 
 
 def _validate_priority(value: Optional[str]) -> Optional[str]:
@@ -60,7 +88,11 @@ def add(
 
 
 @app.command()
-def list(priority: Optional[str] = typer.Option(None), status: Optional[str] = typer.Option(None)):
+def list(
+    priority: Optional[str] = typer.Option(None),
+    status: Optional[str] = typer.Option(None),
+    display_label: Optional[str] = typer.Option(None, hidden=True),
+):
     """List tasks with optional filters."""
     try:
         priority = _validate_priority(_coerce_arg(priority))
@@ -70,6 +102,16 @@ def list(priority: Optional[str] = typer.Option(None), status: Optional[str] = t
         return
 
     tasks = task_service.list_tasks(priority=priority, status=status)
+    if display_label:
+        output.render_info(display_label)
+    pending = len([t for t in tasks if str(t.get("status")).lower() != "done"])
+    done = len(tasks) - pending
+    summary = f"{len(tasks)} total • {pending} pending • {done} done"
+    if priority:
+        summary += f" • priority={priority}"
+    if status:
+        summary += f" • status={status}"
+    output.render_info(summary)
     output.render_task_table(tasks)
 
 
@@ -103,6 +145,7 @@ def delete(task_id: Optional[str] = typer.Option(None), force: bool = typer.Opti
     deleted = task_service.delete_task(task_id)
     if deleted:
         output.render_success("Deleted task")
+        output.render_info("Task removed from list.")
     else:
         output.render_error("Task not found.")
 
@@ -133,11 +176,15 @@ def update(
         priority = _validate_priority(prompts.prompt_priority(existing.get("priority", "low")))
     if notes is None:
         notes = prompts.prompt_optional_text("Notes", existing.get("notes", ""))
+    output.render_info(
+        f"Preview changes: Title '{existing.get('title','')}' → '{title}', "
+        f"Priority {existing.get('priority','')} → {priority}, Notes length {len(notes or '')}"
+    )
     if not prompts.confirm_action("Save updates?", default=True):
         output.render_cancelled("Update cancelled")
         return
     if task_service.update_task(task_id, title=title, priority=priority, notes=notes):
-        output.render_success("Task updated")
+        output.render_success(f"Task updated: {title}")
     else:
         output.render_error("Task not found.")
 
@@ -152,8 +199,52 @@ def complete(task_id: Optional[str] = typer.Option(None)):
         return
     if task_service.mark_complete(task_id):
         output.render_success("Marked complete")
+        output.render_info("Great job! Task status is now done.")
     else:
         output.render_error("Task not found.")
+
+
+def _choose_filters_for_view() -> Tuple[Optional[str], Optional[str], Optional[str]]:
+    last_priority, last_status = _get_last_filter()
+    try:
+        choice = prompts.prompt_select(
+            "Choose a view",
+            [
+                "All tasks",
+                "Pending only",
+                "Done only",
+                "Priority: high",
+                "Priority: medium",
+                "Priority: low",
+                "Use last filter",
+                "Back",
+            ],
+        )
+    except Exception:
+        return None, None, None
+
+    label = "All tasks"
+    priority = None
+    status = None
+    if choice == "All tasks":
+        label = "Showing all tasks"
+    elif choice == "Pending only":
+        status = "pending"
+        label = "Pending tasks"
+    elif choice == "Done only":
+        status = "done"
+        label = "Completed tasks"
+    elif choice.startswith("Priority"):
+        priority = choice.split(":")[1].strip()
+        label = f"Priority {priority}"
+    elif choice == "Use last filter":
+        priority = last_priority
+        status = last_status
+        label = "Last used filter"
+    else:
+        return None, None, None
+    _remember_filter(priority, status)
+    return priority, status, label
 
 
 @app.command()
@@ -162,15 +253,16 @@ def menu():
     while True:
         try:
             output.render_divider("Main Menu")
+            output.render_info("Shortcuts: [a]dd, [d]elete, [u]pdate, [v]iew, [c]omplete, [q]uit")
             choice = prompts.prompt_select(
                 "Select an option",
                 [
-                    "Add Task – Create new todo items",
-                    "Delete Task – Remove tasks from the list",
-                    "Update Task – Modify existing task details",
-                    "View Task List – Display all tasks",
-                    "Mark as Complete – Toggle task completion status",
-                    "Quit",
+                    "Add Task [a] – Create new todo items",
+                    "Delete Task [d] – Remove tasks from the list",
+                    "Update Task [u] – Modify existing task details",
+                    "View Task List [v] – Display all tasks",
+                    "Mark as Complete [c] – Toggle task completion status",
+                    "Quit [q]",
                 ],
             )
         except Exception:
@@ -186,7 +278,9 @@ def menu():
             update()
             output.render_spacing()
         elif choice.startswith("View Task List"):
-            list()
+            priority, status, label = _choose_filters_for_view()
+            if label:
+                list(priority=priority, status=status, display_label=label)
             output.render_spacing()
         elif choice.startswith("Mark as Complete"):
             complete()
