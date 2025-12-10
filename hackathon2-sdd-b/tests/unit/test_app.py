@@ -113,3 +113,43 @@ def test_list_success(monkeypatch):
     result = runner.invoke(cli_app.app, ["list", "--priority", "low", "--status", "pending"])
     assert result.exit_code == 0
     assert tables and tables[0][0]["title"] == "A"
+
+
+def test_menu_dispatch_add(monkeypatch):
+    calls: List[str] = []
+    monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: "add")
+    monkeypatch.setattr("cli.app.add", lambda: calls.append("add"))
+    runner = CliRunner()
+    result = runner.invoke(cli_app.app, ["menu"])
+    assert result.exit_code == 0
+    assert calls == ["add"]
+
+
+def test_menu_dispatch_list(monkeypatch):
+    calls: List[str] = []
+    monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: "list")
+    monkeypatch.setattr("cli.app.list", lambda: calls.append("list"))
+    runner = CliRunner()
+    result = runner.invoke(cli_app.app, ["menu"])
+    assert result.exit_code == 0
+    assert calls == ["list"]
+
+
+def test_menu_dispatch_delete(monkeypatch):
+    calls: List[str] = []
+    monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: "delete")
+    monkeypatch.setattr("cli.app.delete", lambda: calls.append("delete"))
+    runner = CliRunner()
+    result = runner.invoke(cli_app.app, ["menu"])
+    assert result.exit_code == 0
+    assert calls == ["delete"]
+
+
+def test_menu_quit(monkeypatch):
+    messages: List[str] = []
+    monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: "quit")
+    monkeypatch.setattr("cli.app.output.render_cancelled", lambda msg: messages.append(msg))
+    runner = CliRunner()
+    result = runner.invoke(cli_app.app, ["menu"])
+    assert result.exit_code == 0
+    assert messages == ["Goodbye"]

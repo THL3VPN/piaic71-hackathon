@@ -83,6 +83,20 @@ def delete(task_id: Optional[str] = typer.Option(None), force: bool = typer.Opti
     output.render_success("Deleted task (placeholder)")
 
 
+@app.command()
+def menu():
+    """Interactive menu to choose CLI action."""
+    choice = prompts.prompt_select("What do you want to do?", ["add", "list", "delete", "quit"])
+    if choice == "add":
+        add()
+    elif choice == "list":
+        list()
+    elif choice == "delete":
+        delete()
+    else:
+        output.render_cancelled("Goodbye")
+
+
 def run():  # pragma: no cover - convenience wrapper
     app()
 
