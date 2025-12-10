@@ -1,0 +1,5 @@
+typer
+questionary
+rich
+pytest
+pytest-cov

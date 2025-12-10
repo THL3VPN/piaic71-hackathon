@@ -1,0 +1,10 @@
+[project]
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+addopts = ["--cov=src", "--cov=tests", "--cov-report=term-missing", "--cov-fail-under=80"]
+pythonpath = ["src"]
+
+[tool.coverage.run]
+source = ["src"]
+branch = true

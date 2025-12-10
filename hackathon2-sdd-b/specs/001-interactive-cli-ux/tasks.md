@@ -22,11 +22,11 @@ description: "Task list for interactive CLI UX"
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create CLI directories in `src/cli/` and tests in `tests/` (unit/integration/contract)
-- [ ] T002 Add minimal `src/cli/__init__.py` and `src/cli/app.py` Typer app stub
-- [ ] T003 Add `tests/conftest.py` with Rich console capture helper and Questionary mock helper
-- [ ] T004 Add dev dependencies to `requirements.txt` via `uv pip compile` note in `plan.md` if missing
-- [ ] T005 Add coverage config in `pyproject.toml` or `setup.cfg` to enforce ≥80% (document location in plan)
+- [X] T001 Create CLI directories in `src/cli/` and tests in `tests/` (unit/integration/contract)
+- [X] T002 Add minimal `src/cli/__init__.py` and `src/cli/app.py` Typer app stub
+- [X] T003 Add `tests/conftest.py` with Rich console capture helper and Questionary mock helper
+- [X] T004 Add dev dependencies to `requirements.txt` via `uv pip compile` note in `plan.md` if missing
+- [X] T005 Add coverage config in `pyproject.toml` or `setup.cfg` to enforce ≥80% (document location in plan)
 
 ---
 
@@ -34,13 +34,13 @@ description: "Task list for interactive CLI UX"
 
 **Purpose**: Core infrastructure that MUST be complete before ANY user story can be implemented
 
-- [ ] T006 Create `src/cli/prompts.py` with wrapper functions for Questionary (select/text/confirm) plus retry handling
-- [ ] T007 Create `src/cli/output.py` with Rich helpers (success, error, table builder) and color-safe fallback
-- [ ] T008 Create `src/cli/errors.py` defining user-facing error classes/messages (single-sentence guidance)
-- [ ] T009 Wire Typer app entry in `src/cli/main.py` using `app = Typer()` and register placeholder commands
-- [ ] T010 Add unit tests for helpers in `tests/unit/test_prompts.py` and `tests/unit/test_output.py`
-- [ ] T011 Add unit tests for error formatting in `tests/unit/test_errors.py`
-- [ ] T012 Ensure `uv run pytest --cov=app --cov=tests --cov-report=term-missing` documented in `quickstart.md` (update if needed)
+- [X] T006 Create `src/cli/prompts.py` with wrapper functions for Questionary (select/text/confirm) plus retry handling
+- [X] T007 Create `src/cli/output.py` with Rich helpers (success, error, table builder) and color-safe fallback
+- [X] T008 Create `src/cli/errors.py` defining user-facing error classes/messages (single-sentence guidance)
+- [X] T009 Wire Typer app entry in `src/cli/main.py` using `app = Typer()` and register placeholder commands
+- [X] T010 Add unit tests for helpers in `tests/unit/test_prompts.py` and `tests/unit/test_output.py`
+- [X] T011 Add unit tests for error formatting in `tests/unit/test_errors.py`
+- [X] T012 Ensure `uv run pytest --cov=app --cov=tests --cov-report=term-missing` documented in `quickstart.md` (update if needed)
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -54,16 +54,16 @@ description: "Task list for interactive CLI UX"
 
 ### Tests for User Story 1 ⚠️
 
-- [ ] T013 [P] [US1] Add contract test for `add` command outputs in `tests/contract/test_cli_add.py`
-- [ ] T014 [P] [US1] Add integration test for prompt flow and cancel path in `tests/integration/test_cli_add_flow.py`
+- [X] T013 [P] [US1] Add contract test for `add` command outputs in `tests/contract/test_cli_add.py`
+- [X] T014 [P] [US1] Add integration test for prompt flow and cancel path in `tests/integration/test_cli_add_flow.py`
 
 ### Implementation for User Story 1
 
-- [ ] T015 [US1] Implement `add` command in `src/cli/app.py` (Typer command + prompt defaults)
-- [ ] T016 [US1] Add interactive prompt flow in `src/cli/prompts.py` for title/priority/notes + confirm
-- [ ] T017 [US1] Add service call placeholder/wiring in `src/services/task_service.py` (create task) with stub implementation
-- [ ] T018 [US1] Render success/summary via Rich in `src/cli/output.py` for add command
-- [ ] T019 [US1] Handle cancel path gracefully in `src/cli/app.py` with friendly message
+- [X] T015 [US1] Implement `add` command in `src/cli/app.py` (Typer command + prompt defaults)
+- [X] T016 [US1] Add interactive prompt flow in `src/cli/prompts.py` for title/priority/notes + confirm
+- [X] T017 [US1] Add service call placeholder/wiring in `src/services/task_service.py` (create task) with stub implementation
+- [X] T018 [US1] Render success/summary via Rich in `src/cli/output.py` for add command
+- [X] T019 [US1] Handle cancel path gracefully in `src/cli/app.py` with friendly message
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
