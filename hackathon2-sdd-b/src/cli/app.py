@@ -253,36 +253,36 @@ def menu():
     while True:
         try:
             output.render_divider("Main Menu")
-            output.render_info("Shortcuts: [a]dd, [d]elete, [u]pdate, [v]iew, [c]omplete, [q]uit")
+            output.render_info("Use arrow keys or press shortcut letter then Enter.")
             choice = prompts.prompt_select(
                 "Select an option",
                 [
-                    "Add Task [a] – Create new todo items",
-                    "Delete Task [d] – Remove tasks from the list",
-                    "Update Task [u] – Modify existing task details",
-                    "View Task List [v] – Display all tasks",
-                    "Mark as Complete [c] – Toggle task completion status",
-                    "Quit [q]",
+                    prompts.menu_choice("Add Task [a] – Create new todo items", "add", "a"),
+                    prompts.menu_choice("Delete Task [d] – Remove tasks from the list", "delete", "d"),
+                    prompts.menu_choice("Update Task [u] – Modify existing task details", "update", "u"),
+                    prompts.menu_choice("View Task List [v] – Display all tasks", "view", "v"),
+                    prompts.menu_choice("Mark as Complete [c] – Toggle task completion status", "complete", "c"),
+                    prompts.menu_choice("Quit [q]", "quit", "q"),
                 ],
             )
         except Exception:
             output.render_cancelled("Goodbye")
             break
-        if choice.startswith("Add Task"):
+        if choice in ("Add Task [a] – Create new todo items", "add"):
             add()
             output.render_spacing()
-        elif choice.startswith("Delete Task"):
+        elif choice in ("Delete Task [d] – Remove tasks from the list", "delete"):
             delete()
             output.render_spacing()
-        elif choice.startswith("Update Task"):
+        elif choice in ("Update Task [u] – Modify existing task details", "update"):
             update()
             output.render_spacing()
-        elif choice.startswith("View Task List"):
+        elif choice in ("View Task List [v] – Display all tasks", "view"):
             priority, status, label = _choose_filters_for_view()
             if label:
                 list(priority=priority, status=status, display_label=label)
             output.render_spacing()
-        elif choice.startswith("Mark as Complete"):
+        elif choice in ("Mark as Complete [c] – Toggle task completion status", "complete"):
             complete()
             output.render_spacing()
         else:

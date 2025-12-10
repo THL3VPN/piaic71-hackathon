@@ -21,7 +21,7 @@ def prompt_text(message: str) -> str:
     return questionary.text(message).ask()  # type: ignore[union-attr]
 
 
-def prompt_select(message: str, choices: list[str]) -> str:
+def prompt_select(message: str, choices: list[Any]) -> str:
     _require_questionary()
     return questionary.select(message, choices=choices).ask()  # type: ignore[union-attr]
 
@@ -97,3 +97,10 @@ def prompt_priority(current: str) -> str:
     if val == "Back":
         return current
     return val or current
+
+
+def menu_choice(title: str, value: str, shortcut: Optional[str] = None):
+    """Return a questionary Choice with shortcut when available."""
+    if questionary and hasattr(questionary, "Choice"):
+        return questionary.Choice(title=title, value=value, shortcut_key=shortcut)  # type: ignore[attr-defined]
+    return value

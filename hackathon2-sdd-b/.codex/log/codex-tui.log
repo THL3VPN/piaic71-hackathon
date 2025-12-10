@@ -5145,3 +5145,882 @@
 +- Next experiment (smallest change to try): N/A
 *** End Patch
 [2m2025-12-10T18:16:34.180656Z[0m [32m INFO[0m ToolCall: shell_command {"command":"git status -sb","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+[2m2025-12-10T18:21:27.618008Z[0m [32m INFO[0m spawning ghost snapshot task
+[2m2025-12-10T18:21:27.733757Z[0m [32m INFO[0m ghost snapshot blocking task finished
+[2m2025-12-10T18:21:27.733916Z[0m [32m INFO[0m ghost commit captured: ef7999f38aac69fdeda10b0d82546376919113ac
+[2m2025-12-10T18:21:27.733930Z[0m [32m INFO[0m ghost snapshot gate marked ready
+[2m2025-12-10T18:21:34.915012Z[0m [32m INFO[0m interrupt received: abort current task, if any
+[2m2025-12-10T18:23:05.755272Z[0m [32m INFO[0m spawning ghost snapshot task
+[2m2025-12-10T18:23:05.882614Z[0m [32m INFO[0m ghost snapshot blocking task finished
+[2m2025-12-10T18:23:05.882690Z[0m [32m INFO[0m ghost commit captured: 248231470b9c40f1656e6305642511430d6046d0
+[2m2025-12-10T18:23:05.882698Z[0m [32m INFO[0m ghost snapshot gate marked ready
+[2m2025-12-10T18:23:16.550264Z[0m [32m INFO[0m ToolCall: shell_command {"command":"sed -n '1,220p' tests/unit/test_output.py","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+[2m2025-12-10T18:23:40.933377Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: src/cli/output.py
+@@
+-from typing import Iterable
++from typing import Iterable
+ 
+ try:  # runtime dependency optional in tests
+     from rich.console import Console
+     from rich.table import Table
+     from rich.panel import Panel
+@@
+ _console = Console() if Console else None
+ 
+ 
+ def _print(text: str):
+-    if _console:
+-        _console.print(text)
+-    else:  # pragma: no cover
+-        print(text)
++    if _console:
++        _console.print(text)
++    else:  # pragma: no cover
++        print(text)
++
++
++def render_spacing(lines: int = 1):
++    for _ in range(lines):
++        _print("")
++
++
++def render_divider(title: str = ""):
++    if _console:
++        _console.rule(f"[bold cyan]{title}[/bold cyan]" if title else "")
++    else:  # pragma: no cover
++        _print("-" * 20)
+ 
+ 
+ def render_success(message: str):
+-    _print(f"[green]{message}[/green]" if _console else message)
++    _print(f"[green]{message}[/green]" if _console else message)
++    render_spacing()
+ 
+ 
+ def render_error(message: str):
+-    _print(f"[red]{message}[/red]" if _console else message)
++    _print(f"[red]{message}[/red]" if _console else message)
++    render_spacing()
+ 
+ 
+ def render_cancelled(message: str):
+-    _print(f"[yellow]{message}[/yellow]" if _console else message)
++    _print(f"[yellow]{message}[/yellow]" if _console else message)
++    render_spacing()
+ 
+ 
+ def render_task_created(task: dict):
+     if Panel:
+         panel = Panel.fit(
+             f"Title: {task.get('title')}\nPriority: {task.get('priority')}\nStatus: {task.get('status')}\nNotes: {task.get('notes')}",
+             title="Task Created",
+             border_style="green",
+         )
+         _print(panel)
+     else:  # pragma: no cover
+         _print(f"Task Created: {task}")
++    render_spacing()
+ 
+ 
+ def render_task_details(task: dict):
+     if Panel:
+         panel = Panel.fit(
+@@
+             border_style="cyan",
+         )
+         _print(panel)
+     else:  # pragma: no cover
+         _print(f"Task: {task}")
++    render_spacing()
+ 
+ 
+ def render_task_table(tasks: Iterable[dict]):
+     data = list(tasks)
++    render_spacing()
++    render_divider("Task List")
+     if Table and _console:
+         table = Table(title="Tasks")
+         for col in ["#", "title", "priority", "status", "due_date", "notes"]:
+             table.add_column(col.title())
+         if not data:
+@@
+                 table.add_row(
+                     str(idx),
+                     str(t.get("title", "")),
+                     str(t.get("priority", "")),
+-                    str(t.get("status", "")),
++                    f"[green]{t.get('status', '')}[/green]" if str(t.get("status", "")).lower() == "done" else str(t.get("status", "")),
+                     str(t.get("due_date", "")),
+                     str(t.get("notes", "")),
+                 )
+         _console.print(table)
+     else:  # pragma: no cover
+         if not data:
+             _print("No tasks")
+         else:
+-            for t in data:
+-                _print(f"- {t.get('title')} ({t.get('priority')}, {t.get('status')})")
++            for t in data:
++                _print(f"- {t.get('title')} ({t.get('priority')}, {t.get('status')})")
++    render_spacing()
+*** End Patch
+[2m2025-12-10T18:23:50.258926Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: src/cli/app.py
+@@
+ def menu():
+     """Interactive menu to choose CLI action."""
+     while True:
+         try:
++            output.render_divider("Main Menu")
+             choice = prompts.prompt_select(
+                 "Select an option",
+                 [
+                     "Add Task – Create new todo items",
+                     "Delete Task – Remove tasks from the list",
+@@
+             )
+         except Exception:
+             output.render_cancelled("Goodbye")
+             break
+         if choice.startswith("Add Task"):
+             add()
++            output.render_spacing()
+         elif choice.startswith("Delete Task"):
+             delete()
++            output.render_spacing()
+         elif choice.startswith("Update Task"):
+             update()
++            output.render_spacing()
+         elif choice.startswith("View Task List"):
+             list()
++            output.render_spacing()
+         elif choice.startswith("Mark as Complete"):
+             complete()
++            output.render_spacing()
+         else:
+             output.render_cancelled("Goodbye")
+             break
+*** End Patch
+[2m2025-12-10T18:23:55.383753Z[0m [32m INFO[0m ToolCall: shell_command {"command":"sed -n '1,200p' tests/conftest.py","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+[2m2025-12-10T18:24:06.476364Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: tests/unit/test_output.py
+@@
+ def test_render_task_table_with_data(monkeypatch):
+     console, buf = make_console_capture()
+     monkeypatch.setattr(output, "_console", console)
+     output.render_task_table([{"title": "A", "priority": "high", "status": "pending", "due_date": None, "notes": ""}])
+     assert "A" in buf.getvalue()
+@@
+ def test_render_task_details(monkeypatch):
+     console, buf = make_console_capture()
+     monkeypatch.setattr(output, "_console", console)
+     output.render_task_details({"id": "1", "title": "X", "priority": "low", "status": "pending", "due_date": None, "notes": ""})
+     assert "Task" in buf.getvalue()
++
++
++def test_render_divider_and_spacing(monkeypatch):
++    console, buf = make_console_capture()
++    monkeypatch.setattr(output, "_console", console)
++    output.render_divider("Title")
++    output.render_spacing(2)
++    content = buf.getvalue()
++    assert "Title" in content
++    assert content.count("\n") >= 2
+*** End Patch
+[2m2025-12-10T18:24:11.596867Z[0m [32m INFO[0m ToolCall: shell_command {"command":"PYTHONPATH=src UV_CACHE_DIR=.uv-cache uv run -p .venv/bin/python -m pytest","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+[2m2025-12-10T18:24:17.011701Z[0m [32m INFO[0m ToolCall: shell_command {"command":"git status -sb","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+[2m2025-12-10T18:24:28.602811Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: history/prompts/001-interactive-cli-ux/0011-spacing-color-refresh.green.prompt.md
++---
++id: 0011
++title: spacing-color-refresh
++stage: green
++date: 2025-12-10
++surface: cli
++model: gpt-5
++feature: 001-interactive-cli-ux
++branch: 001-interactive-cli-ux
++user: aie
++command: Improve CLI spacing and color readability
++labels: [execution,tests,ux]
++links:
++  spec: specs/001-interactive-cli-ux/spec.md
++  ticket: N/A
++  adr: N/A
++  pr: N/A
++files:
++  - src/cli/output.py
++  - src/cli/app.py
++  - tests/unit/test_output.py
++tests:
++  - PYTHONPATH=src UV_CACHE_DIR=.uv-cache uv run -p .venv/bin/python -m pytest
++---
++
++## Prompt
++
++Overall the functionality works but it feels tightly packed; add spaces and lines to improve readability, add some coloring to the application.
++
++## Response snapshot
++
++Added rich dividers and spacing helpers, colored task status, and inserted menu separators for a clearer interactive experience; expanded output tests to keep 100% coverage.
++
++## Outcome
++
++- ✅ Impact: CLI now shows padded sections, colored task states, and visual dividers for a more comfortable flow.
++- 🧪 Tests: PYTHONPATH=src UV_CACHE_DIR=.uv-cache uv run -p .venv/bin/python -m pytest (pass, 100% coverage)
++- 📁 Files: Updated output helpers, menu spacing, and output tests.
++- 🔁 Next prompts: None
++- 🧠 Reflection: Keeping output helpers centralized makes future UX tweaks low-risk while preserving test coverage.
++
++## Evaluation notes (flywheel)
++
++- Failure modes observed: None
++- Graders run and results (PASS/FAIL): Not run
++- Prompt variant (if applicable): N/A
++- Next experiment (smallest change to try): N/A
+*** End Patch
+[2m2025-12-10T18:27:48.593540Z[0m [32m INFO[0m spawning ghost snapshot task
+[2m2025-12-10T18:27:48.902461Z[0m [32m INFO[0m ghost snapshot blocking task finished
+[2m2025-12-10T18:27:48.902579Z[0m [32m INFO[0m ghost commit captured: 54196511419b585210265b62c4feb8f35651af76
+[2m2025-12-10T18:27:48.902594Z[0m [32m INFO[0m ghost snapshot gate marked ready
+[2m2025-12-10T18:27:52.635662Z[0m [32m INFO[0m ToolCall: shell_command {"command":"git status -sb","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+[2m2025-12-10T18:27:59.522565Z[0m [32m INFO[0m ToolCall: shell_command {"command":"git add src/cli/app.py src/cli/output.py tests/unit/test_output.py history/prompts/001-interactive-cli-ux/0011-spacing-color-refresh.green.prompt.md","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+[2m2025-12-10T18:28:05.966138Z[0m [32m INFO[0m ToolCall: shell_command {"command":"git add src/cli/app.py src/cli/output.py tests/unit/test_output.py history/prompts/001-interactive-cli-ux/0011-spacing-color-refresh.green.prompt.md","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b","with_escalated_permissions":true,"justification":"Need to stage updated project files for commit; git index lives in parent repo requiring write access"}
+[2m2025-12-10T18:28:14.104287Z[0m [32m INFO[0m ToolCall: shell_command {"command":"git commit -m \"feat: polish CLI spacing and colors\"","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b","with_escalated_permissions":true,"justification":"Commit staged CLI UX polishing changes in monorepo with parent-level git permissions"}
+[2m2025-12-10T18:29:16.114700Z[0m [32m INFO[0m ToolCall: shell_command {"command":"git status -sb","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+[2m2025-12-10T18:39:12.287157Z[0m [32m INFO[0m spawning ghost snapshot task
+[2m2025-12-10T18:39:12.506258Z[0m [32m INFO[0m ghost snapshot blocking task finished
+[2m2025-12-10T18:39:12.506413Z[0m [32m INFO[0m ghost commit captured: 0155d25cce2de470ce3e74b13f88cc2b86a7c9d4
+[2m2025-12-10T18:39:12.506432Z[0m [32m INFO[0m ghost snapshot gate marked ready
+[2m2025-12-10T18:42:55.783299Z[0m [32m INFO[0m spawning ghost snapshot task
+[2m2025-12-10T18:42:55.917359Z[0m [32m INFO[0m ghost snapshot blocking task finished
+[2m2025-12-10T18:42:55.917447Z[0m [32m INFO[0m ghost commit captured: ad57d2e09693085e9ecf6502b60edf130a113b6f
+[2m2025-12-10T18:42:55.917461Z[0m [32m INFO[0m ghost snapshot gate marked ready
+[2m2025-12-10T18:43:37.184648Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: src/cli/output.py
+@@
+-def _print(text: str):
+-    if _console:
+-        _console.print(text)
+-    else:  # pragma: no cover
+-        print(text)
++def _print(text: str):
++    if _console:
++        _console.print(text)
++    else:  # pragma: no cover
++        print(text)
+@@
+ def render_spacing(lines: int = 1):
+     for _ in range(lines):
+         _print("")
+ 
+ 
+ def render_divider(title: str = ""):
+     if _console:
+-        _console.rule(f"[bold cyan]{title}[/bold cyan]" if title else "")
++        _console.rule(f"[bold cyan]{title}[/bold cyan]" if title else "")
+     else:  # pragma: no cover
+         _print("-" * 20)
++
++
++def render_info(message: str):
++    _print(f"[cyan]{message}[/cyan]" if _console else message)
++    render_spacing()
+@@
+ def render_success(message: str):
+-    _print(f"[green]{message}[/green]" if _console else message)
++    _print(f"[green]{message}[/green]" if _console else message)
+     render_spacing()
+ 
+ 
+ def render_error(message: str):
+-    _print(f"[red]{message}[/red]" if _console else message)
++    _print(f"[red]{message}[/red]" if _console else message)
+     render_spacing()
+ 
+ 
+ def render_cancelled(message: str):
+-    _print(f"[yellow]{message}[/yellow]" if _console else message)
++    _print(f"[yellow]{message}[/yellow]" if _console else message)
+     render_spacing()
+@@
+ def render_task_table(tasks: Iterable[dict]):
+     data = list(tasks)
+-    render_spacing()
+-    render_divider("Task List")
++    render_spacing()
++    render_divider("Task List")
+     if Table and _console:
+         table = Table(title="Tasks")
+         for col in ["#", "title", "priority", "status", "due_date", "notes"]:
+             table.add_column(col.title())
+         if not data:
+*** End Patch
+[2m2025-12-10T18:43:40.862299Z[0m [32m INFO[0m ToolCall: shell_command {"command":"nl -ba src/cli/output.py | sed -n '1,220p'","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+[2m2025-12-10T18:44:14.244689Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: src/cli/app.py
+@@
+-"""Typer application entrypoint for interactive CLI UX."""
+-from typing import Optional
++"""Typer application entrypoint for interactive CLI UX."""
++import json
++from pathlib import Path
++from typing import Dict, Optional, Tuple
+ 
+ import typer
+ 
+ from . import prompts, output, errors
+ from services import task_service
+@@
+ ALLOWED_PRIORITIES = {"low", "medium", "high"}
++_STATE_PATH = Path(__file__).resolve().parents[2] / ".cli_state.json"
++
++
++def _load_state() -> Dict[str, Dict[str, Optional[str]]]:
++    if _STATE_PATH.exists():
++        try:
++            return json.loads(_STATE_PATH.read_text())
++        except json.JSONDecodeError:  # pragma: no cover - defensive
++            return {"last_filter": {"priority": None, "status": None}}
++    return {"last_filter": {"priority": None, "status": None}}
++
++
++def _save_state(state: Dict[str, Dict[str, Optional[str]]]):
++    _STATE_PATH.write_text(json.dumps(state))
++
++
++def _remember_filter(priority: Optional[str], status: Optional[str]):
++    state = _load_state()
++    state["last_filter"] = {"priority": priority, "status": status}
++    _save_state(state)
++
++
++def _get_last_filter() -> Tuple[Optional[str], Optional[str]]:
++    state = _load_state()
++    last = state.get("last_filter", {})
++    return last.get("priority"), last.get("status")
+ 
+ 
+ def _validate_priority(value: Optional[str]) -> Optional[str]:
+     if value is None or not isinstance(value, str):
+         return None
+@@
+ @app.command()
+-def list(priority: Optional[str] = typer.Option(None), status: Optional[str] = typer.Option(None)):
++def list(
++    priority: Optional[str] = typer.Option(None),
++    status: Optional[str] = typer.Option(None),
++    display_label: Optional[str] = typer.Option(None, hidden=True),
++):
+     """List tasks with optional filters."""
+     try:
+         priority = _validate_priority(_coerce_arg(priority))
+         status = _coerce_arg(status)
+     except errors.UserInputError as exc:
+         output.render_error(errors.format_error(str(exc)))
+         return
+ 
+     tasks = task_service.list_tasks(priority=priority, status=status)
++    if display_label:
++        output.render_info(display_label)
++    pending = len([t for t in tasks if str(t.get("status")).lower() != "done"])
++    done = len(tasks) - pending
++    summary = f"{len(tasks)} total • {pending} pending • {done} done"
++    if priority:
++        summary += f" • priority={priority}"
++    if status:
++        summary += f" • status={status}"
++    output.render_info(summary)
+     output.render_task_table(tasks)
+@@
+     """Show task details."""
+     task_id = _coerce_arg(task_id)
+     if not task_id:
+         output.render_task_table(task_service.list_tasks())
+         return
+@@
+ def delete(task_id: Optional[str] = typer.Option(None), force: bool = typer.Option(False)):
+     """Delete a task by id."""
+     tasks = task_service.list_tasks()
+     task_id = _coerce_arg(task_id) or prompts.select_task(tasks)
+     if not task_id:
+         output.render_cancelled("No task selected.")
+         return
+     if not force:
+         confirm = prompts.confirm_action("Delete task?", default=False)
+         if not confirm:
+             output.render_cancelled("Deletion cancelled")
+             return
+     deleted = task_service.delete_task(task_id)
+     if deleted:
+-        output.render_success("Deleted task")
++        output.render_success("Deleted task")
++        output.render_info("Task removed from list.")
+     else:
+         output.render_error("Task not found.")
+@@
+ def update(
+     task_id: Optional[str] = typer.Option(None),
+     title: Optional[str] = typer.Option(None),
+     priority: Optional[str] = typer.Option(None),
+     notes: Optional[str] = typer.Option(None),
+ ):
+     """Update task details."""
+     tasks = task_service.list_tasks()
+     task_id = _coerce_arg(task_id) or prompts.select_task(tasks)
+     if not task_id:
+         output.render_cancelled("No task selected.")
+         return
+     existing = task_service.get_task(task_id)
+     if not existing:
+         output.render_error("Task not found.")
+         return
+     priority = _validate_priority(_coerce_arg(priority))
+     title = _coerce_arg(title)
+     notes = _coerce_arg(notes)
+     if title is None:
+         title = prompts.prompt_optional_text("Title", existing.get("title", ""))
+     if priority is None:
+         priority = _validate_priority(prompts.prompt_priority(existing.get("priority", "low")))
+     if notes is None:
+         notes = prompts.prompt_optional_text("Notes", existing.get("notes", ""))
+-    if not prompts.confirm_action("Save updates?", default=True):
++    output.render_info(
++        f"Preview changes: Title '{existing.get('title','')}' → '{title}', "
++        f"Priority {existing.get('priority','')} → {priority}, Notes length {len(notes or '')}"
++    )
++    if not prompts.confirm_action("Save updates?", default=True):
+         output.render_cancelled("Update cancelled")
+         return
+     if task_service.update_task(task_id, title=title, priority=priority, notes=notes):
+-        output.render_success("Task updated")
++        output.render_success(f"Task updated: {title}")
+     else:
+         output.render_error("Task not found.")
+@@
+ def complete(task_id: Optional[str] = typer.Option(None)):
+     """Mark a task as complete."""
+     tasks = task_service.list_tasks()
+     task_id = _coerce_arg(task_id) or prompts.select_task(tasks)
+     if not task_id:
+         output.render_cancelled("No task selected.")
+         return
+     if task_service.mark_complete(task_id):
+-        output.render_success("Marked complete")
++        output.render_success("Marked complete")
++        output.render_info("Great job! Task status is now done.")
+     else:
+         output.render_error("Task not found.")
++
++
++def _choose_filters_for_view() -> Tuple[Optional[str], Optional[str], Optional[str]]:
++    last_priority, last_status = _get_last_filter()
++    try:
++        choice = prompts.prompt_select(
++            "Choose a view",
++            [
++                "All tasks",
++                "Pending only",
++                "Done only",
++                "Priority: high",
++                "Priority: medium",
++                "Priority: low",
++                "Use last filter",
++                "Back",
++            ],
++        )
++    except Exception:
++        return None, None, None
++
++    label = "All tasks"
++    priority = None
++    status = None
++    if choice == "All tasks":
++        label = "Showing all tasks"
++    elif choice == "Pending only":
++        status = "pending"
++        label = "Pending tasks"
++    elif choice == "Done only":
++        status = "done"
++        label = "Completed tasks"
++    elif choice.startswith("Priority"):
++        priority = choice.split(":")[1].strip()
++        label = f"Priority {priority}"
++    elif choice == "Use last filter":
++        priority = last_priority
++        status = last_status
++        label = "Last used filter"
++    else:
++        return None, None, None
++    _remember_filter(priority, status)
++    return priority, status, label
+@@
+ def menu():
+     """Interactive menu to choose CLI action."""
+     while True:
+         try:
+-            output.render_divider("Main Menu")
++            output.render_divider("Main Menu")
++            output.render_info("Shortcuts: [a]dd, [d]elete, [u]pdate, [v]iew, [c]omplete, [q]uit")
+             choice = prompts.prompt_select(
+                 "Select an option",
+                 [
+-                    "Add Task – Create new todo items",
+-                    "Delete Task – Remove tasks from the list",
+-                    "Update Task – Modify existing task details",
+-                    "View Task List – Display all tasks",
+-                    "Mark as Complete – Toggle task completion status",
+-                    "Quit",
++                    "Add Task [a] – Create new todo items",
++                    "Delete Task [d] – Remove tasks from the list",
++                    "Update Task [u] – Modify existing task details",
++                    "View Task List [v] – Display all tasks",
++                    "Mark as Complete [c] – Toggle task completion status",
++                    "Quit [q]",
+                 ],
+             )
+         except Exception:
+             output.render_cancelled("Goodbye")
+             break
+-        if choice.startswith("Add Task"):
++        if choice.startswith("Add Task"):
+             add()
+             output.render_spacing()
+-        elif choice.startswith("Delete Task"):
++        elif choice.startswith("Delete Task"):
+             delete()
+             output.render_spacing()
+-        elif choice.startswith("Update Task"):
++        elif choice.startswith("Update Task"):
+             update()
+             output.render_spacing()
+-        elif choice.startswith("View Task List"):
+-            list()
++        elif choice.startswith("View Task List"):
++            priority, status, label = _choose_filters_for_view()
++            if label:
++                list(priority=priority, status=status, display_label=label)
+             output.render_spacing()
+-        elif choice.startswith("Mark as Complete"):
++        elif choice.startswith("Mark as Complete"):
+             complete()
+             output.render_spacing()
+         else:
+             output.render_cancelled("Goodbye")
+             break
+*** End Patch
+[2m2025-12-10T18:44:53.742084Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: tests/unit/test_app.py
+@@
+ def test_list_success(monkeypatch):
+     tables: List[list] = []
+-    monkeypatch.setattr("cli.app.task_service.list_tasks", lambda priority=None, status=None: [{"title": "A"}])
+-    monkeypatch.setattr("cli.app.output.render_task_table", lambda tasks: tables.append(list(tasks)))
++    monkeypatch.setattr("cli.app.task_service.list_tasks", lambda priority=None, status=None: [{"title": "A", "status": "pending"}])
++    monkeypatch.setattr("cli.app.output.render_task_table", lambda tasks: tables.append(list(tasks)))
+ 
+     runner = CliRunner()
+-    result = runner.invoke(cli_app.app, ["list", "--priority", "low", "--status", "pending"])
++    result = runner.invoke(cli_app.app, ["list", "--priority", "low", "--status", "pending"])
+     assert result.exit_code == 0
+     assert tables and tables[0][0]["title"] == "A"
+@@
+ def test_menu_dispatch_update(monkeypatch):
+     calls: List[str] = []
+     seq = iter(
+         [
+-            "Update Task – Modify existing task details",
++            "Update Task [u] – Modify existing task details",
+             "Quit",
+         ]
+     )
+     monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: next(seq))
+     monkeypatch.setattr("cli.app.update", lambda: calls.append("update"))
+@@
+ def test_menu_dispatch_add(monkeypatch):
+     calls: List[str] = []
+-    seq = iter(["Add Task – Create new todo items", "Quit"])
++    seq = iter(["Add Task [a] – Create new todo items", "Quit [q]"])
+     monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: next(seq))
+     monkeypatch.setattr("cli.app.add", lambda: calls.append("add"))
+     cli_app.menu()
+     assert "add" in calls
+@@
+ def test_menu_dispatch_delete(monkeypatch):
+     calls: List[str] = []
+-    seq = iter(["Delete Task – Remove tasks from the list", "Quit"])
++    seq = iter(["Delete Task [d] – Remove tasks from the list", "Quit [q]"])
+     monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: next(seq))
+     monkeypatch.setattr("cli.app.delete", lambda: calls.append("delete"))
+     cli_app.menu()
+     assert "delete" in calls
+@@
+ def test_menu_dispatch_complete(monkeypatch):
+     calls: List[str] = []
+     seq = iter(
+         [
+-            "Mark as Complete – Toggle task completion status",
+-            "Quit",
++            "Mark as Complete [c] – Toggle task completion status",
++            "Quit [q]",
+         ]
+     )
+     monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: next(seq))
+     monkeypatch.setattr("cli.app.prompts.select_task", lambda tasks: "abc")
+     monkeypatch.setattr("cli.app.task_service.mark_complete", lambda tid: True)
+@@
+ def test_menu_dispatch_view(monkeypatch):
+     calls: List[str] = []
+     seq = iter(
+         [
+-            "View Task List – Display all tasks",
+-            "Quit",
++            "View Task List [v] – Display all tasks",
++            "Quit [q]",
+         ]
+     )
+     monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: next(seq))
+-    monkeypatch.setattr("cli.app.output.render_task_table", lambda tasks: calls.append("list"))
+-    monkeypatch.setattr("cli.app.task_service.list_tasks", lambda priority=None, status=None: [{"id": "abc", "title": "T", "status": "pending", "priority": "low", "notes": ""}])
++    monkeypatch.setattr("cli.app._choose_filters_for_view", lambda: (None, None, "All"))
++    monkeypatch.setattr("cli.app.output.render_task_table", lambda tasks: calls.append("list"))
++    monkeypatch.setattr("cli.app.task_service.list_tasks", lambda priority=None, status=None: [{"id": "abc", "title": "T", "status": "pending", "priority": "low", "notes": ""}])
+     cli_app.menu()
+     assert "list" in calls
+@@
+ def test_menu_prompt_failure(monkeypatch):
+     messages: List[str] = []
+     monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: (_ for _ in ()).throw(Exception("fail")))
+     monkeypatch.setattr("cli.app.output.render_cancelled", lambda msg: messages.append(msg))
+     cli_app.menu()
+@@
+ def test_update_not_found(monkeypatch):
+     messages: List[str] = []
+     monkeypatch.setattr("cli.app.prompts.select_task", lambda tasks: "abc")
+     monkeypatch.setattr("cli.app.task_service.get_task", lambda tid: None)
+     monkeypatch.setattr("cli.app.output.render_error", lambda msg: messages.append(msg))
+     runner = CliRunner()
+     result = runner.invoke(cli_app.app, ["update"])
+     assert result.exit_code == 0
+     assert "Task not found." in messages
+@@
+ def test_update_task_missing_after_fetch(monkeypatch):
+     messages: List[str] = []
+     monkeypatch.setattr("cli.app.prompts.select_task", lambda tasks: "abc")
+     monkeypatch.setattr("cli.app.task_service.get_task", lambda tid: {"id": tid, "title": "Old", "priority": "low", "notes": ""})
+     monkeypatch.setattr("cli.app.prompts.prompt_optional_text", lambda message, current: current)
+     monkeypatch.setattr("cli.app.prompts.prompt_priority", lambda current: current)
+     monkeypatch.setattr("cli.app.prompts.confirm_action", lambda msg, default=True: True)
+     monkeypatch.setattr("cli.app.task_service.update_task", lambda *args, **kwargs: False)
+     monkeypatch.setattr("cli.app.output.render_error", lambda msg: messages.append(msg))
+     runner = CliRunner()
+     result = runner.invoke(cli_app.app, ["update"])
+     assert result.exit_code == 0
+     assert "Task not found." in messages
++
++
++def test_remember_filter_roundtrip(monkeypatch, tmp_path):
++    monkeypatch.setattr(cli_app, "_STATE_PATH", tmp_path / "state.json")
++    cli_app._remember_filter("low", "pending")
++    assert cli_app._get_last_filter() == ("low", "pending")
++
++
++def test_choose_filters_use_last(monkeypatch, tmp_path):
++    monkeypatch.setattr(cli_app, "_STATE_PATH", tmp_path / "state.json")
++    (tmp_path / "state.json").write_text(json.dumps({"last_filter": {"priority": "high", "status": "done"}}))
++    monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: "Use last filter")
++    priority, status, label = cli_app._choose_filters_for_view()
++    assert priority == "high"
++    assert status == "done"
++    assert label == "Last used filter"
++
++
++def test_list_display_label(monkeypatch):
++    infos: List[str] = []
++    monkeypatch.setattr("cli.app.output.render_info", lambda msg: infos.append(msg))
++    monkeypatch.setattr("cli.app.output.render_task_table", lambda tasks: None)
++    monkeypatch.setattr("cli.app.task_service.list_tasks", lambda priority=None, status=None: [])
++    result = CliRunner().invoke(cli_app.app, ["list", "--display-label", "All"])
++    assert result.exit_code == 0
++    assert "All" in infos[0]
+*** End Patch
+[2m2025-12-10T18:45:00.257193Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: tests/unit/test_app.py
+@@
+-from typing import List
++import json
++from typing import List
+*** End Patch
+[2m2025-12-10T18:45:13.053275Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: tests/unit/test_output.py
+@@
+ def test_render_task_details(monkeypatch):
+     console, buf = make_console_capture()
+     monkeypatch.setattr(output, "_console", console)
+     output.render_task_details({"id": "1", "title": "X", "priority": "low", "status": "pending", "due_date": None, "notes": ""})
+     assert "Task" in buf.getvalue()
+@@
+ def test_render_divider_and_spacing(monkeypatch):
+     console, buf = make_console_capture()
+     monkeypatch.setattr(output, "_console", console)
+     output.render_divider("Title")
+     output.render_spacing(2)
+     content = buf.getvalue()
+     assert "Title" in content
+     assert content.count("\n") >= 2
++
++
++def test_render_info(monkeypatch):
++    console, buf = make_console_capture()
++    monkeypatch.setattr(output, "_console", console)
++    output.render_info("hint")
++    assert "hint" in buf.getvalue()
+*** End Patch
+[2m2025-12-10T18:45:19.703161Z[0m [32m INFO[0m ToolCall: shell_command {"command":"PYTHONPATH=src UV_CACHE_DIR=.uv-cache uv run -p .venv/bin/python -m pytest","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+[2m2025-12-10T18:45:28.490856Z[0m [32m INFO[0m ToolCall: shell_command {"command":"nl -ba src/cli/app.py | sed -n '210,260p'","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+[2m2025-12-10T18:45:35.901965Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: tests/unit/test_app.py
+@@
+     monkeypatch.setattr("cli.app.prompts.confirm_action", lambda msg, default=True: True)
+     monkeypatch.setattr("cli.app.task_service.update_task", lambda *args, **kwargs: True)
+     monkeypatch.setattr("cli.app.output.render_success", lambda msg: messages.append(msg))
+     runner = CliRunner()
+     result = runner.invoke(cli_app.app, ["update"])
+     assert result.exit_code == 0
+-    assert "Task updated" in messages
++    assert any("Task updated" in msg for msg in messages)
+*** End Patch
+[2m2025-12-10T18:45:46.359087Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: tests/unit/test_app.py
+@@
+ def test_choose_filters_use_last(monkeypatch, tmp_path):
+     monkeypatch.setattr(cli_app, "_STATE_PATH", tmp_path / "state.json")
+     (tmp_path / "state.json").write_text(json.dumps({"last_filter": {"priority": "high", "status": "done"}}))
+     monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: "Use last filter")
+     priority, status, label = cli_app._choose_filters_for_view()
+     assert priority == "high"
+     assert status == "done"
+     assert label == "Last used filter"
++
++
++def test_choose_filters_pending(monkeypatch, tmp_path):
++    monkeypatch.setattr(cli_app, "_STATE_PATH", tmp_path / "state.json")
++    monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: "Pending only")
++    priority, status, label = cli_app._choose_filters_for_view()
++    assert priority is None
++    assert status == "pending"
++    assert label == "Pending tasks"
++
++
++def test_choose_filters_priority(monkeypatch, tmp_path):
++    monkeypatch.setattr(cli_app, "_STATE_PATH", tmp_path / "state.json")
++    monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: "Priority: low")
++    priority, status, label = cli_app._choose_filters_for_view()
++    assert priority == "low"
++    assert status is None
++    assert label == "Priority low"
++
++
++def test_choose_filters_back(monkeypatch, tmp_path):
++    monkeypatch.setattr(cli_app, "_STATE_PATH", tmp_path / "state.json")
++    monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: "Back")
++    priority, status, label = cli_app._choose_filters_for_view()
++    assert priority is None and status is None and label is None
++
++
++def test_choose_filters_exception(monkeypatch):
++    monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: (_ for _ in ()).throw(Exception("fail")))
++    priority, status, label = cli_app._choose_filters_for_view()
++    assert priority is None and status is None and label is None
+*** End Patch
+[2m2025-12-10T18:45:49.989918Z[0m [32m INFO[0m ToolCall: shell_command {"command":"PYTHONPATH=src UV_CACHE_DIR=.uv-cache uv run -p .venv/bin/python -m pytest","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+[2m2025-12-10T18:46:00.794589Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: tests/unit/test_app.py
+@@
+ def test_choose_filters_priority(monkeypatch, tmp_path):
+     monkeypatch.setattr(cli_app, "_STATE_PATH", tmp_path / "state.json")
+     monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: "Priority: low")
+     priority, status, label = cli_app._choose_filters_for_view()
+     assert priority == "low"
+     assert status is None
+     assert label == "Priority low"
+ 
+ 
+ def test_choose_filters_back(monkeypatch, tmp_path):
+@@
+     priority, status, label = cli_app._choose_filters_for_view()
+     assert priority is None and status is None and label is None
+ 
+ 
+ def test_choose_filters_exception(monkeypatch):
+     monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: (_ for _ in ()).throw(Exception("fail")))
+     priority, status, label = cli_app._choose_filters_for_view()
+     assert priority is None and status is None and label is None
++
++
++def test_choose_filters_all_and_done(monkeypatch, tmp_path):
++    monkeypatch.setattr(cli_app, "_STATE_PATH", tmp_path / "state.json")
++    seq = iter(["All tasks", "Done only"])
++    monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: next(seq))
++    priority, status, label = cli_app._choose_filters_for_view()
++    assert label == "Showing all tasks"
++    priority, status, label = cli_app._choose_filters_for_view()
++    assert status == "done"
++    assert label == "Completed tasks"
+*** End Patch
+[2m2025-12-10T18:46:05.624083Z[0m [32m INFO[0m ToolCall: shell_command {"command":"PYTHONPATH=src UV_CACHE_DIR=.uv-cache uv run -p .venv/bin/python -m pytest","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+[2m2025-12-10T18:46:20.226506Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: history/prompts/001-interactive-cli-ux/0012-ux-spacing-colors-shortcuts.green.prompt.md
++---
++id: 0012
++title: ux-spacing-colors-shortcuts
++stage: green
++date: 2025-12-10
++surface: cli
++model: gpt-5
++feature: 001-interactive-cli-ux
++branch: 001-interactive-cli-ux
++user: aie
++command: Polish spacing, colors, shortcuts, filters
++labels: [execution,tests,ux]
++links:
++  spec: specs/001-interactive-cli-ux/spec.md
++  ticket: N/A
++  adr: N/A
++  pr: N/A
++files:
++  - src/cli/app.py
++  - src/cli/output.py
++  - tests/unit/test_app.py
++  - tests/unit/test_output.py
++tests:
++  - PYTHONPATH=src UV_CACHE_DIR=.uv-cache uv run -p .venv/bin/python -m pytest
++---
++
++## Prompt
++
++Overall the functionality works but it’s too tightly packed; add spaces, colors, lines for readability. Improve UX with hints, filters, and nicer menu experience.
++
++## Response snapshot
++
++Added dividers and info banners, colored status rows, quick filter picker with persisted last-used state, keyboard shortcut hints, and richer success previews. Tests expanded to cover new branches with 100% coverage.
++
++## Outcome
++
++- ✅ Impact: Menus and tables are spaced and colored, filters are memorable, and updates show previews before saving.
++- 🧪 Tests: PYTHONPATH=src UV_CACHE_DIR=.uv-cache uv run -p .venv/bin/python -m pytest (pass, 100% coverage)
++- 📁 Files: CLI app/output refreshed; tests updated.
++- 🔁 Next prompts: None
++- 🧠 Reflection: Centralizing UX helpers and adding persistence keeps future polish low-risk.
++
++## Evaluation notes (flywheel)
++
++- Failure modes observed: None
++- Graders run and results (PASS/FAIL): Not run
++- Prompt variant (if applicable): N/A
++- Next experiment (smallest change to try): N/A
+*** End Patch
+[2m2025-12-10T18:46:25.347647Z[0m [32m INFO[0m ToolCall: shell_command {"command":"git add src/cli/app.py src/cli/output.py tests/unit/test_app.py tests/unit/test_output.py history/prompts/001-interactive-cli-ux/0012-ux-spacing-colors-shortcuts.green.prompt.md","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b","with_escalated_permissions":true,"justification":"Stage updated CLI UX files and new PHR for commit; git index requires parent-level write access"}
+[2m2025-12-10T18:49:41.716502Z[0m [32m INFO[0m ToolCall: shell_command {"command":"git commit -m \"feat: enhance CLI UX polish\"","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b","with_escalated_permissions":true,"justification":"Record recent UX polish changes to CLI requiring repo-level permissions"}
+[2m2025-12-10T18:51:13.662238Z[0m [32m INFO[0m ToolCall: shell_command {"command":"git status -sb","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}

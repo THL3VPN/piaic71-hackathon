@@ -157,8 +157,8 @@ def test_menu_dispatch_update(monkeypatch):
     calls: List[str] = []
     seq = iter(
         [
-            "Update Task [u] – Modify existing task details",
-            "Quit",
+            "update",
+            "quit",
         ]
     )
     monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: next(seq))
@@ -169,7 +169,7 @@ def test_menu_dispatch_update(monkeypatch):
 
 def test_menu_dispatch_add(monkeypatch):
     calls: List[str] = []
-    seq = iter(["Add Task [a] – Create new todo items", "Quit [q]"])
+    seq = iter(["add", "quit"])
     monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: next(seq))
     monkeypatch.setattr("cli.app.add", lambda: calls.append("add"))
     cli_app.menu()
@@ -178,7 +178,7 @@ def test_menu_dispatch_add(monkeypatch):
 
 def test_menu_dispatch_delete(monkeypatch):
     calls: List[str] = []
-    seq = iter(["Delete Task [d] – Remove tasks from the list", "Quit [q]"])
+    seq = iter(["delete", "quit"])
     monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: next(seq))
     monkeypatch.setattr("cli.app.delete", lambda: calls.append("delete"))
     cli_app.menu()
@@ -189,8 +189,8 @@ def test_menu_dispatch_complete(monkeypatch):
     calls: List[str] = []
     seq = iter(
         [
-            "Mark as Complete [c] – Toggle task completion status",
-            "Quit [q]",
+            "complete",
+            "quit",
         ]
     )
     monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: next(seq))
@@ -205,8 +205,8 @@ def test_menu_dispatch_view(monkeypatch):
     calls: List[str] = []
     seq = iter(
         [
-            "View Task List [v] – Display all tasks",
-            "Quit [q]",
+            "view",
+            "quit",
         ]
     )
     monkeypatch.setattr("cli.app.prompts.prompt_select", lambda msg, choices: next(seq))
