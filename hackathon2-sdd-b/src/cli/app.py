@@ -12,7 +12,7 @@ ALLOWED_PRIORITIES = {"low", "medium", "high"}
 
 
 def _validate_priority(value: Optional[str]) -> Optional[str]:
-    if value is None:
+    if value is None or not isinstance(value, str):
         return None
     val = value.strip().lower()
     if val not in ALLOWED_PRIORITIES:
@@ -20,6 +20,10 @@ def _validate_priority(value: Optional[str]) -> Optional[str]:
             f"Priority must be one of {sorted(ALLOWED_PRIORITIES)}. Try again."
         )
     return val
+
+
+def _coerce_arg(value: Optional[str]) -> Optional[str]:
+    return value if isinstance(value, str) else None
 
 
 @app.callback()
@@ -35,7 +39,9 @@ def add(
 ):
     """Add a task interactively or via flags."""
     try:
-        priority = _validate_priority(priority)
+        title = _coerce_arg(title)
+        priority = _validate_priority(_coerce_arg(priority))
+        notes = _coerce_arg(notes)
         task_input = prompts.collect_task_inputs(
             title=title, priority=priority, notes=notes
         )
@@ -57,7 +63,8 @@ def add(
 def list(priority: Optional[str] = typer.Option(None), status: Optional[str] = typer.Option(None)):
     """List tasks with optional filters."""
     try:
-        priority = _validate_priority(priority)
+        priority = _validate_priority(_coerce_arg(priority))
+        status = _coerce_arg(status)
     except errors.UserInputError as exc:
         output.render_error(errors.format_error(str(exc)))
         return
@@ -69,6 +76,7 @@ def list(priority: Optional[str] = typer.Option(None), status: Optional[str] = t
 @app.command()
 def view(task_id: Optional[str] = typer.Option(None)):
     """Show task details."""
+    task_id = _coerce_arg(task_id)
     if not task_id:
         output.render_error("Please provide a task id (use list to find one).")
         return
@@ -82,6 +90,7 @@ def view(task_id: Optional[str] = typer.Option(None)):
 @app.command()
 def delete(task_id: Optional[str] = typer.Option(None), force: bool = typer.Option(False)):
     """Delete a task by id."""
+    task_id = _coerce_arg(task_id)
     if not task_id:
         output.render_error("Please provide a task id (use list to find one).")
         return

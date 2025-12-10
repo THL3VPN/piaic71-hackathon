@@ -76,6 +76,16 @@ def test_add_invalid_priority(monkeypatch):
     assert errors and "Priority must be one of" in errors[0]
 
 
+def test_add_optioninfo_like(monkeypatch):
+    class FakeOption:
+        pass
+    errors: List[str] = []
+    monkeypatch.setattr("cli.app.output.render_error", lambda msg: errors.append(msg))
+    monkeypatch.setattr("cli.app.prompts.collect_task_inputs", lambda **kwargs: None)
+    result = CliRunner().invoke(cli_app.app, ["add"], obj=FakeOption())
+    assert result.exit_code == 0
+
+
 def test_view_placeholder(monkeypatch):
     messages: List[str] = []
     monkeypatch.setattr("cli.app.output.render_error", lambda msg: messages.append(msg))
