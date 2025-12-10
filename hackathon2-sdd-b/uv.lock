@@ -1,3 +1,8 @@
 version = 1
 revision = 3
-requires-python = ">=3.13"
+requires-python = ">=3.12"
+
+[[package]]
+name = "interactive-cli-ux"
+version = "0.0.0"
+source = { virtual = "." }

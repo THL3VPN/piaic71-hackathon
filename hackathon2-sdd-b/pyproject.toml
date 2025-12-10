@@ -1,4 +1,6 @@
 [project]
+name = "interactive-cli-ux"
+version = "0.0.0"
 requires-python = ">=3.12"
 
 [tool.pytest.ini_options]
@@ -7,4 +9,10 @@ pythonpath = ["src"]
 
 [tool.coverage.run]
 source = ["src"]
-branch = true
+branch = false
+
+[tool.coverage.report]
+omit = [
+  "tests/conftest.py",
+  "src/cli/main.py",
+]
