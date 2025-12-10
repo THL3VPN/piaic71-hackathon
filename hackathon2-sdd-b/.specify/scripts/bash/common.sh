@@ -3,6 +3,12 @@
 
 # Get repository root, with fallback for non-git repositories
 get_repo_root() {
+    # Allow override to force work within a sandboxed root
+    if [[ -n "${SPECIFY_REPO_ROOT:-}" ]]; then
+        echo "${SPECIFY_REPO_ROOT}"
+        return
+    fi
+
     if git rev-parse --show-toplevel >/dev/null 2>&1; then
         git rev-parse --show-toplevel
     else
@@ -153,4 +159,3 @@ EOF
 
 check_file() { [[ -f "$1" ]] && echo "  ✓ $2" || echo "  ✗ $2"; }
 check_dir() { [[ -d "$1" && -n $(ls -A "$1" 2>/dev/null) ]] && echo "  ✓ $2" || echo "  ✗ $2"; }
-
