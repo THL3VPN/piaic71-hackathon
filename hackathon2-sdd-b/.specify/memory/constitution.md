@@ -1,64 +1,61 @@
 <!--
 Sync Impact Report
-- Version: 1.1.0 → 2.0.0
-- Modified principles: Spec-Driven Five-Phase Delivery → Spec-Driven Full-Stack Delivery; Reviewable & Traceable Work (PHR + specs-first); Terminal UX & Accessibility → Frontend UX Compliance
-- Added sections: Required Phase II Stack; Mandatory REST API Contract & Auth Enforcement; Agent Compliance
-- Removed sections: CLI-only constraints (superseded by full-stack rules)
-- Templates requiring updates: .specify/templates/plan-template.md ✅ reviewed (aligned); .specify/templates/spec-template.md ✅ reviewed (aligned); .specify/templates/tasks-template.md ✅ reviewed (aligned); .specify/templates/commands/*.md ✅ reviewed (no agent-specific issues found)
-- Follow-up TODOs: none
+- Version: 2.0.0 → 3.0.0
+- Modified principles: Spec-Driven Full-Stack Delivery → Spec-Driven Rule Priority & Governance; Python 3.12 + uv Reproducibility → Phase II Stack & Monorepo; API & Data Ownership Enforcement → Auth & Ownership Enforcement
+- Added sections: Stable REST Contract; Monorepo Structure & agent guidance; Better Auth & JWT enforcement
+- Removed sections: uv-only mandate (replaced by stack mandate), CLI-only references
+- Templates requiring updates: .specify/templates/plan-template.md ⚠ review rule priority wording; .specify/templates/spec-template.md ⚠ ensure specs-first language; .specify/templates/tasks-template.md ⚠ align phase references; .specify/templates/commands/*.md ⚠ check for outdated priority/order mentions
+- Follow-up TODOs: None identified
 -->
 # Evolution of Todo Constitution
 
 ## Core Principles
 
-### I. Spec-Driven Full-Stack Delivery (NON-NEGOTIABLE)
-Every change moves through five written phases: Research, Specification, Design & Contracts, Implementation, and Validation & Release. Each phase must produce an artifact (research notes, spec, design/contracts, code with tests, validation report) that can be reviewed independently before advancing. Specs in `/specs` are the source of truth; Spec-Kit commands and Codex agents must be used to generate and store artifacts. No phase may be skipped or merged without a documented amendment.
+### I. Spec-Driven Rule Priority & Governance (NON-NEGOTIABLE)
+`/specs` is the source of truth for functional and technical behavior. Agents must read relevant specs before any implementation. When instructions conflict, follow `/specs` first, then Codex/Constitution guidance. Specs must be authored and updated via Spec-Kit. No work may bypass or contradict specs.
 
-### II. Test Discipline & Coverage
-Tests are authored before or alongside implementation using pytest. All tests must pass at all times. Coverage must remain at or above 80% for new and changed code, measured via pytest + coverage, with gaps explicitly justified. Gate builds on failing tests or coverage regressions.
+### II. Full-Stack Phase II Scope & Stack
+Phase II builds a modern multi-user web app with persistent storage: frontend (Next.js 16+ App Router, TypeScript, Tailwind, Better Auth), backend (FastAPI + SQLModel), Neon PostgreSQL database, spec-driven development, and Better Auth-issued JWTs. All five Task CRUD operations must be delivered as a web application.
 
-### III. Python 3.12 + uv Reproducibility
-Python 3.12+ is the only supported backend runtime. Dependency management uses `uv` with locked versions; no alternative package managers are permitted. All backend commands in plans, specs, and tasks must use `uv run`/`uv pip` to ensure reproducible environments across local and CI.
+### III. Stable REST Contract
+The REST API contract is canonical and must be preserved: `GET/POST /api/{user_id}/tasks`, `GET/PUT/DELETE /api/{user_id}/tasks/{id}`, `PATCH /api/{user_id}/tasks/{id}/complete`. All endpoints are JSON, enforce ownership, and follow `/specs/api/rest-endpoints.md`.
 
-### IV. Incremental Value per Phase
-Each phase must deliver a user-visible or testable increment tied to the phase goal (e.g., validated spec, signed-off contracts, running slice of functionality). Work items remain small enough to complete within a single phase cycle and keep dependency risk low.
+### IV. Auth & Ownership Enforcement
+Every API request requires `Authorization: Bearer <token>`. FastAPI verifies JWTs with `BETTER_AUTH_SECRET`, extracts `user_id`, and cross-checks the URL `user_id`. Missing/invalid tokens return 401; cross-user access returns 403 or 404 per spec. Never bypass or stub auth in production. All data is isolated per user.
 
-### V. Reviewable & Traceable Work
-Plans, specs, tasks, and code changes must reference each other so reviewers can trace decisions to artifacts. Every change must be reviewable asynchronously with clear acceptance criteria, test evidence, coverage data, and a Prompt History Record (PHR) captured before merge. Specs are updated first; implementations may not diverge from specs.
+### V. Test Discipline & Coverage
+Tests are authored before or alongside implementation. All tests must pass at all times. Coverage must be ≥80% for new/changed code, with explicit rationale for any gaps. Failing tests or coverage regressions block release.
 
-### VI. Full-Stack UX & Frontend Compliance
-The frontend must use Next.js 16+ (App Router), TypeScript, Tailwind, and Better Auth for JWT issuing. UI must align with `/specs/ui` guidance, remain responsive, and consistently attach JWTs to backend calls. Back/escape paths and readable layouts are required.
+### VI. Monorepo Structure & Agent Guidance
+Use and respect the Spec-Kit layout in `hackathon-todo/`: `.spec-kit/config.yaml`, `specs/overview.md`, `specs/features/*.md`, `specs/api/*.md`, `specs/database/*.md`, `specs/ui/*.md`, plus agent guidance files (e.g., `AGENTS.md`, backend/frontend instructions). Agents must align folder structure and work products with these references.
 
-### VII. API & Data Ownership Enforcement
-All mandatory REST endpoints (task CRUD + complete) must match `/specs/api/rest-endpoints.md`. JWT is required on every request; `{user_id}` in the path must match the authenticated user. Data isolation is mandatory—no user may access another user’s tasks. Backend queries must filter by authenticated `user_id`.
+### VII. Reviewable & Traceable Work
+Plans, specs, tasks, and code changes must reference each other for traceability. Every change must have clear acceptance criteria, test evidence, coverage data, and a Prompt History Record (PHR) captured before merge. Specs are updated first; implementation follows.
 
 ## Technical Constraints & Quality Requirements
-- Language: Python 3.12+ only.
-- Package manager: `uv` with locked dependencies tracked in VCS.
-- Testing: pytest with coverage reporting; failing or missing tests block merges.
-- Quality thresholds: all tests green at all times; ≥80% coverage on new/changed code with rationale for any exception.
-- Frontend stack: Next.js 16+ (App Router), TypeScript, Tailwind, Better Auth (JWT issuing).
-- Backend stack: FastAPI + SQLModel on Python 3.12+ with `uv`.
-- Database: Neon Serverless PostgreSQL via `DATABASE_URL`.
-- Auth: Better Auth issues JWT; FastAPI validates JWT using `BETTER_AUTH_SECRET`.
-- Mandatory REST endpoints: GET/POST `/api/{user_id}/tasks`, GET/PUT/DELETE `/api/{user_id}/tasks/{id}`, PATCH `/api/{user_id}/tasks/{id}/complete`, all requiring JWT and enforcing user isolation.
-- Tooling commands in docs and tasks must use `uv run` to ensure consistency across environments.
+- Frontend: Next.js 16+ (App Router), TypeScript, Tailwind, Better Auth for authentication and JWT issuing.
+- Backend: FastAPI + SQLModel on Python with Neon PostgreSQL via `DATABASE_URL`.
+- Auth: Better Auth issues JWT; FastAPI validates JWT using `BETTER_AUTH_SECRET`; every request must carry `Authorization: Bearer <token>`.
+- REST contract: Endpoints listed in Principle III are stable and must remain JSON-only with ownership enforcement.
+- Data model: `Task` follows `/specs/database/schema.md` and `/specs/features/task-crud.md`; every task is tied to the authenticated `user_id`.
+- Error handling: Helpful, concise API errors; avoid stubbing or bypassing auth.
+- Code quality: Small, focused modules with explicit types; follow Codex/agent guidance in root, frontend, and backend.
+- Tooling: Use Spec-Kit and GitHub workflows; do not introduce unapproved technologies without explicit request.
 
 ## Development Workflow & Phases
-1. **Research**: Capture problem context, risks, and success measures.
-2. **Specification**: Write a clear, testable spec informed by research.
-3. **Design & Contracts**: Define data models, contracts, and plan structure aligned to the spec; exit requires review.
-4. **Implementation**: Build to spec with tests-first, keeping changes scoped to planned increments.
-5. **Validation & Release**: Run pytest with coverage, document results, and capture user-facing validation before release.
+1. **Research**: Capture context, risks, and success measures.  
+2. **Specification**: Write clear, testable specs informed by research; `/specs` is authoritative.  
+3. **Design & Contracts**: Define data models, contracts, and plan structure aligned to specs; exit requires review.  
+4. **Implementation**: Build to spec with tests-first; keep changes scoped to planned increments.  
+5. **Validation & Release**: Run tests with coverage, document results, and capture user-facing validation before release.
 
-Phase transitions require explicit acceptance of the prior phase artifact. Work that cannot fit a single phase must be split before starting Implementation.
+Phase transitions require explicit acceptance of the prior phase artifact. Work too large for a phase must be split before Implementation.
 
 ## Governance
-- This constitution supersedes other process documents. All plans/specs/tasks must cite the relevant principles and note any exceptions with justification.
-- Amendments require: a documented proposal, impact analysis, version bump per semantic versioning (MAJOR for principle removal/redefinition, MINOR for new/expanded principles, PATCH for clarifications), and reviewer approval.
-- Compliance checks: every PR must state phase, artifacts produced, pytest results, coverage numbers, and link to the relevant PHR. Deviations must include time-bound remediation tasks.
-- Runtime guidance (e.g., quickstart or agent guides) must stay in sync with principles and constraints in this document.
-- Specs in `/specs` are the single source of truth; API, schema, and feature changes must be updated in specs before code changes.
-- Agents (Architect, Backend, Frontend, Specs, DevOps) must enforce this constitution and may not violate API contract, auth rules, or data ownership requirements.
+- Rule priority: `/specs` prevails, then Codex/Constitution guidance. Tasks and plans must cite the governing spec sections.  
+- Amendments require a proposal, impact analysis, semantic version bump (MAJOR for rule redefinition/removal, MINOR for new/expanded guidance, PATCH for clarifications), and reviewer approval.  
+- Compliance checks: every PR states phase, artifacts produced, test results, coverage numbers, and links to the relevant PHR. Deviations require time-bound remediation tasks.  
+- Runtime guidance (e.g., quickstart or agent guides) must stay in sync with this constitution and `/specs`.  
+- Agents (Architect, Backend, Frontend, Specs, DevOps) must enforce this constitution, REST contract, auth rules, and user isolation.
 
-**Version**: 2.0.0 | **Ratified**: 2025-12-10 | **Last Amended**: 2025-12-10
+**Version**: 3.0.0 | **Ratified**: 2025-12-10 | **Last Amended**: 2025-12-12
