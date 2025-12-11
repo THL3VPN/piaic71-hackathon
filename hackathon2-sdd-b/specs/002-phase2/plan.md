@@ -1,70 +1,276 @@
-# Implementation Plan: 002-phase2
+# Phase II Plan – Full-Stack Web Application
 
-**Branch**: `001-interactive-cli-ux` | **Date**: 2025-12-10 | **Spec**: specs/002-phase2/specify.md  
-**Input**: Phase II specs in `specs/002-phase2`
+This plan defines **how** the project will be executed in Phase II using Spec-Kit and the 5-agent Codex architecture (Architect, Backend, Frontend, Specs, DevOps).  
+It translates high-level goals from the Constitution into an actionable development strategy.
 
-## Summary
+---
 
-Build a full-stack multi-user todo web app (Phase II) with Next.js 16+ frontend, FastAPI + SQLModel backend, Neon PostgreSQL, Better Auth JWT, and spec-driven multi-agent execution. Deliver authenticated Task CRUD with strict user isolation to pave the way for Phase III.
+## 1. Phase II Objective
 
-## Technical Context
+Transform the Phase I console todo application into a **modern, multi-user full-stack web application** with:
 
-**Language/Version**: Python 3.12+, TypeScript (Next.js 16+)  
-**Primary Dependencies**: FastAPI, SQLModel, uvicorn, Next.js App Router, Tailwind, Better Auth, Neon PostgreSQL driver  
-**Storage**: Neon Serverless PostgreSQL (`DATABASE_URL`)  
-**Testing**: pytest + coverage (backend); frontend tests as applicable (e.g., React Testing Library)  
-**Target Platform**: Web (backend on Linux, frontend Next.js)  
-**Project Type**: Full-stack web (frontend + backend)  
-**Performance Goals**: Responsive UX; API p95 < 300ms for typical CRUD; support pagination up to 200 items per request  
-**Constraints**: JWT required on all endpoints; user isolation mandatory; coverage ≥80% backend; use `uv` for Python deps  
-**Scale/Scope**: Multi-user todo app; foundation for Phase III chatbot integration
+- Next.js 16+ frontend  
+- FastAPI backend  
+- SQLModel ORM  
+- Neon Serverless PostgreSQL database  
+- Better Auth authentication with JWT  
+- Complete Task CRUD with user isolation  
+- Spec-driven multi-agent implementation  
 
-## Constitution Check
+This phase establishes the full platform required for Phase III (chatbot and tool automation).
 
-- Five-phase flow honored: Research (research.md), Specification (existing specs), Design & Contracts (data-model.md, contracts/), Implementation, Validation & Release.
-- Python 3.12+ with `uv` for all backend commands; no alt package managers.
-- Testing strategy: pytest + coverage ≥80% (backend), frontend tests as feasible; enforce via tasks and CI.
-- Incremental value per phase: Auth scaffolding → CRUD contracts → backend endpoints with isolation → frontend UI with JWT → end-to-end validation.
-- Traceability: plan links to specs/002-phase2, tasks in tasks.md, and PHRs; code must match specs, with updates flowing specs-first via Specs agent.
+---
 
-## Project Structure
+## 2. High-Level Implementation Roadmap
 
-### Documentation (this feature)
+The project will be executed in six major streams:
 
-```text
-specs/002-phase2/
-├── plan.md              # This file
-├── research.md          # Phase 0 output
-├── data-model.md        # Phase 1 output
-├── quickstart.md        # Phase 1 output
-├── contracts/           # Phase 1 output (API/service contracts)
-└── tasks.md             # Phase 2 output
-```
+1. **Backend Implementation (FastAPI + SQLModel)**
+2. **Frontend Implementation (Next.js + Better Auth)**
+3. **Database Schema Integration (Neon PostgreSQL)**
+4. **Authentication via JWT (Better Auth → FastAPI)**
+5. **REST API contract execution**
+6. **Infrastructure + tooling (DevOps agent)**
 
-### Source Code (repository root)
+All steps follow:
 
-```text
-backend/
-  main.py
-  models.py
-  schemas.py
-  db.py
-  auth.py
-  routes/tasks.py
-  tests/
+1. Constitution  
+2. This Plan  
+3. Tasks  
+4. Specs  
 
-frontend/
-  app/ (Next.js App Router pages)
-  lib/api.ts
-  components/ (TaskList, TaskItem, TaskForm, Filters)
-  styles/ (Tailwind)
-  tests/
-```
+---
 
-**Structure Decision**: Monorepo with `/backend` (FastAPI + SQLModel) and `/frontend` (Next.js + Better Auth), specs in `specs/002-phase2`, agents in `/agents`.
+## 3. Multi-Agent Execution Strategy
 
-## Complexity Tracking
+### 3.1 Architect Agent
+Responsible for:
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|---------------------------------------|
-| None | N/A | N/A |
+- Monorepo structure validation  
+- Backend/frontend folder layout  
+- Enforcing architecture consistency  
+- Reviewing and approving cross-cutting changes  
+- Ensuring all agents follow Constitution + specify.md  
+
+Architect Agent does NOT implement backend/frontend code.  
+It ensures **alignment**, not **execution**.
+
+---
+
+### 3.2 Backend Agent
+Responsible for implementing:
+
+- `/api/{user_id}/tasks` REST endpoints  
+- SQLModel models  
+- Database engine + session management  
+- JWT verification middleware  
+- User isolation enforcement  
+- Data validation and error handling  
+
+Backend Agent must:
+
+- Read all API, feature, and database specs  
+- Follow FastAPI conventions  
+- Never modify specs directly  
+- Match API contract **exactly**  
+
+---
+
+### 3.3 Frontend Agent
+Responsible for:
+
+- Next.js 16+ App Router setup  
+- Better Auth integration (JWT issuing)  
+- Login & signup pages  
+- Tasks dashboard  
+- Task CRUD UI  
+- `/frontend/lib/api.ts` client that attaches JWT  
+
+Frontend Agent must:
+
+- Always attach JWT to backend requests  
+- Follow UI specs (pages + components)  
+- Follow feature specs  
+- Treat specs as read-only  
+
+---
+
+### 3.4 Specs Agent
+Responsible for maintaining ALL `/specs` files:
+
+- Feature specs  
+- API endpoint definitions  
+- DB schema  
+- UI specs  
+- Constitution, Plan, Tasks, specify.md (if needed)  
+
+Specs Agent is the ONLY agent allowed to update specs.  
+Specs must remain synchronized with backend and frontend behavior.
+
+---
+
+### 3.5 DevOps Agent
+Responsible for:
+
+- docker-compose.yml for full stack  
+- Environment variable structure  
+- .env.example  
+- Neon DB connection handling  
+- Local dev workflow documentation  
+
+DevOps Agent must not implement backend/frontend logic.
+
+---
+
+## 4. Backend Implementation Plan (FastAPI)
+
+1. Create backend folder structure:
+   - `main.py`
+   - `models.py`
+   - `schemas.py`
+   - `db.py`
+   - `auth.py`
+   - `routes/tasks.py`
+
+2. Implement SQLModel `Task` model based on:
+   - `specs/002-phase2/database/schema.md`
+
+3. Establish Neon PostgreSQL connection (`DATABASE_URL`).
+
+4. Implement JWT verification using shared secret (`BETTER_AUTH_SECRET`).
+
+5. Enforce user isolation:
+   - Decode JWT → extract user_id  
+   - Compare path user_id → JWT user_id  
+   - Reject mismatches  
+
+6. Implement REST API endpoints:
+   - GET: List tasks
+   - POST: Create task
+   - GET: Retrieve single task
+   - PUT: Update task
+   - DELETE: Delete task
+   - PATCH: Toggle completion
+
+7. Ensure all endpoints:
+   - Validate input with Pydantic schemas  
+   - Return correct JSON shapes  
+   - Follow API spec contract  
+   - Respond with correct status codes  
+
+---
+
+## 5. Frontend Implementation Plan (Next.js + Better Auth)
+
+1. Initialize Next.js App Router project inside `/frontend`.
+
+2. Configure:
+   - TypeScript
+   - Tailwind CSS
+   - Better Auth (JWT enabled)
+   - Environment variables
+
+3. Create pages:
+   - `/login`
+   - `/signup`
+   - `/tasks` (dashboard)
+   - Components for task list, task form, filters
+
+4. Implement API client:
+   - Stored in `/frontend/lib/api.ts`
+   - Automatically attaches JWT in `Authorization: Bearer <token>`
+   - Uses authenticated user_id
+
+5. UI behavior:
+   - Fetch tasks on page load
+   - Optimistic updates or revalidation
+   - Responsive Tailwind components
+
+---
+
+## 6. Database Integration Plan
+
+1. Define schema in:
+   - `/specs/002-phase2/database/schema.md`
+
+2. Implement SQLModel models accordingly.
+
+3. Connect FastAPI → Neon using:
+   - Connection pooling  
+   - Async or sync engine (project-dependent)
+
+4. Auto-migrate or manual migration strategy (simple for Phase II).
+
+5. Ensure:
+   - Index on user_id  
+   - Correct timestamp fields  
+   - Ownership enforced at query level  
+
+---
+
+## 7. Authentication Plan (Better Auth → FASTAPI via JWT)
+
+### Frontend responsibilities:
+- Login → Better Auth issues JWT  
+- Store JWT securely  
+- Send token with API requests  
+
+### Backend responsibilities:
+- Verify JWT using shared secret  
+- Extract user_id claim  
+- Compare user_id with URL parameter  
+
+Rules:
+- No endpoint should return or accept data from another user  
+- Unauthenticated → 401  
+- Unauthorized → 403 or 404 (per spec)  
+
+---
+
+## 8. Integration Plan
+
+1. Use docker-compose to orchestrate:
+   - Backend service (FastAPI)  
+   - Frontend service (Next.js)  
+   - Neon PostgreSQL (via external connection)  
+
+2. Shared environment:
+   - `DATABASE_URL`
+   - `BETTER_AUTH_SECRET`
+
+3. Ensure frontend calls backend via internal network (`http://backend:8000`).
+
+4. CORS only applied if needed.
+
+---
+
+## 9. Testing & Validation Plan
+
+### Backend:
+- Test JWT enforcement  
+- Test user isolation  
+- Test CRUD operations  
+- Test invalid data responses  
+
+### Frontend:
+- Test login/signup  
+- Test task creation and editing  
+- Test API error display  
+- Test responsive layout  
+
+### Integration:
+- End-to-end login → CRUD → logout success path  
+
+---
+
+## 10. Multi-Agent Workflow Summary
+
+| Agent | Primary Workload | Restrictions |
+|-------|------------------|-------------|
+| **Architect Agent** | Structure, architecture, consistency | No code implementation |
+| **Backend Agent** | API, DB, JWT, CRUD logic | Cannot modify specs |
+| **Frontend Agent** | UI, API consumption, Better Auth | Cannot modify specs |
+| **Specs Agent** | Maintains all specs | Cannot touch code |
+| **DevOps Agent** | docker, env, tooling | Cannot implement logic |
+
+Agents must collaborate but operate within boundaries.
