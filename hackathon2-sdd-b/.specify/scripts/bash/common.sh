@@ -9,6 +9,13 @@ get_repo_root() {
         return
     fi
 
+    # If the current working directory contains a local .specify folder, prefer it
+    # to avoid writing outside the active workspace (e.g., hackathon2-sdd-b).
+    if [[ -d "$(pwd)/.specify" ]]; then
+        echo "$(pwd)"
+        return
+    fi
+
     if git rev-parse --show-toplevel >/dev/null 2>&1; then
         git rev-parse --show-toplevel
     else
@@ -123,10 +130,14 @@ find_feature_dir_by_prefix() {
         # Exactly one match - perfect!
         echo "$specs_dir/${matches[0]}"
     else
-        # Multiple matches - this shouldn't happen with proper naming convention
-        echo "ERROR: Multiple spec directories found with prefix '$prefix': ${matches[*]}" >&2
-        echo "Please ensure only one spec directory exists per numeric prefix." >&2
-        echo "$specs_dir/$branch_name"  # Return something to avoid breaking the script
+        # Multiple matches - prefer exact branch name if it exists
+        if [[ -d "$specs_dir/$branch_name" ]]; then
+            echo "$specs_dir/$branch_name"
+        else
+            echo "ERROR: Multiple spec directories found with prefix '$prefix': ${matches[*]}" >&2
+            echo "Please ensure only one spec directory exists per numeric prefix or align branch to desired dir." >&2
+            echo "$specs_dir/${matches[0]}"  # Return first match to avoid breaking the script
+        fi
     fi
 }
 
