@@ -9757,3 +9757,300 @@
 2025-12-11T22:22:11.318231Z  INFO ToolCall: shell_command {"command":"git status -sb","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
 2025-12-11T22:22:17.770716Z  INFO ToolCall: shell_command {"command":"git add .codex/history.jsonl .codex/log/codex-tui.log .codex/sessions/2025/12/12/rollout-2025-12-12T02-57-49-019b0f6b-9cff-76c3-ab32-26bcbd666823.jsonl","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
 2025-12-11T22:22:22.485845Z  INFO ToolCall: shell_command {"command":"git add .codex/history.jsonl .codex/log/codex-tui.log .codex/sessions/2025/12/12/rollout-2025-12-12T02-57-49-019b0f6b-9cff-76c3-ab32-26bcbd666823.jsonl","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b","sandbox_permissions":"require_escalated","justification":"Need to stage remaining log files per user cleanup request"}
+2025-12-11T22:23:39.383248Z  INFO ToolCall: shell_command {"command":"git commit -m \"chore: clean codex logs\"","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+2025-12-11T22:23:43.170687Z  INFO ToolCall: shell_command {"command":"git commit -m \"chore: clean codex logs\"","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b","sandbox_permissions":"require_escalated","justification":"Commit staged log cleanup per user request"}
+2025-12-11T22:24:05.776684Z  INFO ToolCall: shell_command {"command":"git push origin HEAD","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b","sandbox_permissions":"require_escalated","justification":"Push latest commit per user request"}
+2025-12-11T22:26:36.473639Z  INFO spawning ghost snapshot task
+2025-12-11T22:26:36.976104Z  INFO ghost snapshot blocking task finished
+2025-12-11T22:26:36.976271Z  INFO ghost commit captured: 9517f061723059e2bde92a3a1f51e9e5eb14cb24
+2025-12-11T22:26:36.976296Z  INFO ghost snapshot gate marked ready
+2025-12-11T22:26:40.427680Z  INFO ToolCall: shell_command {"command":"ls","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+2025-12-11T22:26:44.934790Z  INFO ToolCall: shell_command {"command":"git status -sb","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+2025-12-11T22:26:49.566197Z  INFO ToolCall: shell_command {"command":"ls specs","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+2025-12-11T22:26:52.409717Z  INFO ToolCall: shell_command {"command":"ls src","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+2025-12-11T22:26:56.197077Z  INFO ToolCall: shell_command {"command":"ls tests","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+2025-12-11T22:29:19.124625Z  INFO spawning ghost snapshot task
+2025-12-11T22:29:19.591496Z  INFO ghost snapshot blocking task finished
+2025-12-11T22:29:19.591595Z  INFO ghost commit captured: d38769214c20a2075bd05a4fe066bd453dfd8f25
+2025-12-11T22:29:19.591611Z  INFO ghost snapshot gate marked ready
+2025-12-11T22:32:06.381384Z  INFO spawning ghost snapshot task
+2025-12-11T22:32:06.714362Z  INFO ghost snapshot blocking task finished
+2025-12-11T22:32:06.714513Z  INFO ghost commit captured: e381e30a8b6577b7068bb3bca6a55721463f6dd4
+2025-12-11T22:32:06.714534Z  INFO ghost snapshot gate marked ready
+2025-12-11T22:33:10.018873Z  INFO spawning ghost snapshot task
+2025-12-11T22:33:10.159842Z  INFO ghost snapshot blocking task finished
+2025-12-11T22:33:10.159981Z  INFO ghost commit captured: 2db61318733c55242bacf2a21d38e6ad8493827f
+2025-12-11T22:33:10.160044Z  INFO ghost snapshot gate marked ready
+2025-12-11T22:38:15.216348Z  INFO spawning ghost snapshot task
+2025-12-11T22:38:15.372084Z  INFO ghost snapshot blocking task finished
+2025-12-11T22:38:15.372193Z  INFO ghost commit captured: 095f89e062d17f8a13c737e334dfb9e35d2ca1a2
+2025-12-11T22:38:15.372204Z  INFO ghost snapshot gate marked ready
+2025-12-11T22:38:22.181250Z  INFO ToolCall: update_plan {"explanation":"Update constitution per new Phase II guidance; validate placeholders; propagate impacts; record PHR.","plan":[{"status":"in_progress","step":"Load existing constitution and templates to identify placeholders and context"},{"status":"pending","step":"Draft updated constitution from user input, set version bump, insert Sync Impact Report"},{"status":"pending","step":"Assess template impacts and note follow-ups"},{"status":"pending","step":"Write updated constitution, create PHR, and summarize"}]}
+2025-12-11T22:38:26.482607Z  INFO ToolCall: shell_command {"command":"cat .specify/memory/constitution.md","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+2025-12-11T22:39:19.838518Z  INFO ToolCall: apply_patch *** Begin Patch
+*** Update File: .specify/memory/constitution.md
+-<!--
+-Sync Impact Report
+-- Version: 1.1.0 → 2.0.0
+-- Modified principles: Spec-Driven Five-Phase Delivery → Spec-Driven Full-Stack Delivery; Reviewable & Traceable Work (PHR + specs-first); Terminal UX & Accessibility → Frontend UX Compliance
+-- Added sections: Required Phase II Stack; Mandatory REST API Contract & Auth Enforcement; Agent Compliance
+-- Removed sections: CLI-only constraints (superseded by full-stack rules)
+-- Templates requiring updates: .specify/templates/plan-template.md ✅ reviewed (aligned); .specify/templates/spec-template.md ✅ reviewed (aligned); .specify/templates/tasks-template.md ✅ reviewed (aligned); .specify/templates/commands/*.md ✅ reviewed (no agent-specific issues found)
+-- Follow-up TODOs: none
+--->
+-# Evolution of Todo Constitution
+-
+-## Core Principles
+-
+-### I. Spec-Driven Full-Stack Delivery (NON-NEGOTIABLE)
+-Every change moves through five written phases: Research, Specification, Design & Contracts, Implementation, and Validation & Release. Each phase must produce an artifact (research notes, spec, design/contracts, code with tests, validation report) that can be reviewed independently before advancing. Specs in `/specs` are the source of truth; Spec-Kit commands and Codex agents must be used to generate and store artifacts. No phase may be skipped or merged without a documented amendment.
+-
+-### II. Test Discipline & Coverage
+-Tests are authored before or alongside implementation using pytest. All tests must pass at all times. Coverage must remain at or above 80% for new and changed code, measured via pytest + coverage, with gaps explicitly justified. Gate builds on failing tests or coverage regressions.
+-
+-### III. Python 3.12 + uv Reproducibility
+-Python 3.12+ is the only supported backend runtime. Dependency management uses `uv` with locked versions; no alternative package managers are permitted. All backend commands in plans, specs, and tasks must use `uv run`/`uv pip` to ensure reproducible environments across local and CI.
+-
+-### IV. Incremental Value per Phase
+-Each phase must deliver a user-visible or testable increment tied to the phase goal (e.g., validated spec, signed-off contracts, running slice of functionality). Work items remain small enough to complete within a single phase cycle and keep dependency risk low.
+-
+-### V. Reviewable & Traceable Work
+-Plans, specs, tasks, and code changes must reference each other so reviewers can trace decisions to artifacts. Every change must be reviewable asynchronously with clear acceptance criteria, test evidence, coverage data, and a Prompt History Record (PHR) captured before merge. Specs are updated first; implementations may not diverge from specs.
+-
+-### VI. Full-Stack UX & Frontend Compliance
+-The frontend must use Next.js 16+ (App Router), TypeScript, Tailwind, and Better Auth for JWT issuing. UI must align with `/specs/ui` guidance, remain responsive, and consistently attach JWTs to backend calls. Back/escape paths and readable layouts are required.
+-
+-### VII. API & Data Ownership Enforcement
+-All mandatory REST endpoints (task CRUD + complete) must match `/specs/api/rest-endpoints.md`. JWT is required on every request; `{user_id}` in the path must match the authenticated user. Data isolation is mandatory—no user may access another user’s tasks. Backend queries must filter by authenticated `user_id`.
+-
+-## Technical Constraints & Quality Requirements
+-- Language: Python 3.12+ only.
+-- Package manager: `uv` with locked dependencies tracked in VCS.
+-- Testing: pytest with coverage reporting; failing or missing tests block merges.
+-- Quality thresholds: all tests green at all times; ≥80% coverage on new/changed code with rationale for any exception.
+-- Frontend stack: Next.js 16+ (App Router), TypeScript, Tailwind, Better Auth (JWT issuing).
+-- Backend stack: FastAPI + SQLModel on Python 3.12+ with `uv`.
+-- Database: Neon Serverless PostgreSQL via `DATABASE_URL`.
+-- Auth: Better Auth issues JWT; FastAPI validates JWT using `BETTER_AUTH_SECRET`.
+-- Mandatory REST endpoints: GET/POST `/api/{user_id}/tasks`, GET/PUT/DELETE `/api/{user_id}/tasks/{id}`, PATCH `/api/{user_id}/tasks/{id}/complete`, all requiring JWT and enforcing user isolation.
+-- Tooling commands in docs and tasks must use `uv run` to ensure consistency across environments.
+-
+-## Development Workflow & Phases
+-1. **Research**: Capture problem context, risks, and success measures.
+-2. **Specification**: Write a clear, testable spec informed by research.
+-3. **Design & Contracts**: Define data models, contracts, and plan structure aligned to the spec; exit requires review.
+-4. **Implementation**: Build to spec with tests-first, keeping changes scoped to planned increments.
+-5. **Validation & Release**: Run pytest with coverage, document results, and capture user-facing validation before release.
+-
+-Phase transitions require explicit acceptance of the prior phase artifact. Work that cannot fit a single phase must be split before starting Implementation.
+-
+-## Governance
+-- This constitution supersedes other process documents. All plans/specs/tasks must cite the relevant principles and note any exceptions with justification.
+-- Amendments require: a documented proposal, impact analysis, version bump per semantic versioning (MAJOR for principle removal/redefinition, MINOR for new/expanded principles, PATCH for clarifications), and reviewer approval.
+-- Compliance checks: every PR must state phase, artifacts produced, pytest results, coverage numbers, and link to the relevant PHR. Deviations must include time-bound remediation tasks.
+-- Runtime guidance (e.g., quickstart or agent guides) must stay in sync with principles and constraints in this document.
+-- Specs in `/specs` are the single source of truth; API, schema, and feature changes must be updated in specs before code changes.
+-- Agents (Architect, Backend, Frontend, Specs, DevOps) must enforce this constitution and may not violate API contract, auth rules, or data ownership requirements.
+-
+-**Version**: 2.0.0 | **Ratified**: 2025-12-10 | **Last Amended**: 2025-12-10
++<!--
++Sync Impact Report
++- Version: 2.0.0 → 3.0.0
++- Modified principles: Spec-Driven Full-Stack Delivery → Spec-Driven Rule Priority & Governance; Python 3.12 + uv Reproducibility → Phase II Stack & Monorepo; API & Data Ownership Enforcement → Auth & Ownership Enforcement
++- Added sections: Stable REST Contract; Monorepo Structure & CLAUDE guidance; Better Auth & JWT enforcement
++- Removed sections: uv-only mandate (replaced by stack mandate), CLI-only references
++- Templates requiring updates: .specify/templates/plan-template.md ⚠ review rule priority wording; .specify/templates/spec-template.md ⚠ ensure specs-first language; .specify/templates/tasks-template.md ⚠ align phase references; .specify/templates/commands/*.md ⚠ check for outdated priority/order mentions
++- Follow-up TODOs: None identified
++-->
++# Evolution of Todo Constitution
++
++## Core Principles
++
++### I. Spec-Driven Rule Priority & Governance (NON-NEGOTIABLE)
++`/specs` is the source of truth for functional and technical behavior. Agents must read relevant specs before any implementation. When instructions conflict, follow `/specs` first, then CLAUDE/Constitution files. Specs must be authored and updated via Spec-Kit. No work may bypass or contradict specs.
++
++### II. Full-Stack Phase II Scope & Stack
++Phase II builds a modern multi-user web app with persistent storage: frontend (Next.js 16+ App Router, TypeScript, Tailwind, Better Auth), backend (FastAPI + SQLModel), Neon PostgreSQL database, spec-driven development, and Better Auth-issued JWTs. All five Task CRUD operations must be delivered as a web application.
++
++### III. Stable REST Contract
++The REST API contract is canonical and must be preserved: `GET/POST /api/{user_id}/tasks`, `GET/PUT/DELETE /api/{user_id}/tasks/{id}`, `PATCH /api/{user_id}/tasks/{id}/complete`. All endpoints are JSON, enforce ownership, and follow `/specs/api/rest-endpoints.md`.
++
++### IV. Auth & Ownership Enforcement
++Every API request requires `Authorization: Bearer <token>`. FastAPI verifies JWTs with `BETTER_AUTH_SECRET`, extracts `user_id`, and cross-checks the URL `user_id`. Missing/invalid tokens return 401; cross-user access returns 403 or 404 per spec. Never bypass or stub auth in production. All data is isolated per user.
++
++### V. Test Discipline & Coverage
++Tests are authored before or alongside implementation. All tests must pass at all times. Coverage must be ≥80% for new/changed code, with explicit rationale for any gaps. Failing tests or coverage regressions block release.
++
++### VI. Monorepo Structure & CLAUDE Guidance
++Use and respect the Spec-Kit layout in `hackathon-todo/`: `.spec-kit/config.yaml`, `specs/overview.md`, `specs/features/*.md`, `specs/api/*.md`, `specs/database/*.md`, `specs/ui/*.md`, plus CLAUDE guidance files (root, frontend, backend). Agents must align folder structure and work products with these references.
++
++### VII. Reviewable & Traceable Work
++Plans, specs, tasks, and code changes must reference each other for traceability. Every change must have clear acceptance criteria, test evidence, coverage data, and a Prompt History Record (PHR) captured before merge. Specs are updated first; implementation follows.
++
++## Technical Constraints & Quality Requirements
++- Frontend: Next.js 16+ (App Router), TypeScript, Tailwind, Better Auth for authentication and JWT issuing.
++- Backend: FastAPI + SQLModel on Python with Neon PostgreSQL via `DATABASE_URL`.
++- Auth: Better Auth issues JWT; FastAPI validates JWT using `BETTER_AUTH_SECRET`; every request must carry `Authorization: Bearer <token>`.
++- REST contract: Endpoints listed in Principle III are stable and must remain JSON-only with ownership enforcement.
++- Data model: `Task` follows `/specs/database/schema.md` and `/specs/features/task-crud.md`; every task is tied to the authenticated `user_id`.
++- Error handling: Helpful, concise API errors; avoid stubbing or bypassing auth.
++- Code quality: Small, focused modules with explicit types; follow CLAUDE guidance in root, frontend, and backend.
++- Tooling: Use Spec-Kit and GitHub workflows; do not introduce unapproved technologies without explicit request.
++
++## Development Workflow & Phases
++1. **Research**: Capture context, risks, and success measures.  
++2. **Specification**: Write clear, testable specs informed by research; `/specs` is authoritative.  
++3. **Design & Contracts**: Define data models, contracts, and plan structure aligned to specs; exit requires review.  
++4. **Implementation**: Build to spec with tests-first; keep changes scoped to planned increments.  
++5. **Validation & Release**: Run tests with coverage, document results, and capture user-facing validation before release.
++
++Phase transitions require explicit acceptance of the prior phase artifact. Work too large for a phase must be split before Implementation.
++
++## Governance
++- Rule priority: `/specs` prevails, then CLAUDE/Constitution files. Tasks and plans must cite the governing spec sections.  
++- Amendments require a proposal, impact analysis, semantic version bump (MAJOR for rule redefinition/removal, MINOR for new/expanded guidance, PATCH for clarifications), and reviewer approval.  
++- Compliance checks: every PR states phase, artifacts produced, test results, coverage numbers, and links to the relevant PHR. Deviations require time-bound remediation tasks.  
++- Runtime guidance (e.g., quickstart or agent guides) must stay in sync with this constitution and `/specs`.  
++- Agents (Architect, Backend, Frontend, Specs, DevOps) must enforce this constitution, REST contract, auth rules, and user isolation.
++
++**Version**: 3.0.0 | **Ratified**: 2025-12-10 | **Last Amended**: 2025-12-12
+*** End Patch
+2025-12-11T22:39:24.440162Z  INFO ToolCall: shell_command {"command":".specify/scripts/bash/create-phr.sh --title \"phase2-constitution-update\" --stage constitution --json","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+2025-12-11T22:39:29.257023Z  INFO ToolCall: shell_command {"command":"ls history/prompts/constitution","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+2025-12-11T22:39:54.446795Z  INFO ToolCall: apply_patch *** Begin Patch
+*** Add File: history/prompts/constitution/0004-phase2-constitution-update.constitution.prompt.md
++---
++id: 0004
++title: phase2-constitution-update
++stage: constitution
++date: 2025-12-12
++surface: specs
++model: gpt-5
++feature: null
++branch: 001-spec-meta-refresh
++user: aie
++command: manual (constitution update)
++labels: [constitution, phase2]
++links:
++  spec: null
++  ticket: null
++  adr: null
++  pr: null
++files:
++  - path: .specify/memory/constitution.md
++    note: Updated to v3.0.0 with specs-first priority and Phase II stack/auth mandates.
++tests:
++  - status: not run
++    note: documentation-only change
++---
++
++## Prompt
++
++You are Codex, helping build **Phase II** of the Todo App: a full-stack, multi-user web application using a **spec-driven** workflow. 1. **Spec-Driven Development** - Treat everything in `/specs` as the source of truth. - Before implementing anything, read the relevant spec file(s). - If there is a conflict, follow `/specs` first, then the CLAUDE/Constitution files. 2. **Monorepo & Structure** - Root repo: `hackathon-todo/` - Use and respect the Spec-Kit layout: - `.spec-kit/config.yaml` - `specs/overview.md` - `specs/features/*.md` - `specs/api/*.md` - `specs/database/*.md` - `specs/ui/*.md` - Follow guidance in: - `CLAUDE.md` (root) - `frontend/CLAUDE.md` - `backend/CLAUDE.md` 3. **Phase II Scope (Authoritative)** - Objective: Transform the existing console todo app into a **modern multi-user web app** with persistent storage. - All 5 basic Task CRUD features must exist as a **web application**. - Build a **REST API backend** + **Responsive frontend** + **Neon PostgreSQL** + **Better Auth**. 4. **Technology Stack (Mandatory)** - **Frontend** - Next.js 16+ (App Router) - TypeScript - Tailwind CSS - Better Auth for authentication (JWT issuing) - **Backend** - Python - FastAPI - SQLModel (ORM) - Neon Serverless PostgreSQL - **Spec / Tooling** - Codex + GitHub Spec-Kit Plus - **Auth** - Better Auth issues **JWT tokens**. - FastAPI verifies tokens using a **shared secret** (`BETTER_AUTH_SECRET` env var). 5. **REST API Contract (Stable Interface)** The following endpoints are canonical and must be implemented and preserved: - `GET /api/{user_id}/tasks` List all tasks for `user_id`. - `POST /api/{user_id}/tasks` Create a new task for `user_id`. - `GET /api/{user_id}/tasks/{id}` Get task details by task ID (must belong to `user_id`). - `PUT /api/{user_id}/tasks/{id}` Update task (only if owned by `user_id`). - `DELETE /api/{user_id}/tasks/{id}` Delete task (only if owned by `user_id`). - `PATCH /api/{user_id}/tasks/{id}/complete` Toggle completion flag of the task. All endpoints: - Are **JSON-based**. - Must enforce **ownership**: only operate on tasks of the authenticated user. 6. **Authentication & Security Rules** - Every API request must include a **JWT**: - Header: `Authorization: Bearer <token>`. - FastAPI: - Verifies JWT with the shared secret. - Extracts `user_id` from the token. - Cross-checks that `user_id` in URL matches the authenticated user. - If token is missing or invalid: - Respond with `401 Unauthorized`. - If token is valid but the resource does not belong to the user: - Respond with `403 Forbidden` or `404 Not Found` (depending on spec). - Never bypass or stub out auth in production code. 7. **Database & Models** - Use **SQLModel** with Neon PostgreSQL. - Define a `Task` model following `/specs/database/schema.md` and `/specs/features/task-crud.md`. - Every task must be associated with a specific user (by user ID / subject from JWT). - DB connection string comes from `DATABASE_URL` env variable. 8. **Frontend Responsibilities** - Use Better Auth to handle **signup / signin** and session. - Retrieve JWT token and attach it to all backend requests. - Use the REST endpoints above for all task operations. - Implement responsive UI according to `/specs/ui/*.md`. 9. **Code Quality & Conventions** - Match patterns described in the CLAUDE files. - Use small, focused modules and clear naming. - Favor explicit types (TypeScript, Pydantic models, SQLModel models). - Keep API error messages helpful but not overly verbose. 10. **Non-Negotiable Rules** - Do not change the published API route structure without updating `/specs/api/rest-endpoints.md`. - Do not introduce technologies outside the approved stack without being explicitly requested. - Always ensure **user isolation**: users can never see or modify others’ tasks. You must always act in accordance with this Constitution when reading the Plan and Tasks and when generating code or modifications.
++
++## Response snapshot
++
++Updated constitution to v3.0.0: specs-first priority (then CLAUDE/Constitution), Phase II stack and scope, stable REST contract, Better Auth JWT enforcement, monorepo/CLAUDE guidance, and maintained testing/traceability requirements.
++
++## Outcome
++
++- ✅ Impact: Constitution now encodes Phase II rules, stack, auth, and specs-first governance.
++- 🧪 Tests: not run (doc-only).
++- 📁 Files: .specify/memory/constitution.md updated.
++- 🔁 Next prompts: Review templates for priority wording alignment.
++- 🧠 Reflection: Ensure future plans/specs cite the new rule order and stable REST contract.
++
++## Evaluation notes (flywheel)
++
++- Failure modes observed: PHR script missing template; created manually.
++- Graders run and results (PASS/FAIL): not run
++- Prompt variant (if applicable): n/a
++- Next experiment (smallest change to try): Restore PHR script template to enable automated PHR creation.
+*** End Patch
+2025-12-11T22:40:01.921454Z  INFO ToolCall: shell_command {"command":"git status -sb","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+2025-12-11T22:40:06.327442Z  INFO ToolCall: update_plan {"plan":[{"status":"completed","step":"Load existing constitution and templates to identify placeholders and context"},{"status":"completed","step":"Draft updated constitution from user input, set version bump, insert Sync Impact Report"},{"status":"completed","step":"Assess template impacts and note follow-ups"},{"status":"completed","step":"Write updated constitution, create PHR, and summarize"}]}
+2025-12-11T22:40:55.395156Z  INFO spawning ghost snapshot task
+2025-12-11T22:40:55.764008Z  INFO ghost snapshot blocking task finished
+2025-12-11T22:40:55.764135Z  INFO ghost commit captured: 5f706f3094ff2c53f97733b37cac7d26ce19eac8
+2025-12-11T22:40:55.764156Z  INFO ghost snapshot gate marked ready
+2025-12-11T22:41:13.505174Z  INFO ToolCall: apply_patch *** Begin Patch
+*** Update File: .specify/memory/constitution.md
+@@
+-Sync Impact Report
+-- Version: 2.0.0 → 3.0.0
+-- Modified principles: Spec-Driven Full-Stack Delivery → Spec-Driven Rule Priority & Governance; Python 3.12 + uv Reproducibility → Phase II Stack & Monorepo; API & Data Ownership Enforcement → Auth & Ownership Enforcement
+-- Added sections: Stable REST Contract; Monorepo Structure & CLAUDE guidance; Better Auth & JWT enforcement
+-- Removed sections: uv-only mandate (replaced by stack mandate), CLI-only references
+-- Templates requiring updates: .specify/templates/plan-template.md ⚠ review rule priority wording; .specify/templates/spec-template.md ⚠ ensure specs-first language; .specify/templates/tasks-template.md ⚠ align phase references; .specify/templates/commands/*.md ⚠ check for outdated priority/order mentions
++Sync Impact Report
++- Version: 2.0.0 → 3.0.0
++- Modified principles: Spec-Driven Full-Stack Delivery → Spec-Driven Rule Priority & Governance; Python 3.12 + uv Reproducibility → Phase II Stack & Monorepo; API & Data Ownership Enforcement → Auth & Ownership Enforcement
++- Added sections: Stable REST Contract; Monorepo Structure & agent guidance; Better Auth & JWT enforcement
++- Removed sections: uv-only mandate (replaced by stack mandate), CLI-only references
++- Templates requiring updates: .specify/templates/plan-template.md ⚠ review rule priority wording; .specify/templates/spec-template.md ⚠ ensure specs-first language; .specify/templates/tasks-template.md ⚠ align phase references; .specify/templates/commands/*.md ⚠ check for outdated priority/order mentions
+ - Follow-up TODOs: None identified
+ -->
+ # Evolution of Todo Constitution
+ 
+ ## Core Principles
+ 
+ ### I. Spec-Driven Rule Priority & Governance (NON-NEGOTIABLE)
+-`/specs` is the source of truth for functional and technical behavior. Agents must read relevant specs before any implementation. When instructions conflict, follow `/specs` first, then CLAUDE/Constitution files. Specs must be authored and updated via Spec-Kit. No work may bypass or contradict specs.
++`/specs` is the source of truth for functional and technical behavior. Agents must read relevant specs before any implementation. When instructions conflict, follow `/specs` first, then Codex/Constitution guidance. Specs must be authored and updated via Spec-Kit. No work may bypass or contradict specs.
+@@
+-### VI. Monorepo Structure & CLAUDE Guidance
+-Use and respect the Spec-Kit layout in `hackathon-todo/`: `.spec-kit/config.yaml`, `specs/overview.md`, `specs/features/*.md`, `specs/api/*.md`, `specs/database/*.md`, `specs/ui/*.md`, plus CLAUDE guidance files (root, frontend, backend). Agents must align folder structure and work products with these references.
++### VI. Monorepo Structure & Agent Guidance
++Use and respect the Spec-Kit layout in `hackathon-todo/`: `.spec-kit/config.yaml`, `specs/overview.md`, `specs/features/*.md`, `specs/api/*.md`, `specs/database/*.md`, `specs/ui/*.md`, plus agent guidance files (e.g., `AGENTS.md`, backend/frontend instructions). Agents must align folder structure and work products with these references.
+@@
+-- Code quality: Small, focused modules with explicit types; follow CLAUDE guidance in root, frontend, and backend.
++- Code quality: Small, focused modules with explicit types; follow Codex/agent guidance in root, frontend, and backend.
+@@
+-Rule priority: `/specs` prevails, then CLAUDE/Constitution files. Tasks and plans must cite the governing spec sections.  
++Rule priority: `/specs` prevails, then Codex/Constitution guidance. Tasks and plans must cite the governing spec sections.  
+*** End Patch
+2025-12-11T22:41:17.696294Z  INFO ToolCall: shell_command {"command":"cat .specify/memory/constitution.md","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+2025-12-11T22:41:29.166130Z  INFO ToolCall: apply_patch *** Begin Patch
+*** Update File: .specify/memory/constitution.md
+@@
+-- Added sections: Stable REST Contract; Monorepo Structure & CLAUDE guidance; Better Auth & JWT enforcement
++- Added sections: Stable REST Contract; Monorepo Structure & agent guidance; Better Auth & JWT enforcement
+@@
+-`/specs` is the source of truth for functional and technical behavior. Agents must read relevant specs before any implementation. When instructions conflict, follow `/specs` first, then CLAUDE/Constitution files. Specs must be authored and updated via Spec-Kit. No work may bypass or contradict specs.
++`/specs` is the source of truth for functional and technical behavior. Agents must read relevant specs before any implementation. When instructions conflict, follow `/specs` first, then Codex/Constitution guidance. Specs must be authored and updated via Spec-Kit. No work may bypass or contradict specs.
+@@
+-### VI. Monorepo Structure & CLAUDE Guidance
+-Use and respect the Spec-Kit layout in `hackathon-todo/`: `.spec-kit/config.yaml`, `specs/overview.md`, `specs/features/*.md`, `specs/api/*.md`, `specs/database/*.md`, `specs/ui/*.md`, plus CLAUDE guidance files (root, frontend, backend). Agents must align folder structure and work products with these references.
++### VI. Monorepo Structure & Agent Guidance
++Use and respect the Spec-Kit layout in `hackathon-todo/`: `.spec-kit/config.yaml`, `specs/overview.md`, `specs/features/*.md`, `specs/api/*.md`, `specs/database/*.md`, `specs/ui/*.md`, plus agent guidance files (e.g., `AGENTS.md`, backend/frontend instructions). Agents must align folder structure and work products with these references.
+@@
+-- Code quality: Small, focused modules with explicit types; follow CLAUDE guidance in root, frontend, and backend.
++- Code quality: Small, focused modules with explicit types; follow Codex/agent guidance in root, frontend, and backend.
+@@
+-- Rule priority: `/specs` prevails, then CLAUDE/Constitution files. Tasks and plans must cite the governing spec sections.  
++- Rule priority: `/specs` prevails, then Codex/Constitution guidance. Tasks and plans must cite the governing spec sections.  
+*** End Patch
+2025-12-11T22:42:26.307882Z  INFO spawning ghost snapshot task
+2025-12-11T22:42:26.683555Z  INFO ghost snapshot blocking task finished
+2025-12-11T22:42:26.683702Z  INFO ghost commit captured: a3ba3f54e8806886127c62eb86238488d764006e
+2025-12-11T22:42:26.683716Z  INFO ghost snapshot gate marked ready
+2025-12-11T22:43:42.522660Z  INFO spawning ghost snapshot task
+2025-12-11T22:43:42.911469Z  INFO ghost snapshot blocking task finished
+2025-12-11T22:43:42.911662Z  INFO ghost commit captured: bb5a774f181f6801a03b6609257083f6f876964c
+2025-12-11T22:43:42.911692Z  INFO ghost snapshot gate marked ready
+2025-12-11T22:44:29.056366Z  INFO spawning ghost snapshot task
+2025-12-11T22:44:29.215809Z  INFO ghost snapshot blocking task finished
+2025-12-11T22:44:29.215925Z  INFO ghost commit captured: 641ab7d64e2038b3b8c66ac75af0a2493f3cacb6
+2025-12-11T22:44:29.215958Z  INFO ghost snapshot gate marked ready
+2025-12-11T22:44:32.871950Z  INFO ToolCall: shell_command {"command":"git status -sb","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+2025-12-11T22:44:37.210973Z  INFO ToolCall: shell_command {"command":"git add .specify/memory/constitution.md history/prompts/constitution/0004-phase2-constitution-update.constitution.prompt.md","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+2025-12-11T22:44:43.317574Z  INFO ToolCall: shell_command {"command":"git add .specify/memory/constitution.md history/prompts/constitution/0004-phase2-constitution-update.constitution.prompt.md","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b","sandbox_permissions":"require_escalated","justification":"Stage constitution and PHR per user request"}
+2025-12-11T22:45:06.562937Z  INFO ToolCall: shell_command {"command":"git commit -m \"docs: update constitution to v3.0.0\"","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+2025-12-11T22:45:10.965856Z  INFO ToolCall: shell_command {"command":"git commit -m \"docs: update constitution to v3.0.0\"","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b","sandbox_permissions":"require_escalated","justification":"Commit staged constitution and PHR per user request"}
+2025-12-11T22:45:56.020704Z  INFO ToolCall: shell_command {"command":"git push origin HEAD","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b","sandbox_permissions":"require_escalated","justification":"Push constitution update per user request"}
+2025-12-11T22:46:29.215880Z  INFO spawning ghost snapshot task
+2025-12-11T22:46:29.526178Z  INFO ghost snapshot blocking task finished
+2025-12-11T22:46:29.526398Z  INFO ghost commit captured: a133161d606136825c14c4d17dc81ed1c8fb6681
+2025-12-11T22:46:29.526417Z  INFO ghost snapshot gate marked ready
+2025-12-11T22:46:33.602777Z  INFO ToolCall: shell_command {"command":"git status -sb","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b"}
+2025-12-11T22:46:39.542348Z  INFO ToolCall: shell_command {"command":"git add .codex/history.jsonl .codex/log/codex-tui.log .codex/sessions/2025/12/12/rollout-2025-12-12T02-57-49-019b0f6b-9cff-76c3-ab32-26bcbd666823.jsonl","workdir":"/home/aie/all_data/piaic71-hackathon/hackathon2-sdd-b","sandbox_permissions":"require_escalated","justification":"Stage runtime log files per user cleanup request"}
