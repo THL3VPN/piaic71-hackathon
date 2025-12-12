@@ -10,13 +10,15 @@ import {
   completeTask,
   updateTask,
 } from "../../lib/api";
+import { getSession } from "../../lib/auth";
 
 type Task = { id: string; title: string; description?: string; completed: boolean };
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [token, setToken] = useState("");
-  const [userId, setUserId] = useState("");
+  const session = getSession();
+  const token = session?.token ?? "";
+  const userId = session?.userId ?? "";
 
   useEffect(() => {
     if (!token || !userId) return;

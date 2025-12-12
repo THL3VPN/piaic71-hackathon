@@ -42,12 +42,12 @@
 
 **Goal**: Next.js App Router UI with Better Auth and task CRUD.
 
-- [X] T018 [US3] Configure Better Auth and JWT storage in frontend/app/login and frontend/app/signup flows
+- [X] T018 [US3] Configure Better Auth and JWT storage in frontend/app/login and frontend/app/signup flows (placeholder wiring)
 - [X] T019 [P] [US3] Build `/frontend/lib/api.ts` to attach `Authorization: Bearer <token>` and include authenticated user_id
 - [X] T020 [P] [US3] Implement tasks dashboard page at frontend/app/tasks/page.tsx with list, status, timestamps
 - [X] T021 [P] [US3] Create task form component (create/update) in frontend/components/TaskForm.tsx
 - [X] T022 [P] [US3] Create task list/item components with toggle/delete actions in frontend/components/TaskList.tsx and TaskItem.tsx
-- [X] T023 [US3] Wire CRUD calls (load/create/update/delete/toggle) to backend endpoints in frontend/app/tasks/page.tsx
+- [X] T023 [US3] Wire CRUD calls (load/create/update/delete/toggle) to backend endpoints in frontend/app/tasks/page.tsx (uses session placeholder)
 
 ## Final Phase – Polish & Cross-Cutting
 
