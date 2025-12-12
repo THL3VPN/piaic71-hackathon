@@ -3,3 +3,8 @@ questionary
 rich
 pytest
 pytest-cov
+fastapi
+uvicorn[standard]
+sqlmodel
+asyncpg
+PyJWT
