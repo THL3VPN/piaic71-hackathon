@@ -17,6 +17,9 @@
 - **Data ownership enforcement**: All DB queries filter by authenticated `user_id`; mismatch returns 403/404 per spec.  
   - Rationale: Prevents cross-user leakage; required by Constitution.  
   - Alternatives: None acceptable.
+- **Environment handling**: `.env.example` documents `DATABASE_URL`, `BETTER_AUTH_SECRET`, `NEXT_PUBLIC_API_URL`; frontend calls backend at `http://localhost:8000`.  
+  - Rationale: Needed for manual, non-Docker development.  
+  - Alternatives: Implicit env assumptions (rejected: causes setup friction).
 
 ## Open Questions
 

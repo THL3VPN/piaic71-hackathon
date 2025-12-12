@@ -113,3 +113,7 @@ frontend/
 - Docker/containerization.  
 - Phase III chatbot/tooling (future).  
 - Non-task features beyond Task CRUD and auth for Phase II.
+
+## Validation Note
+
+Aligned with Constitution v3.0.0: specs-first rule priority, stable REST contract, JWT + user isolation, mandated stack, no Docker for Phase II, and testing discipline (pytest coverage ≥80%).

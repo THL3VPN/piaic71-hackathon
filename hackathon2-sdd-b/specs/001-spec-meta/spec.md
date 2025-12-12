@@ -79,6 +79,12 @@ Agents need to understand Phase II mandates: stable REST endpoints, JWT on all r
 - **Phase**: Active delivery stage (currently Phase II) that scopes applicable specs and tasks.  
 - **Agent Role**: Codex roles (Architect, Backend, Frontend, Specs, DevOps) and their permissions/responsibilities relative to specs.
 
+## Edit Policy & Rule Priority Summary
+
+- Rule order: Constitution → plan.md → tasks.md → specs (features/api/database/ui) → /agents → local files.  
+- Specs are read-only for all except the Specs Agent.  
+- Backend/Frontend/DevOps/Architect must read relevant specs before changing code or structure.
+
 ## Success Criteria *(mandatory)*
 
 ### Measurable Outcomes

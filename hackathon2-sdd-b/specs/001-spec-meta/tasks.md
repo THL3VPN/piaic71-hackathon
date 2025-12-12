@@ -13,9 +13,9 @@
 
 ## Phase 2 – Foundational
 
-- [ ] T004 Create/update env setup guide (manual, no Docker) in specs/001-spec-meta/quickstart.md referencing http://localhost:8000 for API
-- [ ] T005 Add ownership/indexing note for `user_id` to backend/db.py setup guidance in specs/001-spec-meta/plan.md
-- [ ] T006 Record Neon connection and JWT secret handling steps in specs/001-spec-meta/research.md
+- [X] T004 Create/update env setup guide (manual, no Docker) in specs/001-spec-meta/quickstart.md referencing http://localhost:8000 for API
+- [X] T005 Add ownership/indexing note for `user_id` to backend/db.py setup guidance in specs/001-spec-meta/plan.md
+- [X] T006 Record Neon connection and JWT secret handling steps in specs/001-spec-meta/research.md
 
 ## Phase 3 – User Story 1 (P1) Auth & Isolation
 
@@ -42,18 +42,18 @@
 
 **Goal**: Next.js App Router UI with Better Auth and task CRUD.
 
-- [ ] T018 [US3] Configure Better Auth and JWT storage in frontend/app/login and frontend/app/signup flows
-- [ ] T019 [P] [US3] Build `/frontend/lib/api.ts` to attach `Authorization: Bearer <token>` and include authenticated user_id
-- [ ] T020 [P] [US3] Implement tasks dashboard page at frontend/app/tasks/page.tsx with list, status, timestamps
-- [ ] T021 [P] [US3] Create task form component (create/update) in frontend/components/TaskForm.tsx
-- [ ] T022 [P] [US3] Create task list/item components with toggle/delete actions in frontend/components/TaskList.tsx and TaskItem.tsx
-- [ ] T023 [US3] Wire CRUD calls (load/create/update/delete/toggle) to backend endpoints in frontend/app/tasks/page.tsx
+- [X] T018 [US3] Configure Better Auth and JWT storage in frontend/app/login and frontend/app/signup flows
+- [X] T019 [P] [US3] Build `/frontend/lib/api.ts` to attach `Authorization: Bearer <token>` and include authenticated user_id
+- [X] T020 [P] [US3] Implement tasks dashboard page at frontend/app/tasks/page.tsx with list, status, timestamps
+- [X] T021 [P] [US3] Create task form component (create/update) in frontend/components/TaskForm.tsx
+- [X] T022 [P] [US3] Create task list/item components with toggle/delete actions in frontend/components/TaskList.tsx and TaskItem.tsx
+- [X] T023 [US3] Wire CRUD calls (load/create/update/delete/toggle) to backend endpoints in frontend/app/tasks/page.tsx
 
 ## Final Phase – Polish & Cross-Cutting
 
-- [ ] T024 Add manual E2E sanity steps (login → CRUD → logout) to specs/001-spec-meta/quickstart.md
-- [ ] T025 Document rule priority and agent edit policy summary in specs/001-spec-meta/spec.md
-- [ ] T026 Validate alignment to Constitution v3.0.0 (REST contract, JWT, no Docker) in specs/001-spec-meta/plan.md
+- [X] T024 Add manual E2E sanity steps (login → CRUD → logout) to specs/001-spec-meta/quickstart.md
+- [X] T025 Document rule priority and agent edit policy summary in specs/001-spec-meta/spec.md
+- [X] T026 Validate alignment to Constitution v3.0.0 (REST contract, JWT, no Docker) in specs/001-spec-meta/plan.md
 
 ## Dependencies (Story Order)
 
